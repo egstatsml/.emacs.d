@@ -4,3 +4,6 @@
 [submodule "Highlight-Indentation-for-Emacs"]
 	path = Highlight-Indentation-for-Emacs
 	url = https://github.com/antonj/Highlight-Indentation-for-Emacs
+[submodule "packages/Highlight-Indentation-for-Emacs"]
+	path = packages/Highlight-Indentation-for-Emacs
+	url = https://github.com/antonj/Highlight-Indentation-for-Emacs.git
