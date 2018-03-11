@@ -1,0 +1,9 @@
+My Emacs configuration that I use on most systems.
+Slight alterations may need to be made for running on some systems (such as high performance clusters without a display environment)
+
+Where possible, I have tried to list other peoples code as a submodle.
+
+For those that arent possible (because I could not find them on Git)
+pp-c-l.el: Emacs Wiki https://www.emacswiki.org/emacs/PrettyControlL
+column-marker.el: Emacs Wiki https://www.emacswiki.org/emacs/ColumnMarker
+

@@ -1,6 +1,18 @@
+;;init.el
+;;
+;;Author: Ethan Goan (With a huge amount of help from the ELisp community)
+;;
+;;Description:
+;;My configuration file for Emacs, where I have focused on configuring it for
+;;Python, LaTeX, org-mode and Matlab
+;;
+;;
+;;
+
 ;; Setting up directories that have additional plugins
-(add-to-list 'load-path "/home/ethan/.emacs.d/plugins")
-(add-to-list 'load-path "/home/ethan/.emacs.d/packages")
+;;this will look recursively throughout packages directory
+(let ((default-directory  "~/.emacs.d/packages/"))
+  (normal-top-level-add-subdirs-to-load-path))
 ;;setting package archives
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
 			 ("marmalade" . "https://marmalade-repo.org/packages/")
@@ -146,6 +158,3 @@
   (insert "    ")
 )
 (global-set-key (kbd "C-x <up>") 'my-insert-four)
-  
-
- 
