@@ -1,3 +1,6 @@
 [submodule "packages/column-enforce-mode"]
 	path = packages/column-enforce-mode
 	url = https://github.com/jordonbiondo/column-enforce-mode
+[submodule "Highlight-Indentation-for-Emacs"]
+	path = Highlight-Indentation-for-Emacs
+	url = https://github.com/antonj/Highlight-Indentation-for-Emacs

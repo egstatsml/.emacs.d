@@ -15,7 +15,6 @@
   (normal-top-level-add-subdirs-to-load-path))
 ;;setting package archives
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-			 ("marmalade" . "https://marmalade-repo.org/packages/")
 			 ("melpa" . "https://melpa.org/packages/")))
 
 
@@ -80,11 +79,13 @@
 
 ;;PYTHON
 ;;Indentation highlighting in Python Mode
-;;If not using Prelude then use this modules
 (add-hook 'python-mode-hook 'highlight-indentation-mode)
 (add-hook 'python-mode-hook 'company-mode)
 
-
+;;enable Sphinx docstring generation
+(add-hook 'python-mode-hook (lambda ()
+			      (require 'sphinx-doc)
+			      (sphinx-doc-mode t)))
 ;; use IPython shell
 (defun ipython ()
   (interactive)
