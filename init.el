@@ -36,7 +36,7 @@
 (require 'column-enforce-mode)
 (package-initialize)
 (add-hook 'prog-mode-hook 'column-enforce-mode)
-
+(require 'column-marker)
 
 
 ;;org-wiki mode
@@ -82,10 +82,17 @@
 (add-hook 'python-mode-hook 'highlight-indentation-mode)
 (add-hook 'python-mode-hook 'company-mode)
 
-;;enable Sphinx docstring generation
-(add-hook 'python-mode-hook (lambda ()
-			      (require 'sphinx-doc)
-			      (sphinx-doc-mode t)))
+;;creating function that will highlight the 72 column,
+;;which can be used to ensure docstrings aren't exceeding this
+(add-hook 'python-mode-hook
+	  (lambda ()
+	    (local-set-key (kbd "C-c C-d") 'my-docstring-column)))
+;;turn the column marker on
+(defun my-docstring-column ()
+  (interactive)
+  (column-marker-3 72)
+  )
+
 ;; use IPython shell
 (defun ipython ()
   (interactive)
