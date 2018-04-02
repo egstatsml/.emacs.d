@@ -28,6 +28,7 @@
 (pretty-control-l-mode 1)
 (setq pp^L-^L-string-function (lambda (win)
 				(make-string fill-column ?-)))
+(setq-default indent-tabs-mode nil)
 (require 'package)
 (package-initialize)  ;load and activate packages, including auto-complete
 (ac-config-default)
@@ -62,6 +63,8 @@
 (defalias 'w-e #'org-wiki-export-html) ;;exports the entire (well most) of the wiki
 (defalias 'w-h #'org-html-export-to-html);;exports a single page
 (defalias 'w-im #'org-display-inline-images)
+(defalias 'w-b #'org-wiki-insert-new);;use for inserting bibtex entries
+(global-set-key (kbd "C-c l") 'org-preview-latex-fragment)
 
 ;;automatically change parent task to DONE when all child tasks are done
 (defun org-summary-todo (n-done n-not-done)
@@ -76,6 +79,36 @@
 ;;add some more TODO list keywords
 (setq org-todo-keywords
   '((sequence "TODO" "TOREAD" "FEEDBACK" "INPROGRESS" "WAITING" "VERIFY" "NOTE" "|" "DONE" "DELEGATED" "NOTE")))
+
+
+(defun my-insert-equation ()
+  (interactive)
+  (insert "\\begin{equation*} \n\n\\end{equation*}")
+  (previous-line)
+    (insert "    ")
+  )
+(defun my-insert-align ()
+  (interactive)
+  (insert "\\begin{align*} \n\n\\end{align*}")
+  (previous-line)
+    (insert "    ")
+  )
+(defun my-insert-gather ()
+  (interactive)
+  (insert "\\begin{gather*} \n\n\\end{gather*}")
+  (previous-line)
+  (insert "    ")
+  )
+(add-hook 'org-mode-hook
+	  (lambda ()
+	    (local-set-key (kbd "C-c e") 'my-insert-equation)))
+(add-hook 'org-mode-hook
+	  (lambda ()
+	    (local-set-key (kbd "C-c a") 'my-insert-align)))
+(add-hook 'org-mode-hook
+	  (lambda ()
+	    (local-set-key (kbd "C-c g") 'my-insert-gather)))
+
 
 ;;PYTHON
 ;;Indentation highlighting in Python Mode
@@ -106,15 +139,35 @@
 
 
 ;;settings for MATLAB
-(custom-set-variables
- '(matlab-shell-command-switches '("-nodesktop -nosplash")))
-(add-hook 'matlab-mode-hook 'auto-complete-mode)
+(add-to-list 'load-path "~/.emacs.d/packages/matlab/matlab.el")
+(load-library "matlab-load")
+(add-hook 'matlab-mode-hook 'company-mode)
+(add-hook 'matlab-shell-mode-hook 'company-mode)
 (setq auto-mode-alist
     (cons
      '("\\.m$" . matlab-mode)
      auto-mode-alist))
 
 
+;;LaTeX
+(eval-after-load "latex"
+  '(progn
+     (add-hook 'LaTeX-mode-hook
+               (lambda ()
+                 (local-set-key (kbd "C-c e") 'ebib)
+                 (local-set-key (kbd "C-c i") 'ebib-insert-citation)
+                 (local-set-key (kbd "C-c o") 'ebib-load-bibtex-file)))))
+(eval-after-load "latex"
+  '(progn
+     (add-hook 'LaTeX-mode-hook
+               (lambda () 'ebib))))
+                 
+     
+
+
+
+
+
 ;;Some of my other custom set variables
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -127,6 +180,7 @@
    ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
  '(custom-enabled-themes (quote (wheatgrass)))
  '(inhibit-startup-screen t)
+ '(matlab-shell-command-switches '("-nodesktop -nosplash"))
  '(org-startup-folded t)
  '(org-startup-truncated nil)
  '(org-wiki-template
@@ -149,13 +203,6 @@
 
 * %n
 "))
-;;; init.el ends here
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
 ;;Custom Keybindings
 (global-set-key (kbd "C-x g") 'magit-status)
@@ -166,3 +213,4 @@
   (insert "    ")
 )
 (global-set-key (kbd "C-x <up>") 'my-insert-four)
+                
