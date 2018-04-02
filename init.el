@@ -154,19 +154,34 @@
   '(progn
      (add-hook 'LaTeX-mode-hook
                (lambda ()
+                 ;;setting up keys for ebib
                  (local-set-key (kbd "C-c e") 'ebib)
                  (local-set-key (kbd "C-c i") 'ebib-insert-citation)
-                 (local-set-key (kbd "C-c o") 'ebib-load-bibtex-file)))))
-(eval-after-load "latex"
-  '(progn
-     (add-hook 'LaTeX-mode-hook
-               (lambda () 'ebib))))
+                 (local-set-key (kbd "C-c o") 'ebib-load-bibtex-file)
+                 ;;setting up keys for texcount
+                 (local-set-key (kbd "C-c c") 'latex-word-count)
+                 (local-set-key (kbd "C-c w") 'latex-word-count-master)
+                 ;;setting up keys for writegood mode
+                 (local-set-key (kbd "C-c C-g") 'writegood-grade-level)
+                 (local-set-key (kbd "C-c C-e") 'writegood-reading-ease)))))
                  
-     
-
-
-
-
+;;count words in single file     
+(defun latex-word-count ()
+  (interactive)
+  (shell-command (concat "~/.emacs.d/packages/texcount/texcount.pl "
+                         ; "uncomment then options go here "
+                         (buffer-file-name))))
+;;count words in entire document
+(defun latex-word-count-master ()
+  (interactive)
+  (if (eq TeX-master t)
+      (setq master (buffer-file-name))
+    (setq master (concat (expand-file-name TeX-master) ".tex")))
+  (shell-command (concat "~/.emacs.d/packages/texcount/texcount.pl "
+                         "-dir "
+                         "-unicode "
+                         "-inc "
+                         master)))
 
 ;;Some of my other custom set variables
 (custom-set-variables
@@ -210,7 +225,6 @@
 ;;Insert four spaces
 (defun my-insert-four ()
   (interactive)
-  (insert "    ")
-)
+  (insert "    "))
 (global-set-key (kbd "C-x <up>") 'my-insert-four)
                 
