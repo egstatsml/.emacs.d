@@ -17,6 +17,13 @@
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
 			 ("melpa" . "https://melpa.org/packages/")))
 
+;;setting up faster access to init.el
+(defun find-user-init-file ()
+  "Edit the `user-init-file', in another window."
+  (interactive)
+  (find-file-other-window user-init-file))
+(global-set-key (kbd "C-c I") 'find-user-init-file)
+
 
 ;; Some global settings
 
@@ -38,6 +45,20 @@
 (package-initialize)
 (add-hook 'prog-mode-hook 'column-enforce-mode)
 (require 'column-marker)
+
+;;spell checking
+                
+(global-set-key (kbd "<f8>") 'ispell-word)
+(global-set-key (kbd "C-S-<f8>") 'flyspell-mode)
+(global-set-key (kbd "M-<f8>") 'flyspell-buffer)
+(global-set-key (kbd "<f7>") 'flyspell-check-previous-highlighted-word)
+(global-set-key (kbd "<f9>") 'flyspell-check-next-highlighted-word)
+;;Go to next mispelt word
+(defun flyspell-check-next-highlighted-word ()
+  "Custom function to spell check next highlighted word"
+  (interactive)
+  (flyspell-goto-next-error)
+  (ispell-word))
 
 
 ;;org-wiki mode
@@ -45,6 +66,10 @@
 (require 'org-wiki)
 (package-initialize)
 (require 'helm-config)
+;;turn line numbers off
+(defun nolinum ()
+  (global-linum-mode 0))
+(add-hook 'org-mode-hook 'nolinum)
 ;;
 (setq org-wiki-location-list
       '(
@@ -154,7 +179,7 @@
   '(progn
      (add-hook 'LaTeX-mode-hook
                (lambda ()
-                 ;;setting up keys for ebib
+                 ;;setting up keys for ebib                 
                  (local-set-key (kbd "C-c e") 'ebib)
                  (local-set-key (kbd "C-c i") 'ebib-insert-citation)
                  (local-set-key (kbd "C-c o") 'ebib-load-bibtex-file)
@@ -162,9 +187,12 @@
                  (local-set-key (kbd "C-c c") 'latex-word-count)
                  (local-set-key (kbd "C-c w") 'latex-word-count-master)
                  ;;setting up keys for writegood mode
-                 (local-set-key (kbd "C-c C-g") 'writegood-grade-level)
-                 (local-set-key (kbd "C-c C-e") 'writegood-reading-ease)))))
-                 
+                 (local-set-key (kbd "C-c g") 'writegood-grade-level)
+                 (local-set-key (kbd "C-c r") 'writegood-reading-ease)))))
+
+;;enable flyspell and run it on all LaTeX buffers
+(add-hook  'LaTeX-mode-hook 'flyspell-mode)
+(add-hook  'LaTeX-mode-hook 'flyspell-buffer)
 ;;count words in single file     
 (defun latex-word-count ()
   (interactive)
