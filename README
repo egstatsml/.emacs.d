@@ -11,7 +11,6 @@ or those from the Emacs Wiki, the links are provided as:
     matlab-mode: Matlab mode for Emacs https://sourceforge.net/p/matlab-emacs/src/ci/master/tree/
     texcount.pl: Perl script for counting text in LaTeX http://app.uio.no/ifi/texcount/download.html
 
-
 For reference, here is the list of packages installed through the Emacs package managers
   ace-window         20170219.256  installed             Quickly switch windows.
   anaconda-mode      20170329.836  installed             Code navigation, documentation lookup and completion for Python

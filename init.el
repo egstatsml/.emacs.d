@@ -23,13 +23,14 @@
   (interactive)
   (find-file-other-window user-init-file))
 (global-set-key (kbd "C-c I") 'find-user-init-file)
-
 
 ;; Some global settings
 
 ;;highlighting parenthesis etc.
 (show-paren-mode 1)
 (global-linum-mode 1)
+;;company mode
+(add-hook 'after-init-hook 'global-company-mode)
 ;;enable pretty control mode
 (require 'pp-c-l)           ; Load this library
 (pretty-control-l-mode 1)
@@ -37,9 +38,7 @@
 				(make-string fill-column ?-)))
 (setq-default indent-tabs-mode nil)
 (require 'package)
-(package-initialize)  ;load and activate packages, including auto-complete
-(ac-config-default)
-(global-auto-complete-mode t)
+(package-initialize)  ;load and activate packages
 ;;enable column-enforce mode for sorce code modes
 (require 'column-enforce-mode)
 (package-initialize)
@@ -89,7 +88,6 @@
 (defalias 'w-h #'org-html-export-to-html);;exports a single page
 (defalias 'w-im #'org-display-inline-images)
 (defalias 'w-b #'org-wiki-insert-new);;use for inserting bibtex entries
-(global-set-key (kbd "C-c l") 'org-preview-latex-fragment)
 
 ;;automatically change parent task to DONE when all child tasks are done
 (defun org-summary-todo (n-done n-not-done)
@@ -133,7 +131,9 @@
 (add-hook 'org-mode-hook
 	  (lambda ()
 	    (local-set-key (kbd "C-c g") 'my-insert-gather)))
-
+(add-hook 'org-mode-hook
+	  (lambda ()
+	    (local-set-key (kbd "C-c l") 'org-preview-latex-fragment)))
 
 ;;PYTHON
 ;;Indentation highlighting in Python Mode
@@ -175,6 +175,18 @@
 
 
 ;;LaTeX
+
+;;make it so we have to specify the main file whenever creating a TeX file
+(setq-default TeX-master nil)
+;;enable flyspell and run it on all LaTeX buffers
+(add-hook  'LaTeX-mode-hook 'flyspell-mode)
+(add-hook  'LaTeX-mode-hook 'flyspell-buffer)
+;;setting up company mode for auxtex
+(require 'company-auctex)
+(company-auctex-init)
+(add-hook  'LaTeX-mode-hook 'company-mode)
+
+;;config after we load a LaTeX doc.
 (eval-after-load "latex"
   '(progn
      (add-hook 'LaTeX-mode-hook
@@ -190,9 +202,6 @@
                  (local-set-key (kbd "C-c g") 'writegood-grade-level)
                  (local-set-key (kbd "C-c r") 'writegood-reading-ease)))))
 
-;;enable flyspell and run it on all LaTeX buffers
-(add-hook  'LaTeX-mode-hook 'flyspell-mode)
-(add-hook  'LaTeX-mode-hook 'flyspell-buffer)
 ;;count words in single file     
 (defun latex-word-count ()
   (interactive)
@@ -210,6 +219,8 @@
                          "-unicode "
                          "-inc "
                          master)))
+
+
 
 ;;Some of my other custom set variables
 (custom-set-variables

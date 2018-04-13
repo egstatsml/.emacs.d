@@ -7,3 +7,6 @@
 [submodule "packages/Highlight-Indentation-for-Emacs"]
 	path = packages/Highlight-Indentation-for-Emacs
 	url = https://github.com/antonj/Highlight-Indentation-for-Emacs.git
+[submodule "packages/predictive"]
+	path = packages/predictive
+	url = http://www.dr-qubit.org/git/predictive.git
