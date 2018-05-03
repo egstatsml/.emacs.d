@@ -175,7 +175,8 @@
 
 
 ;;LaTeX
-
+(setq-default bibtex-dialect 'biblatex)
+(setq TeX-parse-self t)
 ;;make it so we have to specify the main file whenever creating a TeX file
 (setq-default TeX-master nil)
 ;;enable flyspell and run it on all LaTeX buffers
