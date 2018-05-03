@@ -49,9 +49,10 @@
                 
 (global-set-key (kbd "<f8>") 'ispell-word)
 (global-set-key (kbd "C-S-<f8>") 'flyspell-mode)
-(global-set-key (kbd "M-<f8>") 'flyspell-buffer)
+(global-set-key (kbd "C-<f8>") 'flyspell-buffer)
 (global-set-key (kbd "<f7>") 'flyspell-check-previous-highlighted-word)
 (global-set-key (kbd "<f9>") 'flyspell-check-next-highlighted-word)
+(setq ispell-dictionary "british-ise")    ;set the default dictionary
 ;;Go to next mispelt word
 (defun flyspell-check-next-highlighted-word ()
   "Custom function to spell check next highlighted word"
@@ -175,6 +176,8 @@
 
 
 ;;LaTeX
+
+;;defaulting to biblatex dialect
 (setq-default bibtex-dialect 'biblatex)
 (setq TeX-parse-self t)
 ;;make it so we have to specify the main file whenever creating a TeX file
@@ -186,6 +189,9 @@
 (require 'company-auctex)
 (company-auctex-init)
 (add-hook  'LaTeX-mode-hook 'company-mode)
+;;for langtool
+(setq langtool-language-tool-jar "~/.local/LanguageTool-4.1/languagetool-commandline.jar")
+(require 'langtool)
 
 ;;config after we load a LaTeX doc.
 (eval-after-load "latex"
@@ -202,6 +208,15 @@
                  ;;setting up keys for writegood mode
                  (local-set-key (kbd "C-c g") 'writegood-grade-level)
                  (local-set-key (kbd "C-c r") 'writegood-reading-ease)))))
+
+;; nomenclature for latex
+(eval-after-load "tex"
+  '(add-to-list 'TeX-command-list 
+                '("Nomenclature" "makeindex %s.nlo -s nomencl.ist -o %s.nls"
+                  (lambda (name command file)
+                    (TeX-run-compile name command file)
+                    (TeX-process-set-variable file 'TeX-command-next TeX-command-default))
+                  nil t :help "Create nomenclature file")))
 
 ;;count words in single file     
 (defun latex-word-count ()
