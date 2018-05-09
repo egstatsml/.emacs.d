@@ -77,18 +77,53 @@
         ))
 ;;forcing image size if it is too large
 (setq org-image-actual-width '(600))
-
 ;; Initialize first org-wiki-directory or default org-wiki 
 (setq org-wiki-location (car org-wiki-location-list))
+
+;;publishing options
+
+(require 'ox-publish)
+(setq org-publish-project-alist
+      '(
+        ("org-notes"
+         :base-directory "~/org/"
+         :base-extension "org"
+         :publishing-directory "~/org/public_html/"
+         :recursive t
+         :publishing-function org-html-publish-to-html
+         :headline-levels 4             ; Just the default for this project.
+         :auto-preamble t
+         )
+        ("org-static"
+         :base-directory "~/org/"
+         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+         :publishing-directory "~/public_html/"
+         :recursive t
+         :publishing-function org-publish-attachment
+         )
+        ("org"
+         :components ("org-notes" "org-static")
+         )
+        ))
+;;then can publish with M-x org-publish-project RET org RET
+
+;;function for inserting the bibtex text
+(defun my-insert-bibtex ()
+  (interactive)
+  (insert "#+BEGIN_SRC bibtex \n\n#+END_SRC")
+  (previous-line)
+    (insert "    ")
+    )
 ;;now setting up some alias commands for org-wiki mode
 (defalias 'w-i #'org-wiki-index)
-(defalias 'w-in #'org-wiki-insert)
+(defalias 'w-in #'org-wiki-insert-new)
 (defalias 'w-l #'org-wiki-latex)
 (defalias 'w-lin #'org-wiki-insert-latex)
 (defalias 'w-e #'org-wiki-export-html) ;;exports the entire (well most) of the wiki
 (defalias 'w-h #'org-html-export-to-html);;exports a single page
 (defalias 'w-im #'org-display-inline-images)
-(defalias 'w-b #'org-wiki-insert-new);;use for inserting bibtex entries
+(defalias 'w-p #'org-publish-project);;to publish to HTML
+(defalias 'w-b #'my-insert-bibtex);;use for inserting bibtex entries
 
 ;;automatically change parent task to DONE when all child tasks are done
 (defun org-summary-todo (n-done n-not-done)
@@ -105,6 +140,7 @@
   '((sequence "TODO" "TOREAD" "FEEDBACK" "INPROGRESS" "WAITING" "VERIFY" "NOTE" "|" "DONE" "DELEGATED" "NOTE")))
 
 
+;;some functions that I add to local key-bindings
 (defun my-insert-equation ()
   (interactive)
   (insert "\\begin{equation*} \n\n\\end{equation*}")
@@ -123,6 +159,7 @@
   (previous-line)
   (insert "    ")
   )
+;;setting up my local key-bindings
 (add-hook 'org-mode-hook
 	  (lambda ()
 	    (local-set-key (kbd "C-c e") 'my-insert-equation)))
