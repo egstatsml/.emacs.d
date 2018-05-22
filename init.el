@@ -73,6 +73,7 @@
 ;;
 (setq org-wiki-location-list
       '(
+        "~/org/blog"
         "~/org/wiki"    ;; First wiki (root directory) is the default. 
         ))
 ;;forcing image size if it is too large
@@ -120,6 +121,7 @@
 (defalias 'w-l #'org-wiki-latex)
 (defalias 'w-lin #'org-wiki-insert-latex)
 (defalias 'w-e #'org-wiki-export-html) ;;exports the entire (well most) of the wiki
+(defalias 'w-s #'org-wiki-switch-root);;switch wiki 
 (defalias 'w-h #'org-html-export-to-html);;exports a single page
 (defalias 'w-im #'org-display-inline-images)
 (defalias 'w-p #'org-publish-project);;to publish to HTML
