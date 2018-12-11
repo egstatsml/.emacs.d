@@ -9,14 +9,18 @@
 ;;
 ;;
 
+;;(require 'cask "~/.cask/cask.el")
+;;(cask-initialize)
 ;; Setting up directories that have additional plugins
 ;;this will look recursively throughout packages directory
 (let ((default-directory  "~/.emacs.d/packages/"))
   (normal-top-level-add-subdirs-to-load-path))
 ;;setting package archives
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-			 ("melpa" . "https://melpa.org/packages/")))
+                         ("org" . "http://orgmode.org/elpa/")))
 
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 ;;setting up faster access to init.el
 (defun find-user-init-file ()
   "Edit the `user-init-file', in another window."
@@ -62,6 +66,10 @@
 
 
 ;;org-wiki mode
+
+;; add timestamp when closing a task
+(setq org-log-done 'time)
+;; initialising org-wiki mode
 (package-initialize)
 (require 'org-wiki)
 (package-initialize)
@@ -102,9 +110,11 @@
 
 ;;add some more TODO list keywords
 (setq org-todo-keywords
-  '((sequence "TODO" "TOREAD" "FEEDBACK" "INPROGRESS" "WAITING" "VERIFY" "NOTE" "|" "DONE" "DELEGATED" "NOTE")))
+      '((sequence "TODO" "|" "DONE")
+        (sequnce "TOREAD" "|" "DONE")
+        (sequence "INPROGRESS" "FEEDBACK" "WAITING" "VERIFY" "|" "DONE")))
 
-
+;; some self defined functions for LaTeX environments
 (defun my-insert-equation ()
   (interactive)
   (insert "\\begin{equation*} \n\n\\end{equation*}")
@@ -125,10 +135,13 @@
   )
 (add-hook 'org-mode-hook
 	  (lambda ()
+	    (local-set-key (kbd "C-c a") 'org-agenda)))
+(add-hook 'org-mode-hook
+	  (lambda ()
 	    (local-set-key (kbd "C-c e") 'my-insert-equation)))
 (add-hook 'org-mode-hook
 	  (lambda ()
-	    (local-set-key (kbd "C-c a") 'my-insert-align)))
+	    (local-set-key (kbd "C-c ;") 'my-insert-align)))
 (add-hook 'org-mode-hook
 	  (lambda ()
 	    (local-set-key (kbd "C-c g") 'my-insert-gather)))
@@ -164,6 +177,17 @@
 
 
 
+
+;;change assign shortkey to semi-colon
+(add-hook  'R-mode-hook 'r-smart-mode)
+(defun r-smart-mode ()
+  (local-set-key (kbd ";")  (lambda () (interactive) (insert " <- ")))
+  (ess-toggle-underscore nil))
+(setq ess-default-style 'RStudio)
+
+;; For STAN
+(require 'stan-mode)
+
 ;;settings for MATLAB
 (add-to-list 'load-path "~/.emacs.d/packages/matlab/matlab.el")
 (load-library "matlab-load")
@@ -190,7 +214,7 @@
 (company-auctex-init)
 (add-hook  'LaTeX-mode-hook 'company-mode)
 ;;for langtool
-(setq langtool-language-tool-jar "~/.local/LanguageTool-4.1/languagetool-commandline.jar")
+(setq langtool-language-tool-jar "~/.emacs.d/packages/LanguageTool-4.1/languagetool-commandline.jar")
 (require 'langtool)
 
 ;;config after we load a LaTeX doc.
@@ -250,7 +274,8 @@
    ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
  '(custom-enabled-themes (quote (wheatgrass)))
  '(inhibit-startup-screen t)
- '(matlab-shell-command-switches '("-nodesktop -nosplash"))
+ '(matlab-shell-command-switches (quote ("-nodesktop -nosplash")))
+ '(org-agenda-files (quote ("~/org/wiki/TODO.org")))
  '(org-startup-folded t)
  '(org-startup-truncated nil)
  '(org-wiki-template
@@ -283,3 +308,9 @@
   (insert "    "))
 (global-set-key (kbd "C-x <up>") 'my-insert-four)
                 
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
