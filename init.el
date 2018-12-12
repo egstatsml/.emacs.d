@@ -73,8 +73,8 @@
 ;;
 (setq org-wiki-location-list
       '(
-        "~/org/blog"
         "~/org/wiki"    ;; First wiki (root directory) is the default. 
+        "~/org/blog"
         ))
 ;;forcing image size if it is too large
 (setq org-image-actual-width '(600))
@@ -311,13 +311,8 @@
 #+KEYWORDS:
 #+STARTUP:  content
 #+OPTIONS: \\n:t
-#+OPTIONS: H:3 num:2
-#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=\"http://www.pirilampo.org/styles/readtheorg/css/htmlize.css\"/>
-#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=\"http://www.pirilampo.org/styles/readtheorg/css/readtheorg.css\"/>
-#+HTML_HEAD: <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js\"></script>
-#+HTML_HEAD: <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js\"></script>
-#+HTML_HEAD: <script type=\"text/javascript\" src=\"http://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.js\"></script>
-#+HTML_HEAD: <script type=\"text/javascript\" src=\"http://www.pirilampo.org/styles/readtheorg/js/readtheorg.js\"></script>
+#+OPTIONS: H:3 num:1
+#+SETUPFILE: /home/ethan/org/wiki/org-html-themes-master/setup/theme-readtheorg-local.setup
 
 - [[wiki:index][Index]]
 
@@ -335,3 +330,5 @@
   (insert "    "))
 (global-set-key (kbd "C-x <up>") 'my-insert-four)
                 
+
+
