@@ -20,7 +20,7 @@
                          ("org" . "http://orgmode.org/elpa/")))
 
 (add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+             '("melpa" . "https://melpa.org/packages/") t)
 ;;setting up faster access to init.el
 (defun find-user-init-file ()
   "Edit the `user-init-file', in another window."
@@ -128,6 +128,7 @@
 (defalias 'w-in #'org-wiki-insert-new)
 (defalias 'w-l #'org-wiki-latex)
 (defalias 'w-lin #'org-wiki-insert-latex)
+(defalias 'w-f #'org-wiki-helm)
 (defalias 'w-e #'org-wiki-export-html) ;;exports the entire (well most) of the wiki
 (defalias 'w-s #'org-wiki-switch-root);;switch wiki 
 (defalias 'w-h #'org-html-export-to-html);;exports a single page
@@ -334,7 +335,11 @@
 - Related: 
 
 * %n
-"))
+")
+
+ '(package-selected-packages
+   (quote
+    (latex-preview-pane xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view ebib company-auctex auto-complete-auctex ac-html))))
 
 ;;Custom Keybindings
 (global-set-key (kbd "C-x g") 'magit-status)
