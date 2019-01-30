@@ -15,12 +15,20 @@
 ;;this will look recursively throughout packages directory
 (let ((default-directory  "~/.emacs.d/packages/"))
   (normal-top-level-add-subdirs-to-load-path))
+;; ensuring mu4e is in the path
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
 ;;setting package archives
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                         ("org" . "http://orgmode.org/elpa/")))
+                         ("org" . "http://orgmode.org/elpa/")
+                         ("melpa" . "https://melpa.org/packages/")
+                         ("melpa-stable" . "https://stable.melpa.org/packages/")))
+(setq package-archive-priorities
+      '(("melpa-stable" . 20)
+        ("org" . 20)
+        ("gnu" . 10)
+        ("melpa" . 0)))
 
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
+
 ;;setting up faster access to init.el
 (defun find-user-init-file ()
   "Edit the `user-init-file', in another window."
@@ -245,7 +253,7 @@
 ;;LaTeX
 
 ;;defaulting to biblatex dialect
-(setq-default bibtex-dialect 'biblatex)
+;;(setq-default bibtex-dialect 'biblatex)
 (setq TeX-parse-self t)
 ;;make it so we have to specify the main file whenever creating a TeX file
 (setq-default TeX-master nil)
@@ -256,6 +264,7 @@
 (require 'company-auctex)
 (company-auctex-init)
 (add-hook  'LaTeX-mode-hook 'company-mode)
+(add-hook  'LaTeX-mode-hook 'latex-preview-pane-mode)
 ;;for langtool
 (setq langtool-language-tool-jar "~/.emacs.d/packages/LanguageTool-4.1/languagetool-commandline.jar")
 (require 'langtool)
@@ -315,7 +324,7 @@
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
    ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
- '(custom-enabled-themes (quote (wheatgrass)))
+ '(custom-enabled-themes (quote (wombat)))
  '(inhibit-startup-screen t)
  '(matlab-shell-command-switches (quote ("-nodesktop -nosplash")))
  '(org-agenda-files (quote ("~/org/wiki/TODO.org")))
@@ -336,10 +345,10 @@
 
 * %n
 ")
-
  '(package-selected-packages
    (quote
-    (latex-preview-pane xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view ebib company-auctex auto-complete-auctex ac-html))))
+    (mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib latex-preview-pane xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view company-auctex auto-complete-auctex ac-html)))
+ '(python-indent-offset 2))
 
 ;;Custom Keybindings
 (global-set-key (kbd "C-x g") 'magit-status)
