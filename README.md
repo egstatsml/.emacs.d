@@ -12,7 +12,7 @@ or those from the Emacs Wiki, the links are provided as:
     texcount.pl: Perl script for counting text in LaTeX http://app.uio.no/ifi/texcount/download.html
 
 # Pulling submodules
- Need to check exact comamnd to use
+`git submodule update --init --recursive`
 
 # Installing Packages Through MELPA etc.
 The list of installed packages through the package manager are listed in [emacs_packages.el](./emacs_packages.el). Open this script and execute the buffer to install packages.
