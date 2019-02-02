@@ -347,7 +347,7 @@
 ")
  '(package-selected-packages
    (quote
-    (mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib latex-preview-pane xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view company-auctex auto-complete-auctex ac-html)))
+    (ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib latex-preview-pane xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view company-auctex auto-complete-auctex ac-html)))
  '(python-indent-offset 2))
 
 ;;Custom Keybindings
