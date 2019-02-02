@@ -1,3 +1,4 @@
+
 ;;Istalled packages and script to install them
 ;;
 ;;Can get a list of installed packages from Emacs
@@ -6,7 +7,19 @@
 ;;sed or something similar to put it in the Elisp format
 ;;Then run this buffer and should be good to go
 
+;; setting package archives and priorities
+(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                         ("org" . "http://orgmode.org/elpa/")
+                         ("melpa" . "https://melpa.org/packages/")
+                         ("melpa-stable" . "https://stable.melpa.org/packages/")))
+(setq package-archive-priorities
+      '(("melpa-stable" . 20)
+        ("org" . 20)
+        ("gnu" . 10)
+        ("melpa" . 0)))
 
+
+;; function that will install all the packages
 (defun require-package (package)
     "Install given PACKAGE. This is from Bling's config"
     (unless (package-installed-p package)
@@ -14,6 +27,7 @@
         (package-refresh-contents))
     (package-install package)))
 
+;; list of packages to install
 (setq pkgs '(ac-html
 dash
 f
@@ -98,7 +112,6 @@ dash
 async
 markdown-mode
 nadvice
-org-wiki
 helm-core
 async
 parsebib
@@ -116,3 +129,12 @@ yasnippet)) ;; (you probably want to format the packages.txt first, otherwise yo
 (require 'cl) ;;g Common Lisp compatibility library
 (loop for pkg in pkgs do
   (require-package pkg)) ;; install each package
+
+;; install org-wiki
+(let ((url "https://raw.githubusercontent.com/caiorss/org-wiki/master/org-wiki.el"))     
+      (with-current-buffer (url-retrieve-synchronously url)
+	(goto-char (point-min))
+	(re-search-forward "^$")
+	(delete-region (point) (point-min))
+	(kill-whole-line)
+	(package-install-from-buffer)))
