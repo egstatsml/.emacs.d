@@ -46,7 +46,7 @@
 (show-paren-mode 1)
 (global-linum-mode 1)
 ;;company mode
-(add-hook 'after-init-hook 'global-company-mode)
+;;(add-hook 'after-init-hook 'global-company-mode)
 ;;enable pretty control mode
 (require 'pp-c-l)           ; Load this library
 (pretty-control-l-mode 1)
@@ -244,8 +244,8 @@
 
 
 ;;settings for MATLAB
-(add-to-list 'load-path "~/.emacs.d/packages/matlab/matlab.el")
-(load-library "matlab-load")
+;(add-to-list 'load-path "~/.emacs.d/packages/matlab")
+;(load-library "matlab-load")
 (add-hook 'matlab-mode-hook 'company-mode)
 (add-hook 'matlab-shell-mode-hook 'company-mode)
 (setq auto-mode-alist
@@ -369,13 +369,14 @@
 
 - [[wiki:index][Index]]
 
-- Related: 
+- Related:
 
 * %n
 ")
  '(package-selected-packages
    (quote
-    (ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib latex-preview-pane xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view company-auctex auto-complete-auctex ac-html)))
+    (auctex-latexmk company-reftex latex-preview-pane company-auctex auctex latex-extra latex-math-preview htmlize matlab-mode ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html)))
+ '(preview-transparent-color "black")
  '(python-indent-offset 2))
 
 ;;Custom Keybindings
