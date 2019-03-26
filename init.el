@@ -18,16 +18,15 @@
 ;; ensuring mu4e is in the path
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
 ;;setting package archives
-(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                         ("org" . "http://orgmode.org/elpa/")
+(setq package-archives '(("org" . "http://orgmode.org/elpa/")
                          ("melpa" . "https://melpa.org/packages/")
-                         ("melpa-stable" . "https://stable.melpa.org/packages/")))
+                         ("melpa-stable" . "https://stable.melpa.org/packages/")
+                         ("gnu" . "https://elpa.gnu.org/packages/")))
 (setq package-archive-priorities
       '(("melpa-stable" . 20)
         ("org" . 20)
-        ("gnu" . 10)
-        ("melpa" . 0)))
-
+        ("melpa" . 30)
+        ("gnu" . 10)))
 
 ;;setting up faster access to init.el
 (defun find-user-init-file ()
