@@ -257,10 +257,12 @@
 ;;LaTeX
 
 ;;defaulting to biblatex dialect
-;;(setq-default bibtex-dialect 'biblatex)
+(setq-default bibtex-dialect 'biblatex)
 (setq TeX-parse-self t)
 ;;make it so we have to specify the main file whenever creating a TeX file
 (setq-default TeX-master nil)
+;; set to pdfmode so that is uses pdflatex by default
+(setq TeX-PDF-mode t)
 ;;enable flyspell and run it on all LaTeX buffers
 (add-hook  'LaTeX-mode-hook 'flyspell-mode)
 (add-hook  'LaTeX-mode-hook 'flyspell-buffer)
@@ -268,7 +270,30 @@
 (require 'company-auctex)
 (company-auctex-init)
 (add-hook  'LaTeX-mode-hook 'company-mode)
-(add-hook  'LaTeX-mode-hook 'latex-preview-pane-mode)
+;; adding RefTeX support
+(require `reftex)
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(setq reftex-plug-into-AUCTeX t)
+(add-to-list 'company-backends
+              '(company-reftex-labels))
+;; adding flymake to check my syntax on the fly
+(require 'flymake)
+(defun flymake-get-tex-args (file-name)
+(list "pdflatex"
+(list "-file-line-error" "-draftmode" "-interaction=nonstopmode" file-name)))
+(add-hook 'LaTeX-mode-hook 'flymake-mode)
+(define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
+(define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error)
+;; using Latexmk as the default latex command to compile
+(require 'auctex-latexmk)
+(auctex-latexmk-setup)
+(setq auctex-latexmk-inherit-TeX-PDF-mode t)
+(setq TeX-command-default "LatexMk")
+;; setting the viewing program
+;; setting to qpdfview on Manjaro
+(with-eval-after-load "tex"
+  (add-to-list 'TeX-view-program-list '("evince" "/usr/bin/evince %o"))
+  (setcdr (assq 'output-pdf TeX-view-program-selection) '("evince")))
 ;;for langtool
 (setq langtool-language-tool-jar "~/.emacs.d/packages/LanguageTool-4.1/languagetool-commandline.jar")
 (require 'langtool)
@@ -278,7 +303,7 @@
   '(progn
      (add-hook 'LaTeX-mode-hook
                (lambda ()
-                 ;;setting up keys for ebib                 
+                 ;;setting up keys for ebib
                  (local-set-key (kbd "C-c e") 'ebib)
                  (local-set-key (kbd "C-c i") 'ebib-insert-citation)
                  (local-set-key (kbd "C-c o") 'ebib-load-bibtex-file)
@@ -291,14 +316,14 @@
 
 ;; nomenclature for latex
 (eval-after-load "tex"
-  '(add-to-list 'TeX-command-list 
+  '(add-to-list 'TeX-command-list
                 '("Nomenclature" "makeindex %s.nlo -s nomencl.ist -o %s.nls"
                   (lambda (name command file)
                     (TeX-run-compile name command file)
                     (TeX-process-set-variable file 'TeX-command-next TeX-command-default))
                   nil t :help "Create nomenclature file")))
 
-;;count words in single file     
+;;count words in single file
 (defun latex-word-count ()
   (interactive)
   (shell-command (concat "~/.emacs.d/packages/texcount/texcount.pl "
@@ -315,7 +340,6 @@
                          "-unicode "
                          "-inc "
                          master)))
-
 
 
 ;;Some of my other custom set variables
@@ -362,11 +386,11 @@
   (interactive)
   (insert "    "))
 (global-set-key (kbd "C-x <up>") 'my-insert-four)
-                
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
-
+ '(preview-face ((t nil)))
+ '(preview-reference-face ((t nil))))
