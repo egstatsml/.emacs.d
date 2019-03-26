@@ -18,16 +18,15 @@
 ;; ensuring mu4e is in the path
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
 ;;setting package archives
-(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                         ("org" . "http://orgmode.org/elpa/")
+(setq package-archives '(("org" . "http://orgmode.org/elpa/")
                          ("melpa" . "https://melpa.org/packages/")
-                         ("melpa-stable" . "https://stable.melpa.org/packages/")))
+                         ("melpa-stable" . "https://stable.melpa.org/packages/")
+                         ("gnu" . "https://elpa.gnu.org/packages/")))
 (setq package-archive-priorities
       '(("melpa-stable" . 20)
         ("org" . 20)
-        ("gnu" . 10)
-        ("melpa" . 0)))
-
+        ("melpa" . 30)
+        ("gnu" . 10)))
 
 ;;setting up faster access to init.el
 (defun find-user-init-file ()
@@ -35,6 +34,11 @@
   (interactive)
   (find-file-other-window user-init-file))
 (global-set-key (kbd "C-c I") 'find-user-init-file)
+
+;; delete whitspace upon saving a file
+(add-hook 'before-save-hook
+          'delete-trailing-whitespace)
+
 
 ;; Some global settings
 
@@ -42,7 +46,7 @@
 (show-paren-mode 1)
 (global-linum-mode 1)
 ;;company mode
-(add-hook 'after-init-hook 'global-company-mode)
+;;(add-hook 'after-init-hook 'global-company-mode)
 ;;enable pretty control mode
 (require 'pp-c-l)           ; Load this library
 (pretty-control-l-mode 1)
@@ -58,13 +62,13 @@
 (require 'column-marker)
 
 ;;spell checking
-                
+
 (global-set-key (kbd "<f8>") 'ispell-word)
 (global-set-key (kbd "C-S-<f8>") 'flyspell-mode)
 (global-set-key (kbd "C-<f8>") 'flyspell-buffer)
 (global-set-key (kbd "<f7>") 'flyspell-check-previous-highlighted-word)
 (global-set-key (kbd "<f9>") 'flyspell-check-next-highlighted-word)
-(setq ispell-dictionary "british-ise")    ;set the default dictionary
+(setq ispell-dictionary "british")    ;set the default dictionary
 ;;Go to next mispelt word
 (defun flyspell-check-next-highlighted-word ()
   "Custom function to spell check next highlighted word"
@@ -84,17 +88,17 @@
 (require 'helm-config)
 ;;turn line numbers off
 (defun nolinum ()
-  (global-linum-mode 0))
+  (linum-mode 0))
 (add-hook 'org-mode-hook 'nolinum)
 ;;
 (setq org-wiki-location-list
       '(
-        "~/org/wiki"    ;; First wiki (root directory) is the default. 
+        "~/org/wiki"    ;; First wiki (root directory) is the default.
         "~/org/blog"
         ))
 ;;forcing image size if it is too large
 (setq org-image-actual-width '(600))
-;; Initialize first org-wiki-directory or default org-wiki 
+;; Initialize first org-wiki-directory or default org-wiki
 (setq org-wiki-location (car org-wiki-location-list))
 
 ;;publishing options
@@ -138,7 +142,7 @@
 (defalias 'w-lin #'org-wiki-insert-latex)
 (defalias 'w-f #'org-wiki-helm)
 (defalias 'w-e #'org-wiki-export-html) ;;exports the entire (well most) of the wiki
-(defalias 'w-s #'org-wiki-switch-root);;switch wiki 
+(defalias 'w-s #'org-wiki-switch-root);;switch wiki
 (defalias 'w-h #'org-html-export-to-html);;exports a single page
 (defalias 'w-im #'org-display-inline-images)
 (defalias 'w-p #'org-publish-project);;to publish to HTML
@@ -253,10 +257,12 @@
 ;;LaTeX
 
 ;;defaulting to biblatex dialect
-;;(setq-default bibtex-dialect 'biblatex)
+(setq-default bibtex-dialect 'biblatex)
 (setq TeX-parse-self t)
 ;;make it so we have to specify the main file whenever creating a TeX file
 (setq-default TeX-master nil)
+;; set to pdfmode so that is uses pdflatex by default
+(setq TeX-PDF-mode t)
 ;;enable flyspell and run it on all LaTeX buffers
 (add-hook  'LaTeX-mode-hook 'flyspell-mode)
 (add-hook  'LaTeX-mode-hook 'flyspell-buffer)
@@ -264,7 +270,30 @@
 (require 'company-auctex)
 (company-auctex-init)
 (add-hook  'LaTeX-mode-hook 'company-mode)
-(add-hook  'LaTeX-mode-hook 'latex-preview-pane-mode)
+;; adding RefTeX support
+(require `reftex)
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(setq reftex-plug-into-AUCTeX t)
+(add-to-list 'company-backends
+              '(company-reftex-labels))
+;; adding flymake to check my syntax on the fly
+(require 'flymake)
+(defun flymake-get-tex-args (file-name)
+(list "pdflatex"
+(list "-file-line-error" "-draftmode" "-interaction=nonstopmode" file-name)))
+(add-hook 'LaTeX-mode-hook 'flymake-mode)
+(define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
+(define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error)
+;; using Latexmk as the default latex command to compile
+(require 'auctex-latexmk)
+(auctex-latexmk-setup)
+(setq auctex-latexmk-inherit-TeX-PDF-mode t)
+(setq TeX-command-default "LatexMk")
+;; setting the viewing program
+;; setting to qpdfview on Manjaro
+(with-eval-after-load "tex"
+  (add-to-list 'TeX-view-program-list '("evince" "/usr/bin/evince %o"))
+  (setcdr (assq 'output-pdf TeX-view-program-selection) '("evince")))
 ;;for langtool
 (setq langtool-language-tool-jar "~/.emacs.d/packages/LanguageTool-4.1/languagetool-commandline.jar")
 (require 'langtool)
@@ -274,7 +303,7 @@
   '(progn
      (add-hook 'LaTeX-mode-hook
                (lambda ()
-                 ;;setting up keys for ebib                 
+                 ;;setting up keys for ebib
                  (local-set-key (kbd "C-c e") 'ebib)
                  (local-set-key (kbd "C-c i") 'ebib-insert-citation)
                  (local-set-key (kbd "C-c o") 'ebib-load-bibtex-file)
@@ -287,14 +316,14 @@
 
 ;; nomenclature for latex
 (eval-after-load "tex"
-  '(add-to-list 'TeX-command-list 
+  '(add-to-list 'TeX-command-list
                 '("Nomenclature" "makeindex %s.nlo -s nomencl.ist -o %s.nls"
                   (lambda (name command file)
                     (TeX-run-compile name command file)
                     (TeX-process-set-variable file 'TeX-command-next TeX-command-default))
                   nil t :help "Create nomenclature file")))
 
-;;count words in single file     
+;;count words in single file
 (defun latex-word-count ()
   (interactive)
   (shell-command (concat "~/.emacs.d/packages/texcount/texcount.pl "
@@ -311,7 +340,6 @@
                          "-unicode "
                          "-inc "
                          master)))
-
 
 
 ;;Some of my other custom set variables
@@ -341,13 +369,14 @@
 
 - [[wiki:index][Index]]
 
-- Related: 
+- Related:
 
 * %n
 ")
  '(package-selected-packages
    (quote
-    (ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib latex-preview-pane xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view company-auctex auto-complete-auctex ac-html)))
+    (auctex-latexmk company-reftex latex-preview-pane company-auctex auctex latex-extra latex-math-preview htmlize matlab-mode ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html)))
+ '(preview-transparent-color "black")
  '(python-indent-offset 2))
 
 ;;Custom Keybindings
@@ -358,11 +387,11 @@
   (interactive)
   (insert "    "))
 (global-set-key (kbd "C-x <up>") 'my-insert-four)
-                
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
-
+ '(preview-face ((t nil)))
+ '(preview-reference-face ((t nil))))

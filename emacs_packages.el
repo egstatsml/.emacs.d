@@ -29,99 +29,50 @@
 
 ;; list of packages to install
 (setq pkgs '(ac-html
-dash
-f
-dash
-s
-s
-auto-complete
-popup
+auctex-latexmk
 auto-complete-auctex
 auto-complete
-popup
-yasnippet
 company-auctex
 auctex
+company-reftex
 company
-yasnippet
 ebib
-parsebib
-seq
-dash
 ess-R-data-view
-ess
-julia-mode
-popup
 ctable
 ess-smart-equals
-ess
-julia-mode
 ess-smart-underscore
-ess
-julia-mode
 ess-view
-f
-dash
-s
-s
 ess
-julia-mode
 excorporate
-nadvice
-url-http-ntlm
-ntlm
-soap-client
-fsm
 fsm
 helm-bibtex
 biblio
 biblio-core
-dash
-seq
-let-alist
 f
-dash
-s
-dash
-s
-parsebib
 helm
-helm-core
-async
-popup
-async
+htmlize
 julia-mode
 langtool
+latex-preview-pane
 magit
-with-editor
-async
-magit-popup
-dash
-async
-let-alist
 git-commit
-with-editor
-async
-dash
 ghub
-let-alist
-dash
-async
+graphql
 magit-popup
 dash
-async
 markdown-mode
+matlab-mode
 nadvice
+org-wiki
 helm-core
-async
 parsebib
 popup
 s
-seq
 soap-client
 stan-mode
+treepy
 url-http-ntlm
-ntlm
+web-completion-data
 with-editor
 async
 writegood-mode
@@ -131,7 +82,7 @@ yasnippet)) ;; (you probably want to format the packages.txt first, otherwise yo
   (require-package pkg)) ;; install each package
 
 ;; install org-wiki
-(let ((url "https://raw.githubusercontent.com/caiorss/org-wiki/master/org-wiki.el"))     
+(let ((url "https://raw.githubusercontent.com/caiorss/org-wiki/master/org-wiki.el"))
       (with-current-buffer (url-retrieve-synchronously url)
 	(goto-char (point-min))
 	(re-search-forward "^$")
