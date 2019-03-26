@@ -63,13 +63,13 @@
 (require 'column-marker)
 
 ;;spell checking
-                
+
 (global-set-key (kbd "<f8>") 'ispell-word)
 (global-set-key (kbd "C-S-<f8>") 'flyspell-mode)
 (global-set-key (kbd "C-<f8>") 'flyspell-buffer)
 (global-set-key (kbd "<f7>") 'flyspell-check-previous-highlighted-word)
 (global-set-key (kbd "<f9>") 'flyspell-check-next-highlighted-word)
-(setq ispell-dictionary "british-ise")    ;set the default dictionary
+(setq ispell-dictionary "british")    ;set the default dictionary
 ;;Go to next mispelt word
 (defun flyspell-check-next-highlighted-word ()
   "Custom function to spell check next highlighted word"
@@ -89,17 +89,17 @@
 (require 'helm-config)
 ;;turn line numbers off
 (defun nolinum ()
-  (global-linum-mode 0))
+  (linum-mode 0))
 (add-hook 'org-mode-hook 'nolinum)
 ;;
 (setq org-wiki-location-list
       '(
-        "~/org/wiki"    ;; First wiki (root directory) is the default. 
+        "~/org/wiki"    ;; First wiki (root directory) is the default.
         "~/org/blog"
         ))
 ;;forcing image size if it is too large
 (setq org-image-actual-width '(600))
-;; Initialize first org-wiki-directory or default org-wiki 
+;; Initialize first org-wiki-directory or default org-wiki
 (setq org-wiki-location (car org-wiki-location-list))
 
 ;;publishing options
@@ -143,7 +143,7 @@
 (defalias 'w-lin #'org-wiki-insert-latex)
 (defalias 'w-f #'org-wiki-helm)
 (defalias 'w-e #'org-wiki-export-html) ;;exports the entire (well most) of the wiki
-(defalias 'w-s #'org-wiki-switch-root);;switch wiki 
+(defalias 'w-s #'org-wiki-switch-root);;switch wiki
 (defalias 'w-h #'org-html-export-to-html);;exports a single page
 (defalias 'w-im #'org-display-inline-images)
 (defalias 'w-p #'org-publish-project);;to publish to HTML
