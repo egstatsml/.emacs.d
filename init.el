@@ -35,6 +35,11 @@
   (interactive)
   (find-file-other-window user-init-file))
 (global-set-key (kbd "C-c I") 'find-user-init-file)
+
+;; delete whitspace upon saving a file
+(add-hook 'before-save-hook
+          'delete-trailing-whitespace)
+
 
 ;; Some global settings
 
