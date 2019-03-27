@@ -189,16 +189,16 @@
 	    (local-set-key (kbd "C-c a") 'org-agenda)))
 (add-hook 'org-mode-hook
 	  (lambda ()
-	    (local-set-key (kbd "C-c e") 'my-insert-equation)))
+	    (local-set-key (kbd "C-c C-e") 'my-insert-equation)))
 (add-hook 'org-mode-hook
 	  (lambda ()
-	    (local-set-key (kbd "C-c ;") 'my-insert-align)))
+	    (local-set-key (kbd "C-c C-a") 'my-insert-align)))
 (add-hook 'org-mode-hook
 	  (lambda ()
-	    (local-set-key (kbd "C-c g") 'my-insert-gather)))
+	    (local-set-key (kbd "C-c C-g") 'my-insert-gather)))
 (add-hook 'org-mode-hook
 	  (lambda ()
-	    (local-set-key (kbd "C-c l") 'org-preview-latex-fragment)))
+	    (local-set-key (kbd "C-c C-p") 'org-preview-latex-fragment)))
 
 ;;PYTHON
 ;;Indentation highlighting in Python Mode
