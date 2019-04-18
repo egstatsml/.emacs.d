@@ -53,7 +53,6 @@ helm
 htmlize
 julia-mode
 langtool
-latex-preview-pane
 magit
 git-commit
 ghub

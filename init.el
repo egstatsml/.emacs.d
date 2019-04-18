@@ -245,14 +245,14 @@
 
 
 ;;settings for MATLAB
-;(add-to-list 'load-path "~/.emacs.d/packages/matlab")
-;(load-library "matlab-load")
-(add-hook 'matlab-mode-hook 'company-mode)
-(add-hook 'matlab-shell-mode-hook 'company-mode)
-(setq auto-mode-alist
-    (cons
-     '("\\.m$" . matlab-mode)
-     auto-mode-alist))
+;;(add-to-list 'load-path "~/.emacs.d/packages/matlab/matlab.el")
+;;(load-library "matlab-load")
+;;(add-hook 'matlab-mode-hook 'company-mode)
+;;(add-hook 'matlab-shell-mode-hook 'company-mode)
+;;(setq auto-mode-alist
+;;    (cons
+;;     '("\\.m$" . matlab-mode)
+;;     auto-mode-alist))
 
 
 ;;LaTeX
@@ -288,8 +288,15 @@
 ;; using Latexmk as the default latex command to compile
 (require 'auctex-latexmk)
 (auctex-latexmk-setup)
-(setq auctex-latexmk-inherit-TeX-PDF-mode t)
-(setq TeX-command-default "LatexMk")
+;;(setq auctex-latexmk-inherit-TeX-PDF-mode t)
+;;(setq TeX-command-default "LatexMk")
+(add-hook 'LaTeX-mode-hook (lambda ()
+  (push
+    '("latexmk" "latexmk -pdf %s" TeX-run-TeX nil t
+      :help "Run latexmk on file")
+    TeX-command-list)))
+(add-hook 'TeX-mode-hook '(lambda () (setq TeX-command-default "latexmk")))
+
 ;; setting the viewing program
 ;; setting to qpdfview on Manjaro
 (with-eval-after-load "tex"
@@ -376,8 +383,7 @@
 ")
  '(package-selected-packages
    (quote
-    (auctex-latexmk company-reftex latex-preview-pane company-auctex auctex latex-extra latex-math-preview htmlize matlab-mode ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html)))
- '(preview-transparent-color "black")
+    (matlab-mode htmlize ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html)))
  '(python-indent-offset 2))
 
 ;;Custom Keybindings
@@ -394,5 +400,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(preview-face ((t nil)))
- '(preview-reference-face ((t nil))))
+ )
