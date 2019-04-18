@@ -66,6 +66,7 @@
 (global-set-key (kbd "<f8>") 'ispell-word)
 (global-set-key (kbd "C-S-<f8>") 'flyspell-mode)
 (global-set-key (kbd "C-<f8>") 'flyspell-buffer)
+(global-set-key (kbd "<f10>") 'flyspell-buffer)
 (global-set-key (kbd "<f7>") 'flyspell-check-previous-highlighted-word)
 (global-set-key (kbd "<f9>") 'flyspell-check-next-highlighted-word)
 (setq ispell-dictionary "british")    ;set the default dictionary
