@@ -154,6 +154,7 @@
 (defalias 'w-im #'org-display-inline-images)
 (defalias 'w-p #'org-publish-project);;to publish to HTML
 (defalias 'w-b #'my-insert-bibtex);;use for inserting bibtex entries
+(defalias 'w-t #'my-insert-template);;use for inserting reading notes template
 
 ;;automatically change parent task to DONE when all child tasks are done
 (defun org-summary-todo (n-done n-not-done)
@@ -190,6 +191,28 @@
   (previous-line)
   (insert "    ")
   )
+(defun my-insert-template ()
+  (interactive)
+  (insert "** Title of Article
+*** Info
+Author:
+Journal:
+Year:
+Link:
+Bibtex:
+Code:
+
+**** Pros
+**** Cons
+*** Abstract:
+*** Notes:
+**** Intro
+**** Related Work
+**** Results")
+  (previous-line)
+  (insert "    ")
+  )
+
 ;;setting up my local key-bindings
 (add-hook 'org-mode-hook
 	  (lambda ()
