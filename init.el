@@ -431,8 +431,9 @@ Code:
 ")
  '(package-selected-packages
    (quote
-    (matlab-mode htmlize ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html)))
- '(python-indent-offset 2))
+    (cmake-mode wakatime-mode matlab-mode htmlize ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html)))
+ '(python-indent-offset 2)
+ '(wakatime-python-bin nil))
 
 ;;Custom Keybindings
 (global-set-key (kbd "C-x g") 'magit-status)
