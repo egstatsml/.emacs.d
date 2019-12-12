@@ -18,7 +18,7 @@
 ;; This MUST be done
 ;; The only valid values for this variable are "desktop"
 ;; or "terminal"
-(defvar machine_type "desktop")
+(defvar machine_type "terminal")
 
 ;; Setting up directories that have additional plugins
 ;; this will look recursively throughout packages directory
@@ -112,25 +112,31 @@
 
 
 ;; loading all the required init files
-(load "flymake")
-(defun load-inits ()
-  (if (eq 'machine_type "desktop")
-      (load-file "~/.emacs.d/org_init.el")
-    (load-file "~/.emacs.d/latex_init.el")
-    (load-file "~/.emacs.d/matlab_init.el")
-    (load-file "~/.emacs.d/python_init.el")
-    (load-file "~/.emacs.d/ipython_init.el")
-    (load-file "~/.emacs.d/r_init.el")
-    (load-file "~/.emacs.d/flymake_init.el")
-    (load-file "~/.emacs.d/eshell_init.el")
-    (if (eq 'machine_type "terminal")
-      (load-file "~/.emacs.d/org_init.el")
-      (load-file "~/.emacs.d/python_init.el")
-      (load-file "~/.emacs.d/r_init.el")
-      (load-file "~/.emacs.d/flymake_init.el")
-      (load-file "~/.emacs.d/eshell_init.el")
-        )))
-(load-inits)
+;;(load "flymake")
+(defun load-inits (machine_type)
+  (if (string-equal machine_type "desktop")
+      (load-desktop)
+    ;; otherwise just load terminal packages
+    (load-terminal)))
+;; loading desktop packages
+(defun load-desktop ()
+       (load-file "~/.emacs.d/org_init.el")
+       (load-file "~/.emacs.d/latex_init.el")
+       (load-file "~/.emacs.d/matlab_init.el")
+       (load-file "~/.emacs.d/python_init.el")
+       (load-file "~/.emacs.d/ipython_init.el")
+       (load-file "~/.emacs.d/r_init.el")
+       ;;(load-file "~/.emacs.d/flymake_init.el")
+       (load-file "~/.emacs.d/eshell_init.el"))
+;; loading terminal packages
+(defun load-terminal ()
+  (load-file "~/.emacs.d/org_init.el")
+     (load-file "~/.emacs.d/python_init.el")
+     (load-file "~/.emacs.d/r_init.el")
+     ;;(load-file "~/.emacs.d/flymake_init.el")
+     (load-file "~/.emacs.d/eshell_init.el"))
+
+(load-inits machine_type)
 
 
 ;; Some of my other custom set variables
