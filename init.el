@@ -39,6 +39,11 @@
 (add-hook 'before-save-hook
           'delete-trailing-whitespace)
 
+;; using Forge with Magit
+(with-eval-after-load 'magit
+  (require 'forge))
+
+
 
 ;; Some global settings
 
