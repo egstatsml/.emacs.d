@@ -276,6 +276,7 @@ Code:
       (let ((err (car (second elem))))
         (message "%s" (flymake-ler-text err)))))))
 
+(require 'flymake)
 (add-hook 'post-command-hook 'show-fly-err-at-point)
 ;; Set as a minor mode for Python
 (add-hook 'python-mode-hook '(lambda () (flymake-mode)))
