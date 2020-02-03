@@ -18,7 +18,7 @@
 ;; This MUST be done
 ;; The only valid values for this variable are "desktop"
 ;; or "terminal"
-(defvar machine_type "terminal")
+(defvar machine_type "desktop")
 
 ;; Setting up directories that have additional plugins
 ;; this will look recursively throughout packages directory
@@ -152,7 +152,7 @@
  '(custom-enabled-themes (quote (wombat)))
  '(inhibit-startup-screen t)
  '(matlab-shell-command-switches (quote ("-nodesktop -nosplash")))
- '(org-agenda-files (quote ("~/org/wiki/TODO.org")))
+ '(org-agenda-files (quote ("~/org/wiki/capture.org" "~/org/wiki/TODO.org")))
  '(org-startup-folded t)
  '(org-startup-truncated nil)
  '(org-wiki-template
@@ -172,7 +172,7 @@
 ")
  '(package-selected-packages
    (quote
-    (px ein elpy forge cmake-mode wakatime-mode matlab-mode htmlize ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html)))
+    (magic-latex-buffer px ein elpy forge cmake-mode wakatime-mode matlab-mode htmlize ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html)))
  '(python-indent-offset 2)
  '(wakatime-python-bin nil))
 
