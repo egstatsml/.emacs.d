@@ -126,10 +126,11 @@ Code:
   (insert "    ")
   )
 
+;;setting up global key-bindings
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-ca" 'org-agenda)
+
 ;;setting up my local key-bindings
-(add-hook 'org-mode-hook
-	  (lambda ()
-	    (local-set-key (kbd "C-c a") 'org-agenda)))
 (add-hook 'org-mode-hook
 	  (lambda ()
 	    (local-set-key (kbd "C-c C-e") 'my-insert-equation)))
@@ -142,3 +143,13 @@ Code:
 (add-hook 'org-mode-hook
 	  (lambda ()
 	    (local-set-key (kbd "C-c C-p") 'org-preview-latex-fragment)))
+
+;; setting up capture templates
+(setq org-capture-templates
+      (quote (("t" "todo" entry (file "~/org/wiki/capture.org")
+               "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("n" "note" entry (file "~/org/wiki/capture.org")
+               "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("j" "Journal" entry (file+datetree "~/org/wiki/diary.org")
+               "* %?\n%U\n" :clock-in t :clock-resume t)
+              )))
