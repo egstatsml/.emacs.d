@@ -147,7 +147,7 @@ Code:
 ;; setting up capture templates
 (setq org-capture-templates
       (quote (("t" "todo" entry (file "~/org/wiki/capture.org")
-               "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+               "* TODO %?\n%a\nDEADLINE: %t \n\n")
               ("n" "note" entry (file "~/org/wiki/capture.org")
                "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
               ("j" "Journal" entry (file+datetree "~/org/wiki/diary.org")
