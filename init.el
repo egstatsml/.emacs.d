@@ -18,7 +18,7 @@
 ;; This MUST be done
 ;; The only valid values for this variable are "desktop"
 ;; or "terminal"
-(defvar machine_type "terminal")
+(defvar machine_type "desktop")
 
 ;; Setting up directories that have additional plugins
 ;; this will look recursively throughout packages directory
