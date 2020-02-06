@@ -10,3 +10,6 @@
 [submodule "packages/predictive"]
 	path = packages/predictive
 	url = http://www.dr-qubit.org/git/predictive.git
+[submodule "packages/preview-latex"]
+	path = packages/preview-latex
+	url = https://github.com/aaptel/preview-latex.git
