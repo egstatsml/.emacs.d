@@ -68,7 +68,7 @@
 (package-initialize)  ;load and activate packages
 
 ;; enable wakatime
-(setq wakatime-api-key "f53a8041-948d-4751-aeca-2ac27260e8f2")
+(setq wakatime-api-key "3ba9ed56-aa83-4b89-b415-f272f233b61f")
 (setq wakatime-cli-path "/home/ethan/.local/bin/wakatime")
 (global-wakatime-mode)
 ;;
