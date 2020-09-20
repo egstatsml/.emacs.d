@@ -35,20 +35,21 @@
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
   (add-hook 'elpy-mode-hook 'flycheck-mode))
 ;; setting location for pylintrc
-(setq-default flycheck-pylintrc "~/.emacs.d/.pylintrc")
+(setq-default flycheck-pylintrc "~/.emacs.d/pylintrc")
+(setq flycheck-flake8rc "/.emacs.d/.flake8")
 ;; To avoid having to mouse hover for the error message,
 ;; these functions make flymake error messages appear in the minibuffer
-(defun show-fly-err-at-point ()
-  "If the cursor is sitting on a flymake error, display the message in the minibuffer"
-  (require 'cl)
-  (interactive)
-  (let ((line-no (line-number-at-pos)))
-    (dolist (elem flymake-err-info)
-      (if (eq (car elem) line-no)
-      (let ((err (car (second elem))))
-        (message "%s" (flymake-ler-text err)))))))
+;; (defun show-fly-err-at-point ()
+;;   "If the cursor is sitting on a flymake error, display the message in the minibuffer"
+;;   (require 'cl)
+;;   (interactive)
+;;   (let ((line-no (line-number-at-pos)))
+;;     (dolist (elem flymake-err-info)
+;;       (if (eq (car elem) line-no)
+;;       (let ((err (car (second elem))))
+;;         (message "%s" (flymake-ler-text err)))))))
 
-(require 'flymake)
-(add-hook 'post-command-hook 'show-fly-err-at-point)
+;;(require 'flymake)
+;;(add-hook 'post-command-hook 'show-fly-err-at-point)
 ;; Set as a minor mode for Python
-(add-hook 'python-mode-hook '(lambda () (flymake-mode)))
+;;(add-hook 'python-mode-hook '(lambda () (flymake-mode)))
