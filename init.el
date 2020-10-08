@@ -65,7 +65,7 @@
 				(make-string fill-column ?-)))
 (setq-default indent-tabs-mode nil)
 (require 'package)
-(package-initialize)  ;load and activate packages
+
 
 ;; enable wakatime
 (setq wakatime-api-key "3ba9ed56-aa83-4b89-b415-f272f233b61f")
@@ -75,7 +75,6 @@
 
 ;;enable column-enforce mode for sorce code modes
 (require 'column-enforce-mode)
-(package-initialize)
 (add-hook 'prog-mode-hook 'column-enforce-mode)
 (require 'column-marker)
 
@@ -149,13 +148,12 @@
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
    ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
- '(custom-enabled-themes (quote (zenburn)))
+ '(custom-enabled-themes '(zenburn))
  '(custom-safe-themes
-   (quote
-    ("76c5b2592c62f6b48923c00f97f74bcb7ddb741618283bdb2be35f3c0e1030e3" default)))
+   '("f2c35f8562f6a1e5b3f4c543d5ff8f24100fae1da29aeb1864bbc17758f52b70" "76c5b2592c62f6b48923c00f97f74bcb7ddb741618283bdb2be35f3c0e1030e3" default))
  '(inhibit-startup-screen t)
- '(matlab-shell-command-switches (quote ("-nodesktop -nosplash")))
- '(org-agenda-files (quote ("~/org/wiki/capture.org" "~/org/wiki/TODO.org")))
+ '(matlab-shell-command-switches '("-nodesktop -nosplash"))
+ '(org-agenda-files '("~/org/wiki/capture.org" "~/org/wiki/TODO.org"))
  '(org-startup-folded t)
  '(org-startup-truncated nil)
  '(org-wiki-template
@@ -174,8 +172,7 @@
 * %n
 ")
  '(package-selected-packages
-   (quote
-    (zenburn-theme flycheck flycheck-cython flycheck-julia async-await magic-latex-buffer px ein elpy forge cmake-mode wakatime-mode matlab-mode htmlize ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html)))
+   '(zenburn-theme flycheck flycheck-cython flycheck-julia async-await magic-latex-buffer px ein elpy forge cmake-mode wakatime-mode matlab-mode htmlize ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html))
  '(python-indent-offset 2)
  '(wakatime-python-bin nil))
 
