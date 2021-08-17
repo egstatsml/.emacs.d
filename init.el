@@ -95,7 +95,6 @@
 
 ;;enable column-enforce mode for sorce code modes
 (require 'column-enforce-mode)
-(package-initialize)
 (add-hook 'prog-mode-hook 'column-enforce-mode)
 (require 'column-marker)
 

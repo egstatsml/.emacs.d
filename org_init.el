@@ -1,10 +1,7 @@
 ;;org-wiki mode
 ;; add timestamp when closing a task
 (setq org-log-done 'time)
-;; initialising org-wiki mode
-(package-initialize)
 (require 'org-wiki)
-(package-initialize)
 (require 'helm-config)
 ;;turn line numbers off
 (defun nolinum ()

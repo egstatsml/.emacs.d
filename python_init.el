@@ -36,7 +36,7 @@
   (add-hook 'elpy-mode-hook 'flycheck-mode))
 ;; setting location for pylintrc
 (setq-default flycheck-pylintrc "~/.emacs.d/pylintrc")
-(setq flycheck-flake8rc "/.emacs.d/.flake8")
+;;(setq flycheck-flake8rc "/.emacs.d/.flake8")
 ;; To avoid having to mouse hover for the error message,
 ;; these functions make flymake error messages appear in the minibuffer
 ;; (defun show-fly-err-at-point ()
