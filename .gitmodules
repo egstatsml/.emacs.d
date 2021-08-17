@@ -13,3 +13,6 @@
 [submodule "packages/preview-latex"]
 	path = packages/preview-latex
 	url = https://github.com/aaptel/preview-latex.git
+[submodule "packages/lsp-ltex"]
+	path = packages/lsp-ltex
+	url = https://github.com/emacs-languagetool/lsp-ltex.git
