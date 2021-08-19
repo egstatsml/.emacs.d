@@ -64,8 +64,9 @@
 
 ;; Some global settings
 
-;; disable tool-bar
+;; disable tool-bar and menu bar
 (tool-bar-mode -1)
+(menu-bar-mode -1)
 ;; want to default split to vertical
 (setq split-width-threshold 0)
 (setq split-height-threshold nil)
@@ -198,7 +199,6 @@
  '(matlab-shell-command-switches '("-nodesktop -nosplash"))
  '(nrepl-message-colors
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
- '(org-agenda-files '("~/org/wiki/inbox.org"))
  '(org-directory "~/org/wiki/roam")
  '(org-startup-folded t)
  '(org-startup-truncated nil)

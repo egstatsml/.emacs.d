@@ -72,6 +72,11 @@
   (previous-line)
     (insert "    ")
     )
+
+;; org temoplate expansion
+(add-to-list 'org-structure-template-alist '("r" . "src R"))
+(add-to-list 'org-structure-template-alist '("p" . "src python"))
+
 ;;now setting up some alias commands for org-wiki mode
 (defalias 'w-i #'org-wiki-index)
 (defalias 'w-in #'org-wiki-insert-new)
@@ -447,7 +452,7 @@ Code:
 ;;default org-modules = (ol-w3m ol-bbdb ol-bibtex ol-docview ol-gnus ol-info ol-irc ol-mhe ol-rmail ol-eww)
 (setq org-modules
       (quote
-       (ol-w3m ol-bbdb ol-bibtex ol-docview ol-gnus ol-info ol-irc ol-mhe ol-rmail ol-eww org-habit)))
+       (ol-w3m ol-bbdb ol-bibtex ol-docview ol-gnus ol-info ol-irc ol-mhe ol-rmail ol-eww org-habit org-temp)))
 
 
 ;; setting the default column views
@@ -729,11 +734,6 @@ Code:
 ;; setting org agenda files
 ;; (setq org-agenda-files                  
 ;;       (sa-find-org-file-recursively "~/org/wiki/roam" "org"))
-(setq org-agenda-files
-      (list "~/org/wiki/gtd.org"
-            "~/org/wiki/tickler.org"
-            "~/org/wiki/someday.org"
-            "~/org/wiki/inbox.org"))
 
 (setq org-roam-capture-templates
   '(("d" "default" plain "%?"
@@ -903,8 +903,8 @@ Taken from https://sachachua.com/blog/2013/01/emacs-org-task-related-keyboard-sh
                  (org-agenda-sorting-strategy '(priority-down tag-up category-keep effort-down))))
           ;; Inbox
           (alltodo ""
-                   ((org-agenda-files '("~/org/wiki/inbox.org"))
-                    (org-agenda-prefix-format "%-6e ")
+                   ((org-agenda-prefix-format "%-6e ")
+                    (org-agenda-files '("~/org/wiki/inbox.org"))
                     (org-agenda-overriding-header "Inbox: ")))
           (todo "WAITING-inactive"
                 ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
@@ -1034,21 +1034,58 @@ Taken from https://sachachua.com/blog/2013/01/emacs-org-task-related-keyboard-sh
          "+PROJECT"
          ((org-agenda-max-entries 3)))))
 
+(setq org-agenda-files
+      (list "~/org/wiki/gtd.org"
+            "~/org/wiki/tickler.org"
+            "~/org/wiki/someday.org"
+            "~/org/wiki/inbox.org"))
+
+
 ;; make sure tags don't over run multiple lines in agenda view
 (setq org-agenda-align-tags-to-column -150)
 
 
 
+
+
 ;; org-journal
+
+;; kill journal buffer after saving
+;; from org-journal readme
+(defun org-journal-save-entry-and-exit()
+  "Simple convenience function.
+  Saves the buffer of the current day's entry and kills the window
+  Similar to org-capture like behavior"
+  (interactive)
+  (save-buffer)
+  (kill-buffer-and-window))
+
 (use-package org-journal
   :ensure t
   :defer t
+  :bind (("C-c n s" . org-journal-save-entry-and-exit))  ;; map key to save and close buffer/window of journal
   :init
   ;; Change default prefix key; needs to be set before loading org-journal
   (setq org-journal-prefix-key "C-c j ")
   :config
   (setq org-journal-dir "~/org/wiki/journal/"
         org-journal-date-format "%A, %d %B %Y"))
+
+
+
+(defun org-journal-find-location ()
+  ;; Open today's journal, but specify a non-nil prefix argument in order to
+  ;; inhibit inserting the heading; org-capture will insert the heading.
+  (org-journal-new-entry t)
+  (unless (eq org-journal-file-type 'daily)
+    (org-narrow-to-subtree))
+  (goto-char (point-max)))
+
+(setq org-capture-templates '(("j" "Journal entry" plain (function org-journal-find-location)
+                               "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
+                               :jump-to-captured t :immediate-finish t)))
+
+"** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
 
 (defun org-journal-file-header-func (time)
   "Custom function to create journal header."
@@ -1060,14 +1097,17 @@ Taken from https://sachachua.com/blog/2013/01/emacs-org-task-related-keyboard-sh
       (`yearly "#+TITLE: Yearly Journal\n#+STARTUP: folded"))))
 
 (setq org-journal-file-header 'org-journal-file-header-func)
+(setq org-habit-graph-column 80)
 
-;; kill journal buffer after saving
-;; from org-journal readme
-(defun org-journal-save-entry-and-exit()
-  "Simple convenience function.
-  Saves the buffer of the current day's entry and kills the window
-  Similar to org-capture like behavior"
-  (interactive)
-  (save-buffer)
-  (kill-buffer-and-window))
-(define-key org-journal-mode-map (kbd "C-x C-s") 'org-journal-save-entry-and-exit)
+
+(defun pc/new-buffer-p ()
+  (not (file-exists-p (buffer-file-name))))
+
+(defun pc/insert-journal-template ()
+  (let ((template-file "~/org/wiki/journal/template.org"))
+    (when (pc/new-buffer-p)
+      (save-excursion
+        (goto-char (point-min))
+        (insert-file-contents template-file)))))
+
+(add-hook 'org-journal-after-entry-create-hook #'pc/insert-journal-template)
