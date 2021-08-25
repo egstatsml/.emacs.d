@@ -1,4 +1,3 @@
-
 ;;Istalled packages and script to install them
 ;;
 ;;Can get a list of installed packages from Emacs
@@ -21,7 +20,7 @@
       '(("melpa-stable" . 20)
         ("org" . 20)
         ("gnu" . 10)
-        ("melpa" . 0)))
+        ("melpa" . 100)))
 
 
 ;; function that will install all the packages
