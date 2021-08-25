@@ -695,18 +695,33 @@ Code:
       (setq org-roam-v2-ack t)
       :custom
       (org-roam-directory (file-truename "~/org/wiki/roam"))
+      (org-roam-dailies-capture-templates
+       '(("d" "default" plain "%?"
+          :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n* Exercise\n\n* Meditation\n\n* What I learn't today\n\n* Question of the Day\n\n* Something nice that happened\n\n* Notes
+"))))
       :bind (("C-c n l" . org-roam-buffer-toggle)
              ("C-c n f" . org-roam-node-find)
              ("C-c n g" . org-roam-graph)
              ("C-c n i" . org-roam-node-insert)
              ("C-c n c" . org-roam-capture)
              ;; Dailies
-             ("C-c n j" . org-roam-dailies-capture-today))
+             ;;("C-c n j" . org-roam-dailies-capture-today))
+             :map org-mode-map
+             ("C-M-i" . completion-at-point)
+             :map org-roam-dailies-map
+             ("Y" . org-roam-dailies-capture-yesterday)
+             ("T" . org-roam-dailies-capture-tomorrow))
+      :bind-keymap
+      ("C-c n d" . org-roam-dailies-map)
       :config
       (org-roam-setup)
+      (require 'org-roam-dailies) ;; Ensure the keymap is available
+      ;;(org-roam-db-autosync-mode)
       ;; If using org-roam-protocol
       (require 'org-roam-protocol))
 
+;; directory for my journal
+(setq org-roam-dailies-directory "journal/")
 
 ;; recursively find .org files in provided directory
 ;; modified from an Emacs Lisp Intro example
@@ -1048,66 +1063,66 @@ Taken from https://sachachua.com/blog/2013/01/emacs-org-task-related-keyboard-sh
 
 
 
-;; org-journal
+;; ;; org-journal
 
-;; kill journal buffer after saving
-;; from org-journal readme
-(defun org-journal-save-entry-and-exit()
-  "Simple convenience function.
-  Saves the buffer of the current day's entry and kills the window
-  Similar to org-capture like behavior"
-  (interactive)
-  (save-buffer)
-  (kill-buffer-and-window))
+;; ;; kill journal buffer after saving
+;; ;; from org-journal readme
+;; (defun org-journal-save-entry-and-exit()
+;;   "Simple convenience function.
+;;   Saves the buffer of the current day's entry and kills the window
+;;   Similar to org-capture like behavior"
+;;   (interactive)
+;;   (save-buffer)
+;;   (kill-buffer-and-window))
 
-(use-package org-journal
-  :ensure t
-  :defer t
-  :bind (("C-c n s" . org-journal-save-entry-and-exit))  ;; map key to save and close buffer/window of journal
-  :init
-  ;; Change default prefix key; needs to be set before loading org-journal
-  (setq org-journal-prefix-key "C-c j ")
-  :config
-  (setq org-journal-dir "~/org/wiki/journal/"
-        org-journal-date-format "%A, %d %B %Y"))
-
-
-
-(defun org-journal-find-location ()
-  ;; Open today's journal, but specify a non-nil prefix argument in order to
-  ;; inhibit inserting the heading; org-capture will insert the heading.
-  (org-journal-new-entry t)
-  (unless (eq org-journal-file-type 'daily)
-    (org-narrow-to-subtree))
-  (goto-char (point-max)))
-
-(setq org-capture-templates '(("j" "Journal entry" plain (function org-journal-find-location)
-                               "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
-                               :jump-to-captured t :immediate-finish t)))
-
-"** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
-
-(defun org-journal-file-header-func (time)
-  "Custom function to create journal header."
-  (concat
-    (pcase org-journal-file-type
-      (`daily "#+TITLE: Daily Journal\n#+STARTUP: showeverything")
-      (`weekly "#+TITLE: Weekly Journal\n#+STARTUP: folded")
-      (`monthly "#+TITLE: Monthly Journal\n#+STARTUP: folded")
-      (`yearly "#+TITLE: Yearly Journal\n#+STARTUP: folded"))))
-
-(setq org-journal-file-header 'org-journal-file-header-func)
-(setq org-habit-graph-column 80)
+;; (use-package org-journal
+;;   :ensure t
+;;   :defer t
+;;   :bind (("C-c n s" . org-journal-save-entry-and-exit))  ;; map key to save and close buffer/window of journal
+;;   :init
+;;   ;; Change default prefix key; needs to be set before loading org-journal
+;;   (setq org-journal-prefix-key "C-c j ")
+;;   :config
+;;   (setq org-journal-dir "~/org/wiki/journal/"
+;;         org-journal-date-format "%A, %d %B %Y"))
 
 
-(defun pc/new-buffer-p ()
-  (not (file-exists-p (buffer-file-name))))
 
-(defun pc/insert-journal-template ()
-  (let ((template-file "~/org/wiki/journal/template.org"))
-    (when (pc/new-buffer-p)
-      (save-excursion
-        (goto-char (point-min))
-        (insert-file-contents template-file)))))
+;; (defun org-journal-find-location ()
+;;   ;; Open today's journal, but specify a non-nil prefix argument in order to
+;;   ;; inhibit inserting the heading; org-capture will insert the heading.
+;;   (org-journal-new-entry t)
+;;   (unless (eq org-journal-file-type 'daily)
+;;     (org-narrow-to-subtree))
+;;   (goto-char (point-max)))
 
-(add-hook 'org-journal-after-entry-create-hook #'pc/insert-journal-template)
+;; (setq org-capture-templates '(("j" "Journal entry" plain (function org-journal-find-location)
+;;                                "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
+;;                                :jump-to-captured t :immediate-finish t)))
+
+;; "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
+
+;; (defun org-journal-file-header-func (time)
+;;   "Custom function to create journal header."
+;;   (concat
+;;     (pcase org-journal-file-type
+;;       (`daily "#+TITLE: Daily Journal\n#+STARTUP: showeverything")
+;;       (`weekly "#+TITLE: Weekly Journal\n#+STARTUP: folded")
+;;       (`monthly "#+TITLE: Monthly Journal\n#+STARTUP: folded")
+;;       (`yearly "#+TITLE: Yearly Journal\n#+STARTUP: folded"))))
+
+;; (setq org-journal-file-header 'org-journal-file-header-func)
+;; (setq org-habit-graph-column 80)
+
+
+;; (defun pc/new-buffer-p ()
+;;   (not (file-exists-p (buffer-file-name))))
+
+;; (defun pc/insert-journal-template ()
+;;   (let ((template-file "~/org/wiki/journal/template.org"))
+;;     (when (pc/new-buffer-p)
+;;       (save-excursion
+;;         (goto-char (point-min))
+;;         (insert-file-contents template-file)))))
+
+;; (add-hook 'org-journal-after-entry-create-hook #'pc/insert-journal-template)
