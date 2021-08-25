@@ -36,6 +36,11 @@
         ("melpa" . 30)
         ("gnu" . 10)))
 
+;; adding use-package
+;; This is only needed once, near the top of the file
+(eval-when-compile
+  (require 'use-package))
+
 ;;setting up faster access to init.el
 (defun find-user-init-file ()
   "Edit the `user-init-file', in another window."
@@ -48,13 +53,17 @@
 ;;           'delete-trailing-whitespace)
 
 ;; using Forge with Magit
-(with-eval-after-load 'magit
-  (require 'forge))
+(use-package magit
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
-;; adding use-package
-;; This is only needed once, near the top of the file
-(eval-when-compile
-  (require 'use-package))
+;; NOTE: Make sure to configure a GitHub token before using this package!
+;; - https://magit.vc/manual/forge/Token-Creation.html#Token-Creation
+;; - https://magit.vc/manual/ghub/Getting-Started.html#Getting-Started
+(use-package forge)
+
+;; (with-eval-after-load 'magit
+;;   (require 'forge))
 
 
 ;; Changing where backup files are saved
