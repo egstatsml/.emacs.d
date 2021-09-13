@@ -60,7 +60,9 @@
 ;; using Forge with Magit
 (use-package magit
   :custom
-  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+  :bind
+  ("C-x g" . 'magit-status))
 
 ;; NOTE: Make sure to configure a GitHub token before using this package!
 ;; - https://magit.vc/manual/forge/Token-Creation.html#Token-Creation
@@ -74,7 +76,6 @@
 ;; Changing where backup files are saved
 (setq backup-directory-alist '(("." . "~/.config/emacs/backups")))
 
-
 
 ;; Some global settings
 
@@ -100,18 +101,20 @@
 (setq pp^L-^L-string-function (lambda (win)
 				(make-string fill-column ?-)))
 (setq-default indent-tabs-mode nil)
-(require 'package)
+
 
 ;; enable wakatime
-(setq wakatime-api-key "3ba9ed56-aa83-4b89-b415-f272f233b61f")
-(setq wakatime-cli-path "/home/ethan/.local/bin/wakatime")
-(global-wakatime-mode)
+(use-package wakatime-mode
+  :init
+  (setq wakatime-api-key "3ba9ed56-aa83-4b89-b415-f272f233b61f")
+  (setq wakatime-cli-path "/home/ethan/.local/bin/wakatime")
+  :config
+  (global-wakatime-mode t))
 ;;
-
+;;
 ;;enable column-enforce mode for sorce code modes
-(require 'column-enforce-mode)
-(add-hook 'prog-mode-hook 'column-enforce-mode)
-(require 'column-marker)
+(use-package column-enforce-mode
+  :hook (prog-mode 'column-enforce-mode))
 
 ;;spell checking
 (global-set-key (kbd "<f8>") 'ispell-word)
@@ -128,22 +131,12 @@
   (flyspell-goto-next-error)
   (ispell-word))
 
-;; Custom Keybindings
-(global-set-key (kbd "C-x g") 'magit-status)
 
 ;;Insert four spaces
 (defun my-insert-four ()
   (interactive)
   (insert "    "))
 (global-set-key (kbd "C-x <up>") 'my-insert-four)
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
 
 ;; enable which-key package
 (use-package which-key
@@ -173,13 +166,13 @@
 
 
 ;; lsp-mode
-(defun efs/lsp-mode-setup ()
+(defun ethan/lsp-mode-setup ()
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
   (lsp-headerline-breadcrumb-mode))
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :hook (lsp-mode . efs/lsp-mode-setup)
+  :hook (lsp-mode . ethan/lsp-mode-setup)
   :init
   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
   :config
@@ -191,7 +184,6 @@
 
 ;; lsp-ivy 
 (use-package lsp-ivy)
-
 
 ;; enable dap-mode
 (use-package dap-mode)
@@ -228,7 +220,6 @@
 (use-package company-box
   :hook (company-mode . company-box-mode))
 
-
 ;; projectile
 (use-package projectile
   :diminish projectile-mode
@@ -248,43 +239,32 @@
 ;; rainbow delimeters
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
-
 
 
 ;; loading all the required init files
-;;(load "flymake")
+;; loading default inits, initialisations used across all my machines
+(load-file "~/.emacs.d/org_init.el")
+(load-file "~/.emacs.d/ivy_init.el")
+(load-file "~/.emacs.d/python_lsp_init.el")
+(load-file "~/.emacs.d/r_init.el")
+(load-file "~/.emacs.d/eshell_init.el")
+
+;; checking to see if additional inits used by desktop machines,
+;; such as inits for email etc should be loaded
 (defun load-inits (machine_type)
-  (if (string-equal machine_type "desktop")
-      (load-desktop)
-    ;; otherwise just load terminal packages
-    (load-terminal)))
-;; loading desktop packages
+  (if (or my/desktop my/laptop)
+      (load-desktop)))
+
 (defun load-desktop ()
   (load-file "~/.emacs.d/mu4e_init.el")
-  (load-file "~/.emacs.d/org_init.el")
   (load-file "~/.emacs.d/latex_init.el")
-  (load-file "~/.emacs.d/matlab_init.el")
-  (load-file "~/.emacs.d/python_lsp_init.el")
   ;;(load-file "~/.emacs.d/python_init.el")
   ;;(load-file "~/.emacs.d/ipython_init.el")
-  (load-file "~/.emacs.d/r_init.el")
-  (load-file "~/.emacs.d/ivy_init.el")
-  (load-file "~/.emacs.d/icons_init.el")
-  ;;(load-file "~/.emacs.d/flymake_init.el")
-  (load-file "~/.emacs.d/eshell_init.el"))
-;; loading terminal packages
-(defun load-terminal ()
-  (load-file "~/.emacs.d/org_init.el")
-  (load-file "~/.emacs.d/ivy_init.el")
-  ;; (load-file "~/.emacs.d/python_init.el")
-  (load-file "~/.emacs.d/python_lsp_init.el")
-  (load-file "~/.emacs.d/r_init.el")
-  ;;(load-file "~/.emacs.d/flymake_init.el")
-  (load-file "~/.emacs.d/eshell_init.el"))
+  (load-file "~/.emacs.d/icons_init.el"))
+
 
 (load-inits machine_type)
-
-
+            
 ;; Some of my other custom set variables
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -375,8 +355,5 @@
 
 
 (require 'calfw)
-
 (setq excorporate-configuration (quote ("n9197621@qut.edu.au" . "https://outlook.office365.com/EWS/Exchange.asmx")))
-
-
 (setq excorporate-calendar-show-day-function 'exco-calfw-show-day)
