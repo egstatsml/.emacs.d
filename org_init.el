@@ -23,6 +23,14 @@
 ;; Initialize first org-wiki-directory or default org-wiki
 (setq org-wiki-location (car org-wiki-location-list))
 
+
+;; setting up faster access t GTD file
+(defun ethan/open-gtd-file ()
+  "Edit the `user-init-file', in another window."
+  (interactive)
+  (org-open-file "~/org/wiki/gtd.org"))
+(global-set-key (kbd "C-c g") 'ethan/open-gtd-file)  
+
 ;;publishing options
 
 (require 'ox-publish)
