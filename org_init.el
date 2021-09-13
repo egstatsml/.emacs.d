@@ -209,14 +209,18 @@ Code:
 	    (local-set-key (kbd "C-c s") 'my-org-archive-done-tasks)))
 
 ;; setting up capture templates
-(setq org-capture-templates
-      (quote (("t" "todo" entry (file "~/org/wiki/capture.org")
-               "* TODO %?\n%a\nDEADLINE: %t \n\n")
-              ("n" "note" entry (file "~/org/wiki/capture.org")
-               "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-              ("j" "Journal" entry (file+datetree "~/org/wiki/diary.org")
-               "* %?\n%U\n" :clock-in t :clock-resume t)
-              )))
+;; (setq org-capture-templates
+;;       (quote (("t" "todo" entry (file "~/org/wiki/capture.org")
+;;                "* TODO %?\n%a\nDEADLINE: %t \n\n")
+;;               ("n" "note" entry (file "~/org/wiki/capture.org")
+;;                "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+;;               ("j" "Journal" entry (file+datetree "~/org/wiki/diary.org")
+;;                "* %?\n%U\n" :clock-in t :clock-resume t)
+;;               ("r" "bibliography reference" plain "%?"
+;;                :if-new
+;;                (file+head "references/${citekey}.org" "#+title: ${title}\n")
+;;                :unnarrowed t)
+;;               )))
 
 ;; refile targets
 (setq org-refile-targets '(("~/org/wiki/gtd.org" :maxlevel . 1)
@@ -759,7 +763,10 @@ Code:
      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                         "#+title: ${title}\n#+TAGS: PHD LIFE PROG WRITE UPDATE MEET PRESENT DEADLINE CLOUDFORGE HABIT")
      :unnarrowed t)
-    ))
+    ("r" "bibliography reference" plain
+     (file "~/.emacs.d/noter_template.org")
+     :if-new
+     (file+head "references/${citekey}.org" "#+title: ${title}\n"))))
 
 (defun org-agenda-done (&optional arg)
   "Mark current TODO as done.
@@ -1126,3 +1133,148 @@ Taken from https://sachachua.com/blog/2013/01/emacs-org-task-related-keyboard-sh
 ;;         (insert-file-contents template-file)))))
 
 ;; (add-hook 'org-journal-after-entry-create-hook #'pc/insert-journal-template)
+
+;; This buffer is for text that is not saved, and for Lisp evaluation.
+;; To create a file, visit it with <open> and enter text in its buffer.
+
+
+
+;; (autoload 'ivy-bibtex "ivy-bibtex" "" t)
+;; ;; ivy-bibtex requires ivy's `ivy--regex-ignore-order` regex builder, which
+;; ;; ignores the order of regexp tokens when searching for matching candidates.
+;; ;; Add something like this to your init file:
+;; (setq ivy-re-builders-alist
+;;       '((ivy-bibtex . ivy--regex-ignore-order)
+;;         (t . ivy--regex-plus)))
+;; (setq bibtex-completion-bibliography
+;;       '("~/.emacs.d/ref.bib"))
+
+
+;; (use-package org-roam-bibtex
+;;   :after (org-roam)
+;;   :init
+;;   (setq orb-note-actions-interface 'ivy)
+;;   (setq orb-insert-interface 'ivy-bibtex)
+;;   (setq orb-insert-generic-candidates-format 'ivy-bibtex)
+;;   (setq orb-preformat-keywords
+;;         '("citekey" "title" "url" "author-or-editor" "keywords" "file")
+;;         orb-process-file-keyword t
+;;         orb-file-field-extensions '("pdf"))
+;;   :bind
+;;   ("C-c b a" . orb-note-actions)
+;;   ("C-c b i" . orb-insert-link) 
+;;   :config
+;;   (require 'org-ref)) ; optional: if Org Ref is not loaded anywhere else, load it here
+ 
+
+(setq bibtex-completion-library-path '("~/org/wiki/pdfs"))
+
+
+(setq ethan/bibliography-path "~/.emacs.d/ref.bib")
+(setq ethan/pdf-path  "~/org/wiki/pdfs/")
+(setq ethan/bibliography-notes "~/org/wiki/roam/references/")
+
+
+(use-package org-ref
+    ;; :init
+    ; code to run before loading org-ref
+    :config
+    (setq
+     org-ref-notes-function 'org-ref-notes-function-many-files
+     org-ref-completion-library 'org-ref-ivy-cite
+     org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex
+     org-ref-default-bibliography (list "~/.emacs.d/ref.bib")
+     org-ref-bibliography-notes "~/org/wiki/bibnotes.org"
+     org-ref-note-title-format "* NOTES %y - %t\n :PROPERTIES:\n  :Custom_ID: %k\n  :NOTER_DOCUMENT: %F\n :ROAM_KEY: cite:%k\n  :AUTHOR: %9a\n  :JOURNAL: %j\n  :YEAR: %y\n  :VOLUME: %v\n  :PAGES: %p\n  :DOI: %D\n  :URL: %U\n :END:\n\n"
+     org-ref-notes-directory ethan/bibliography-notes
+     org-ref-notes-function 'orb-edit-notes
+     ))
+
+(setq
+ bibtex-completion-notes-path ethan/bibliography-notes
+ bibtex-completion-bibliography "~/.emacs.d/ref.bib"
+ bibtex-completion-pdf-field "file"
+ bibtex-completion-notes-template-multiple-files
+ (concat
+  "#+TITLE: ${title}\n"
+  "#+ROAM_KEY: cite:${=key=}"
+  "#+ROAM_TAGS: ${keywords}"
+  "#+CREATED:%<%Y-%m-%d-%H-%M-%S>"
+  "Time-stamp: <>\n"
+  "- tags :: \n"
+  "* NOTES \n"
+  ":PROPERTIES:\n"
+  ":Custom_ID: ${=key=}\n"
+  ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
+  ":AUTHOR: ${author-abbrev}\n"
+  ":JOURNAL: ${journaltitle}\n"
+  ":DATE: ${date}\n"
+  ":YEAR: ${year}\n"
+  ":DOI: ${doi}\n"
+  ":URL: ${url}\n"
+  ":END:\n\n"
+  ))
+ 
+(use-package org-roam-bibtex
+  :after (org-roam)
+  :hook (org-roam-mode . org-roam-bibtex-mode)
+  :bind
+  ("C-c b a" . orb-note-actions)
+  ("C-c b i" . orb-insert-link) 
+  :config
+  (setq orb-note-actions-interface 'ivy)
+  (setq orb-insert-interface 'ivy-bibtex)
+  (setq orb-insert-generic-candidates-format 'ivy-bibtex)
+  (setq org-roam-bibtex-preformat-keywords
+   '("=key=" "title" "url" "file" "author-or-editor" "keywords"))
+  (setq orb-templates
+        '(("r" "ref" plain (function org-roam-capture--get-point)
+           ""
+           :file-name "${slug}"
+           :head "#+TITLE: ${=key=}: ${title}\n#+ROAM_KEY: ${ref}
+
+- tags ::
+- keywords :: ${keywords}
+
+\n* ${title}\n  :PROPERTIES:\n  :Custom_ID: ${=key=}\n  :URL: ${url}\n  :AUTHOR: ${author-or-editor}\n  :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n  :NOTER_PAGE: \n  :END:\n\n"
+
+           :unnarrowed t))))
+ 
+(use-package org-noter
+  :after (:any org pdf-view)
+  :config
+  (setq
+   ;; The WM can handle splits
+   ;;org-noter-notes-window-location 'other-frame
+   ;; Please stop opening frames
+   ;;org-noter-always-create-frame nil
+   ;; I want to see the whole file
+   org-noter-hide-other nil
+   ;; Everything is relative to the rclone mega
+   org-noter-notes-search-path ethan/bibliography-notes
+   )
+  )
+
+
+;; ;; This buffer is for text that is not saved, and for Lisp evaluation.
+;; ;; To create a file, visit it with <open> and enter text in its buffer.
+
+;; (setq org-ref-completion-library 'org-ref-ivy-cite)
+;; (require 'org-ref)
+
+;; (setq bibtex-dialect 'biblatex)
+
+;; (defun org-ref-open-notes-at-point-bandaid ()
+;;     (interactive)
+;;     (bibtex-completion-edit-notes-default (list (org-ref-get-bibtex-key-under-cursor)))
+;;     )
+
+
+;; (defun org-ref-notes-function-many-files (thekey)
+;;   "Function to open note belonging to THEKEY.
+;; Set `org-ref-notes-function' to this function if you use one file
+;; for each bib entry."
+;;   (let* ((bibtex-completion-bibliography
+;;           (cdr (org-ref-get-bibtex-key-and-file thekey)))
+;;          (bibtex-completion-notes-path org-ref-notes-directory))
+;;     (bibtex-completion-edit-notes (list thekey))))
