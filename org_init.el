@@ -1,3 +1,42 @@
+;; Turn on indentation and auto-fill mode for Org files
+(defun dw/org-mode-setup ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (auto-fill-mode 0)
+  (visual-line-mode 1))
+
+(use-package org
+  :defer t
+  :hook (org-mode . dw/org-mode-setup)
+  :config
+  (setq org-ellipsis " ▾"
+        org-hide-emphasis-markers t
+        org-src-fontify-natively t
+        org-fontify-quote-and-verse-blocks t
+        org-src-tab-acts-natively t
+        org-edit-src-content-indentation 2
+        org-hide-block-startup nil
+        org-src-preserve-indentation nil
+        org-startup-folded 'content
+        org-cycle-separator-lines 2)
+
+  (setq org-modules
+    '(org-crypt
+        org-habit
+        org-bookmark
+        org-eshell
+        org-irc))
+
+  (setq org-outline-path-complete-in-steps nil)
+  (setq org-refile-use-outline-path t)
+
+  (org-babel-do-load-languages
+    'org-babel-load-languages
+    '((emacs-lisp . t)
+      (ledger . t)))
+
+  (push '("conf-unix" . conf-unix) org-src-lang-modes))
+
 ;;org-wiki mode
 ;; add timestamp when closing a task
 (setq org-log-done 'time)
@@ -29,7 +68,7 @@
   "Edit the `user-init-file', in another window."
   (interactive)
   (org-open-file "~/org/wiki/gtd.org"))
-(global-set-key (kbd "C-c g") 'ethan/open-gtd-file)  
+(global-set-key (kbd "C-c g") 'ethan/open-gtd-file)
 
 ;;publishing options
 
@@ -73,17 +112,10 @@
         ("PROJECT")
         ("HABIT")))
 
-;;function for inserting the bibtex text
-(defun my-insert-bibtex ()
-  (interactive)
-  (insert "#+BEGIN_SRC bibtex \n\n#+END_SRC")
-  (previous-line)
-    (insert "    ")
-    )
-
 ;; org temoplate expansion
 (add-to-list 'org-structure-template-alist '("r" . "src R"))
 (add-to-list 'org-structure-template-alist '("p" . "src python"))
+
 
 ;;now setting up some alias commands for org-wiki mode
 (defalias 'w-i #'org-wiki-index)
@@ -110,14 +142,7 @@
 (setq org-html-checkbox-type 'html)
 
 ;; enable org-ref and bibtext with export
-(require 'org-ref)
 (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
-
-
-;; see org-ref for use of these variables
-(setq org-ref-bibliography-notes "~/org/wiki/bibliography/notes.org"
-      org-ref-default-bibliography '("~/org/wiki/bibliography/references.bib")
-      org-ref-pdf-directory "~/org/wiki/bibliography/bibtex-pdfs/")
 
 ;;add some more TODO list keywords
 (setq org-todo-keywords
@@ -141,27 +166,6 @@
 (defun my-insert-gather ()
   (interactive)
   (insert "\\begin{gather*} \n\n\\end{gather*}")
-  (previous-line)
-  (insert "    ")
-  )
-(defun my-insert-template ()
-  (interactive)
-  (insert "** Title of Article
-*** Info
-Author:
-Journal:
-Year:
-Link:
-Bibtex:
-Code:
-
-**** Pros
-**** Cons
-*** Abstract:
-*** Notes:
-**** Intro
-**** Related Work
-**** Results")
   (previous-line)
   (insert "    ")
   )
@@ -205,9 +209,6 @@ Code:
 	    (local-set-key (kbd "C-c i") 'org-ref-insert-cite-with-completion)))
 (add-hook 'org-mode-hook
 	  (lambda ()
-	    (local-set-key (kbd "C-c t") 'my-insert-template)))
-(add-hook 'org-mode-hook
-	  (lambda ()
 	    (local-set-key (kbd "C-c e") 'my-add-effort-property)))
 (add-hook 'org-mode-hook
 	  (lambda ()
@@ -216,25 +217,11 @@ Code:
 	  (lambda ()
 	    (local-set-key (kbd "C-c s") 'my-org-archive-done-tasks)))
 
-;; setting up capture templates
-;; (setq org-capture-templates
-;;       (quote (("t" "todo" entry (file "~/org/wiki/capture.org")
-;;                "* TODO %?\n%a\nDEADLINE: %t \n\n")
-;;               ("n" "note" entry (file "~/org/wiki/capture.org")
-;;                "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-;;               ("j" "Journal" entry (file+datetree "~/org/wiki/diary.org")
-;;                "* %?\n%U\n" :clock-in t :clock-resume t)
-;;               ("r" "bibliography reference" plain "%?"
-;;                :if-new
-;;                (file+head "references/${citekey}.org" "#+title: ${title}\n")
-;;                :unnarrowed t)
-;;               )))
 
 ;; refile targets
 (setq org-refile-targets '(("~/org/wiki/gtd.org" :maxlevel . 1)
                            ("~/org/wiki/someday.org" :maxlevel . 1)
                            ("~/org/wiki/tickler.org" :maxlevel . 1)))
-
 
 ;; active Babel languages
 (org-babel-do-load-languages
@@ -262,7 +249,7 @@ Code:
 ;;             (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
 ;;      (base-font-color     (face-foreground 'default nil 'default))
 ;;      (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
-  
+
 ;;   (custom-theme-set-faces
 ;;    'user
 ;;    `(org-level-8 ((t (,@headline ,@variable-tuple))))
@@ -318,8 +305,6 @@ Code:
 ;; old link property  '(org-link ((t (:foreground "royal blue" :underline t))))
 
 
-(require 'org-super-agenda)
-
 (defun end-of-month-fn ()
   (-let* (((sec minute hour day month year dow dst utcoff) (decode-time))
           (last-day-of-month (calendar-last-day-of-month month year)))
@@ -352,115 +337,6 @@ Code:
       org-habit-show-habits-only-for-today t
       org-agenda-view-columns-initially nil)
 
-
-;; (setq org-agenda-custom-commands
-;;       '(("z" "Super zaen view"
-;;          ((agenda "" ((org-agenda-span 'day)
-;;                       (org-super-agenda-groups
-;;                        '((:name "Today"
-;;                                 :time-grid t
-;;                                 :discard (:deadline future :habit t)
-;;                                 :todo "TODO"
-;;                                 :deadline today
-;;                                 :order 1)))))
-;;           (alltodo "" ((org-agenda-overriding-header "\n")
-;;                        (org-super-agenda-groups
-;;                         '((:name "Next to do"
-;;                                  :todo "NEXT"
-;;                                  :order 1)
-;;                           (:name "In Progress"
-;;                                  :todo "INPROGRESS"
-;;                                  :order 2)
-;;                           (:name "Waiting"
-;;                                  :todo "WAITING"
-;;                                  :order 2)
-;;                           (:name "Important"
-;;                                  :tag "Important"
-;;                                  :priority "A"
-;;                                  :order 6)
-;;                           (:name "Due Today"
-;;                                  :deadline today
-;;                                  :order 2)
-;;                           (:name "Overdue"
-;;                                  :deadline past
-;;                                  :order 7)
-;;                           (:name "Issues"
-;;                                  :tag "Issue"
-;;                                  :order 12)
-;;                           (:name "Projects"
-;;                                  :tag "Project"
-;;                                  :order 14)
-;;                           (:name "Habits"
-;;                                  :deadline today
-;;                                  :habit t
-;;                                  :order 13)
-;;                           (:name "Research"
-;;                                  :tag "Research"
-;;                                  :order 15)
-;;                           (:name "Important Deadlines"
-;;                                  :tag "DEADLINE"
-;;                                  :order 30)
-;;                           (:name "Waiting"
-;;                                  :todo "WAITING"
-;;                                  :order 20)
-;;                           (:name "trivial"
-;;                                  :priority<= "C"
-;;                                  :tag ("Trivial" "Unimportant")
-;;                                  :todo ("SOMEDAY")
-;;                                  :order 90)
-;;                           (:discard (:tag ("Chore" "Routine" "Daily")))))))))
-;;         ("S" "Someday"
-;;          ((alltodo ""  ((org-agenda-overriding-header "")
-;;                         (org-super-agenda-groups
-;;                          '((:name "Someday"
-;;                                   :todo "TODO"
-;;                                   :file-path "~/org/wiki/someday.org"
-;;                                   :order 1))))))
-;;          )
-;;         ))
-;; (add-hook 'org-agenda-mode-hook 'org-super-agenda-mode)
-
-
-
-;; (defun start-and-end-date-of-the-week (date)
-;;     (-let* (((month day year) date)
-;;         (org-today (format "%d-%02d-%02d" year month day))
-;;         (today-absolute (org-time-string-to-absolute org-today))
-;;         (remaining-days-of-the-week (mod (- (calendar-week-end-day) (calendar-day-of-week date)) 7))
-;;         (first-day-of-the-week-absolute (1+ (- today-absolute (calendar-day-of-week date))))
-;;         (last-day-of-the-week-absolute (+ today-absolute remaining-days-of-the-week))
-;;         (first-day-of-the-week (calendar-gregorian-from-absolute first-day-of-the-week-absolute))
-;;         (last-day-of-the-week (calendar-gregorian-from-absolute last-day-of-the-week-absolute))
-;;         ((month1 day1 year1) first-day-of-the-week)
-;;         ((month2 day2 year2) last-day-of-the-week)
-;;         (start-date (format "%d-%02d-%02d" year1 month1 day1))
-;;         (end-date (format "%d-%02d-%02d" year2 month2 day2)))
-;;       (list start-date end-date)))
-
-;; (setq org-agenda-custom-commands
-;;     '(("k" "Kanban View"
-;;        ((todo "DONE" ((org-agenda-sorting-strategy '(priority-down))))
-;;         (todo "NEXT" ((org-agenda-sorting-strategy '(priority-down))))
-;;         (todo "TODO" ((org-agenda-sorting-strategy '(priority-down)))))
-;;        ((org-super-agenda-groups
-;;          (-let* (((start-date end-date) (start-and-end-date (calendar-current-date))))
-;;            `((:name none
-;;             :not (:and (:not (:and (:tag "work"
-;;                              :todo "DONE"
-;;                              :scheduled (after ,start-date)
-;;                              :not (:deadline (before ,start-date))
-;;                              :not (:tag "drill")))
-;;                      :not (:and (:tag "work"
-;;                               :todo "NEXT"
-;;                               :scheduled (before ,end-date)
-;;                               :not (:deadline (before ,start-date))))
-;;                      :not (:and (:tag "work"
-;;                               :todo "TODO"
-;;                               :scheduled (before ,end-date)
-;;                               :not (:deadline (before ,start-date))
-;;                               :not (:regexp "+[12][dw]"))))))
-;;          (:discard (:anything t)))))))))
-
 ;;default org-modules = (ol-w3m ol-bbdb ol-bibtex ol-docview ol-gnus ol-info ol-irc ol-mhe ol-rmail ol-eww)
 (setq org-modules
       (quote
@@ -470,240 +346,13 @@ Code:
 ;; setting the default column views
 (setq org-columns-default-format "#+COLUMNS: %38ITEM(Details) %PRIORITY(Priority) %TAGS(Context) %7TODO(To Do) %5Effort(Estimated Time){:} %CLOCKSUM(Logged Time) ")
 
-
-
-;; Old org-agenda commands - To review
-;; (let ((org-super-agenda-groups
-;;        '(;; Each group has an implicit boolean OR operator between its selectors.
-;;          (:name "Today"  ; Optionally specify section name
-;;                 :time-grid t  ; Items that appear on the time grid
-;;                 :todo "TODAY")  ; Items that have this TODO keyword
-;;          (:name "Important"
-;;                 ;; Single arguments given alone
-;;                 :tag "bills"
-;;                 :priority "A")
-;;          ;; Set order of multiple groups at once
-;;          (:order-multi (2 (:name "Shopping in town"
-;;                                  ;; Boolean AND group matches items that match all subgroups
-;;                                  :and (:tag "shopping" :tag "@town"))
-;;                           (:name "Food-related"
-;;                                  ;; Multiple args given in list with implicit OR
-;;                                  :tag ("food" "dinner"))
-;;                           (:name "Personal"
-;;                                  :habit t
-;;                                  :tag "personal")
-;;                           (:name "Space-related (non-moon-or-planet-related)"
-;;                                  ;; Regexps match case-insensitively on the entire entry
-;;                                  :and (:regexp ("space" "NASA")
-;;                                                ;; Boolean NOT also has implicit OR between selectors
-;;                                                :not (:regexp "moon" :tag "planet")))))
-;;          ;; Groups supply their own section names when none are given
-;;          (:todo "WAITING" :order 8)  ; Set order of this section
-;;          (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
-;;                 ;; Show this group at the end of the agenda (since it has the
-;;                 ;; highest number). If you specified this group last, items
-;;                 ;; with these todo keywords that e.g. have priority A would be
-;;                 ;; displayed in that group instead, because items are grouped
-;;                 ;; out in the order the groups are listed.
-;;                 :order 9)
-;;          (:priority<= "B"
-;;                       ;; Show this section after "Today" and "Important", because
-;;                       ;; their order is unspecified, defaulting to 0. Sections
-;;                       ;; are displayed lowest-number-first.
-;;                       :order 1)
-;;          ;; After the last group, the agenda will display items that didn't
-;;          ;; match any of these groups, with the default order position of 99
-;;          (org-agenda-list)))))
-
-;; (let ((org-super-agenda-groups
-;;        '((:log t)  ; Automatically named "Log"
-;;          (:name "Schedule"
-;;                 :time-grid t)
-;;          (:name "Today"
-;;                 :scheduled today)
-;;          (:habit t)
-;;          (:name "Due today"
-;;                 :deadline today)
-;;          (:name "Overdue"
-;;                 :deadline past)
-;;          (:name "Due soon"
-;;                 :deadline future)
-;;          (:name "Unimportant"
-;;                 :todo ("SOMEDAY" "MAYBE" "CHECK" "TO-READ" "TO-WATCH")
-;;                 :order 100)
-;;          (:name "Waiting..."
-;;                 :todo "WAITING"
-;;                 :order 98)
-;;          (:name "Scheduled earlier"
-;;                 :scheduled past))))
-;;   (org-agenda-list))
-;; (let ((org-super-agenda-groups
-;;        '((:log t)  ; Automatically named "Log"
-;;          (:name "Schedule"
-;;                 :time-grid t)
-;;          (:name "Today"
-;;                 :scheduled today)
-;;          (:habit t)
-;;          (:name "Due today"
-;;                 :deadline today)
-;;          (:name "Overdue"
-;;                 :deadline past)
-;;          (:name "Due soon"
-;;                 :deadline future)
-;;          (:name "Unimportant"
-;;                 :todo ("SOMEDAY" "MAYBE" "CHECK" "TO-READ" "TO-WATCH")
-;;                 :order 100)
-;;          (:name "Waiting..."
-;;                 :todo "WAITING"
-;;                 :order 98)
-;;          (:name "Scheduled earlier"
-;;                 :scheduled past))))
-;;   (org-agenda-list))
-
-
-;;
-;;
-;; (setq org-agenda-custom-commands
-;;       '(("z" "Super zaen view"
-;;          ((agenda "" ((org-agenda-span 'day)
-;;                       (org-super-agenda-groups
-;;                        '((:name "Today"
-;;                                 :time-grid t
-;;                                 :date today
-;;                                 :todo "TODAY"
-;;                                 :scheduled today
-;;                                 :order 1)))))
-;;           (alltodo "" ((org-agenda-overriding-header "")
-;;                        (org-super-agenda-groups
-;;                         '((:name "Next to do"
-;;                                  :todo "NEXT"
-;;                                  :order 1)
-;;                           (:name "Important"
-;;                                  :tag "Important"
-;;                                  :priority "A"
-;;                                  :order 6)
-;;                           (:name "Due Today"
-;;                                  :deadline today
-;;                                  :order 2)
-;;                           (:name "Due Before end of Month"
-;;                                  :deadline (before end-of-month)
-;;                                  :discard :anything t
-;;                                  :order:20)
-;;                           (:name "Due Soon"
-;;                                  :deadline .+7d
-;;                                  :order 8)
-;;                           (:name "Overdue"
-;;                                  :deadline past
-;;                                  :order 7)
-;;                           (:name "Assignments"
-;;                                  :tag "Assignment"
-;;                                  :order 10)
-;;                           (:name "Issues"
-;;                                  :tag "Issue"
-;;                                  :order 12)
-;;                           (:name "Projects"
-;;                                  :tag "Project"
-;;                                  :order 14)
-;;                           (:name "Emacs"
-;;                                  :tag "Emacs"
-;;                                  :order 13)
-;;                           (:name "Research"
-;;                                  :tag "Research"
-;;                                  :order 15)
-;;                           (:name "To read"
-;;                                  :tag "Read"
-;;                                  :order 30)
-;;                           (:name "Waiting"
-;;                                  :todo "WAITING"
-;;                                  :order 20)
-;;                           (:name "trivial"
-;;                                  :priority<= "C"
-;;                                  :tag ("Trivial" "Unimportant")
-;;                                  :todo ("SOMEDAY" )
-;;                                  :order 90)
-;;                           (:discard (:tag ("Chore" "Routine" "Daily")))))))))))
-
-
-
-
-;; (setq org-agenda-custom-commands
-;;   '(("t" "Tickler"
-;;      ((agenda "" ((org-agenda-files '("~/org/wiki/tickler.org"))))))))
-
-;; ;; setting custom agenda commands for everything in the tickler.org
-;; (setq org-agenda-custom-commands
-;;       '(("W" "Weekly Review"
-;;          ((agenda "" ((org-agenda-span 7))); review upcoming deadlines and appointments
-;;                                            ; type "l" in the agenda to review logged items 
-;;           (todo "TODO") ; review all TODO items for week
-;;           (todo "DEADLINE") ; Make sure all deadlines for week are visible
-;;           (todo "MAYBE") ; review someday/maybe items
-;;           (todo "WAITING"); review waiting items
-;;           )) 
-;;         ;; Look at everything in the tickler file
-;;         ("t" "Tickler"
-;;          (
-;;           (org-agenda-files '("~/org/wiki/tickler.org")) 
-;;           ))
-;;         ;; Look at all deadlines
-;;         ("D" "Deadlines"
-;;          (
-;;           (tags "DEADLINE")
-;;           ))
-;;         ))
-;;
-;;
-;;
-;;
-;; (let ((org-super-agenda-groups
-;;        '(;; Each group has an implicit boolean OR operator between its selectors.
-;;          (:name "Today"  ; Optionally specify section name
-;;                 :time-grid t  ; Items that appear on the time grid
-;;                 :date "today")  ; Items that have this TODO keyword
-;;          (:name "Important"
-;;                 ;; Single arguments given alone
-;;                 :tag "bills"
-;;                 :priority "A")
-;;          ;; Set order of multiple groups at once
-;;          (:order-multi (2 (:name "Shopping in town"
-;;                                  ;; Boolean AND group matches items that match all subgroups
-;;                                  :and (:tag "shopping" :tag "@town"))
-;;                           (:name "Food-related"
-;;                                  ;; Multiple args given in list with implicit OR
-;;                                  :tag ("food" "dinner"))
-;;                           (:name "Personal"
-;;                                  :habit t
-;;                                  :tag "personal")
-;;                           (:name "Space-related (non-moon-or-planet-related)"
-;;                                  ;; Regexps match case-insensitively on the entire entry
-;;                                  :and (:regexp ("space" "NASA")
-;;                                                ;; Boolean NOT also has implicit OR between selectors
-;;                                                :not (:regexp "moon" :tag "planet")))))
-;;          ;; Groups supply their own section names when none are given
-;;          (:todo "WAITING" :order 8)  ; Set order of this section
-;;          (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
-;;                 ;; Show this group at the end of the agenda (since it has the
-;;                 ;; highest number). If you specified this group last, items
-;;                 ;; with these todo keywords that e.g. have priority A would be
-;;                 ;; displayed in that group instead, because items are grouped
-;;                 ;; out in the order the groups are listed.
-;;                 :order 9)
-;;          (:priority<= "B"
-;;                       ;; Show this section after "Today" and "Important", because
-;;                       ;; their order is unspecified, defaulting to 0. Sections
-;;                       ;; are displayed lowest-number-first.
-;;                       :order 1)
-;;          ;; After the last group, the agenda will display items that didn't
-;;          ;; match any of these groups, with the default order position of 99
-;;          )))
-;;   (org-agenda nil "a"))
-
-
-
 ;; org roam
 (use-package org-roam
       :ensure t
       :init
+      ;; directory for my journal
+      (setq org-roam-dailies-directory "journal/")
+      (setq org-roam-completion-everywhere t)
       (setq org-roam-v2-ack t)
       :custom
       (org-roam-directory (file-truename "~/org/wiki/roam"))
@@ -732,9 +381,22 @@ Code:
       ;; If using org-roam-protocol
       (require 'org-roam-protocol))
 
-;; directory for my journal
-(setq org-roam-dailies-directory "journal/")
+(setq org-roam-capture-templates
+  '(("d" "default" plain "%?"
+     :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                        "#+title: ${title}\n")
+     :unnarrowed t)
+    ("c" "custom" plain "%?"
+     :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                        "#+title: ${title}\n#+TAGS: PHD LIFE PROG WRITE UPDATE MEET PRESENT DEADLINE CLOUDFORGE HABIT")
+     :unnarrowed t)
+    ("r" "bibliography reference" plain
+     (file "~/.emacs.d/noter_template.org")
+     :if-new
+     (file+head "references/${citekey}.org" "#+title: ${title}\n"))))
 
+
+;; for agenda commands
 ;; recursively find .org files in provided directory
 ;; modified from an Emacs Lisp Intro example
 ;; I got it from https://stackoverflow.com/questions/11384516/how-to-make-all-org-files-under-a-folder-added-in-agenda-list-automatically
@@ -759,38 +421,25 @@ Code:
                           org-file-list) ; add files found to result
           (add-to-list 'org-file-list org-file)))))))
 ;; setting org agenda files
-;; (setq org-agenda-files                  
+;; (setq org-agenda-files
 ;;       (sa-find-org-file-recursively "~/org/wiki/roam" "org"))
 
-(setq org-roam-capture-templates
-  '(("d" "default" plain "%?"
-     :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                        "#+title: ${title}\n")
-     :unnarrowed t)
-    ("c" "custom" plain "%?"
-     :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                        "#+title: ${title}\n#+TAGS: PHD LIFE PROG WRITE UPDATE MEET PRESENT DEADLINE CLOUDFORGE HABIT")
-     :unnarrowed t)
-    ("r" "bibliography reference" plain
-     (file "~/.emacs.d/noter_template.org")
-     :if-new
-     (file+head "references/${citekey}.org" "#+title: ${title}\n"))))
 
-(defun org-agenda-done (&optional arg)
+
+(defun my/org-agenda-todo-done (&optional arg)
   "Mark current TODO as done.
 This changes the line at point, all other lines in the agenda referring to
 the same tree node, and the headline of the tree node in the Org-mode file.
 Taken from https://sachachua.com/blog/2013/01/emacs-org-task-related-keyboard-shortcuts-agenda/
+and https://emacs.stackexchange.com/questions/19403/how-do-i-change-key-bindings-for-org-mode-agenda-view
 "
   (interactive "P")
   (org-agenda-todo "DONE"))
 ;; Override the key definition for org-exit
-(define-key org-agenda-mode-map "x" 'org-agenda-done)
-
-
-
-
-
+;;(define-key org-agenda-mode-map "x" 'org-agenda-done)
+(add-hook 'org-agenda-mode-hook
+          (lambda ()
+                  (local-set-key (kbd "d") 'my/org-agenda-todo-done)))
 
 ;;(bind-key "<apps> a" 'org-agenda)
 
@@ -942,7 +591,7 @@ Taken from https://sachachua.com/blog/2013/01/emacs-org-task-related-keyboard-sh
                  (org-agenda-overriding-header "Waiting: ")
                  (org-agenda-sorting-strategy '(priority-down effort-up tag-up category-keep))))
           ;; Unscheduled
-          (tags-todo "TODO=\"TODO\"-project-cooking-routine-errands-shopping-video-evilplans" 
+          (tags-todo "TODO=\"TODO\"-project-cooking-routine-errands-shopping-video-evilplans"
                      ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
                       (org-agenda-prefix-format "%-6e ")
                       (org-agenda-overriding-header "Unscheduled TODO entries: ")
@@ -1073,111 +722,7 @@ Taken from https://sachachua.com/blog/2013/01/emacs-org-task-related-keyboard-sh
 
 ;; make sure tags don't over run multiple lines in agenda view
 (setq org-agenda-align-tags-to-column -150)
-
-
-
-
-
-;; ;; org-journal
-
-;; ;; kill journal buffer after saving
-;; ;; from org-journal readme
-;; (defun org-journal-save-entry-and-exit()
-;;   "Simple convenience function.
-;;   Saves the buffer of the current day's entry and kills the window
-;;   Similar to org-capture like behavior"
-;;   (interactive)
-;;   (save-buffer)
-;;   (kill-buffer-and-window))
-
-;; (use-package org-journal
-;;   :ensure t
-;;   :defer t
-;;   :bind (("C-c n s" . org-journal-save-entry-and-exit))  ;; map key to save and close buffer/window of journal
-;;   :init
-;;   ;; Change default prefix key; needs to be set before loading org-journal
-;;   (setq org-journal-prefix-key "C-c j ")
-;;   :config
-;;   (setq org-journal-dir "~/org/wiki/journal/"
-;;         org-journal-date-format "%A, %d %B %Y"))
-
-
-
-;; (defun org-journal-find-location ()
-;;   ;; Open today's journal, but specify a non-nil prefix argument in order to
-;;   ;; inhibit inserting the heading; org-capture will insert the heading.
-;;   (org-journal-new-entry t)
-;;   (unless (eq org-journal-file-type 'daily)
-;;     (org-narrow-to-subtree))
-;;   (goto-char (point-max)))
-
-;; (setq org-capture-templates '(("j" "Journal entry" plain (function org-journal-find-location)
-;;                                "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
-;;                                :jump-to-captured t :immediate-finish t)))
-
-;; "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
-
-;; (defun org-journal-file-header-func (time)
-;;   "Custom function to create journal header."
-;;   (concat
-;;     (pcase org-journal-file-type
-;;       (`daily "#+TITLE: Daily Journal\n#+STARTUP: showeverything")
-;;       (`weekly "#+TITLE: Weekly Journal\n#+STARTUP: folded")
-;;       (`monthly "#+TITLE: Monthly Journal\n#+STARTUP: folded")
-;;       (`yearly "#+TITLE: Yearly Journal\n#+STARTUP: folded"))))
-
-;; (setq org-journal-file-header 'org-journal-file-header-func)
-;; (setq org-habit-graph-column 80)
-
-
-;; (defun pc/new-buffer-p ()
-;;   (not (file-exists-p (buffer-file-name))))
-
-;; (defun pc/insert-journal-template ()
-;;   (let ((template-file "~/org/wiki/journal/template.org"))
-;;     (when (pc/new-buffer-p)
-;;       (save-excursion
-;;         (goto-char (point-min))
-;;         (insert-file-contents template-file)))))
-
-;; (add-hook 'org-journal-after-entry-create-hook #'pc/insert-journal-template)
-
-;; This buffer is for text that is not saved, and for Lisp evaluation.
-;; To create a file, visit it with <open> and enter text in its buffer.
-
-
-
-;; (autoload 'ivy-bibtex "ivy-bibtex" "" t)
-;; ;; ivy-bibtex requires ivy's `ivy--regex-ignore-order` regex builder, which
-;; ;; ignores the order of regexp tokens when searching for matching candidates.
-;; ;; Add something like this to your init file:
-;; (setq ivy-re-builders-alist
-;;       '((ivy-bibtex . ivy--regex-ignore-order)
-;;         (t . ivy--regex-plus)))
-;; (setq bibtex-completion-bibliography
-;;       '("~/.emacs.d/ref.bib"))
-
-
-;; (use-package org-roam-bibtex
-;;   :after (org-roam)
-;;   :init
-;;   (setq orb-note-actions-interface 'ivy)
-;;   (setq orb-insert-interface 'ivy-bibtex)
-;;   (setq orb-insert-generic-candidates-format 'ivy-bibtex)
-;;   (setq orb-preformat-keywords
-;;         '("citekey" "title" "url" "author-or-editor" "keywords" "file")
-;;         orb-process-file-keyword t
-;;         orb-file-field-extensions '("pdf"))
-;;   :bind
-;;   ("C-c b a" . orb-note-actions)
-;;   ("C-c b i" . orb-insert-link) 
-;;   :config
-;;   (require 'org-ref)) ; optional: if Org Ref is not loaded anywhere else, load it here
- 
-
 (setq bibtex-completion-library-path '("~/org/wiki/pdfs"))
-
-
 (setq ethan/bibliography-path "~/.emacs.d/ref.bib")
 (setq ethan/pdf-path  "~/org/wiki/pdfs/")
 (setq ethan/bibliography-notes "~/org/wiki/roam/references/")
@@ -1205,9 +750,10 @@ Taken from https://sachachua.com/blog/2013/01/emacs-org-task-related-keyboard-sh
  bibtex-completion-notes-template-multiple-files
  (concat
   "#+TITLE: ${title}\n"
-  "#+ROAM_KEY: cite:${=key=}"
-  "#+ROAM_TAGS: ${keywords}"
-  "#+CREATED:%<%Y-%m-%d-%H-%M-%S>"
+  "#+ROAM_KEY: cite:${=key=}\n"
+  "#+ROAM_TAGS: ${keywords}\n"
+  "#+filetags:REFERENCE\n"
+  "#+CREATED:%<%Y-%m-%d-%H-%M-%S>\n"
   "Time-stamp: <>\n"
   "- tags :: \n"
   "* NOTES \n"
@@ -1222,13 +768,13 @@ Taken from https://sachachua.com/blog/2013/01/emacs-org-task-related-keyboard-sh
   ":URL: ${url}\n"
   ":END:\n\n"
   ))
- 
+
 (use-package org-roam-bibtex
   :after (org-roam)
   :hook (org-roam-mode . org-roam-bibtex-mode)
   :bind
   ("C-c b a" . orb-note-actions)
-  ("C-c b i" . orb-insert-link) 
+  ("C-c b i" . orb-insert-link)
   :config
   (setq orb-note-actions-interface 'ivy)
   (setq orb-insert-interface 'ivy-bibtex)
@@ -1247,7 +793,7 @@ Taken from https://sachachua.com/blog/2013/01/emacs-org-task-related-keyboard-sh
 \n* ${title}\n  :PROPERTIES:\n  :Custom_ID: ${=key=}\n  :URL: ${url}\n  :AUTHOR: ${author-or-editor}\n  :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n  :NOTER_PAGE: \n  :END:\n\n"
 
            :unnarrowed t))))
- 
+
 (use-package org-noter
   :after (:any org pdf-view)
   :config
@@ -1262,27 +808,3 @@ Taken from https://sachachua.com/blog/2013/01/emacs-org-task-related-keyboard-sh
    org-noter-notes-search-path ethan/bibliography-notes
    )
   )
-
-
-;; ;; This buffer is for text that is not saved, and for Lisp evaluation.
-;; ;; To create a file, visit it with <open> and enter text in its buffer.
-
-;; (setq org-ref-completion-library 'org-ref-ivy-cite)
-;; (require 'org-ref)
-
-;; (setq bibtex-dialect 'biblatex)
-
-;; (defun org-ref-open-notes-at-point-bandaid ()
-;;     (interactive)
-;;     (bibtex-completion-edit-notes-default (list (org-ref-get-bibtex-key-under-cursor)))
-;;     )
-
-
-;; (defun org-ref-notes-function-many-files (thekey)
-;;   "Function to open note belonging to THEKEY.
-;; Set `org-ref-notes-function' to this function if you use one file
-;; for each bib entry."
-;;   (let* ((bibtex-completion-bibliography
-;;           (cdr (org-ref-get-bibtex-key-and-file thekey)))
-;;          (bibtex-completion-notes-path org-ref-notes-directory))
-;;     (bibtex-completion-edit-notes (list thekey))))
