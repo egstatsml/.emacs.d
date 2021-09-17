@@ -19,6 +19,12 @@
 ;; The only valid values for this variable are "desktop"
 ;; or "terminal"
 (defvar machine_type "desktop")
+
+(defvar my/desktop (equal (system-name) "abode"))
+(defvar my/laptop (equal (system-name) "laptop"))
+(defvar my/greenbeacon (equal (system-name) "greenbeacon"))
+(defvar my/lyra (equal (user-login-name) "n9197621"))
+
 
 ;; Setting up directories that have additional plugins
 ;; this will look recursively throughout packages directory
@@ -28,12 +34,10 @@
 ;; (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
 ;;setting package archives
 (setq package-archives '(("org" . "http://orgmode.org/elpa/")
-                         ("melpa-stable" . "https://stable.melpa.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")
                          ("gnu" . "https://elpa.gnu.org/packages/")))
 (setq package-archive-priorities
-      '(("melpa-stable" . 20)
-        ("org" . 20)
+      '(("org" . 20)
         ("melpa" . 10)
         ("gnu" . 10)))
 
@@ -50,13 +54,15 @@
 (global-set-key (kbd "C-c I") 'find-user-init-file)
 
 ;; delete whitspace upon saving a file
-;; (add-hook 'before-save-hook
-;;           'delete-trailing-whitespace)
+(add-hook 'before-save-hook
+          'delete-trailing-whitespace)
 
 ;; using Forge with Magit
 (use-package magit
   :custom
-  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+  :bind
+  ("C-x g" . 'magit-status))
 
 ;; adding use-package
 ;; This is only needed once, near the top of the file
@@ -67,7 +73,6 @@
 ;; Changing where backup files are saved
 (setq backup-directory-alist '(("." . "~/.config/emacs/backups")))
 
-
 
 ;; Some global settings
 
@@ -93,18 +98,20 @@
 (setq pp^L-^L-string-function (lambda (win)
 				(make-string fill-column ?-)))
 (setq-default indent-tabs-mode nil)
-(require 'package)
+
 
 ;; enable wakatime
-(setq wakatime-api-key "3ba9ed56-aa83-4b89-b415-f272f233b61f")
-(setq wakatime-cli-path "/home/ethan/.local/bin/wakatime")
-(global-wakatime-mode)
+(use-package wakatime-mode
+  :init
+  (setq wakatime-api-key "3ba9ed56-aa83-4b89-b415-f272f233b61f")
+  (setq wakatime-cli-path "/home/ethan/.local/bin/wakatime")
+  :config
+  (global-wakatime-mode t))
 ;;
-
+;;
 ;;enable column-enforce mode for sorce code modes
-(require 'column-enforce-mode)
-(add-hook 'prog-mode-hook 'column-enforce-mode)
-(require 'column-marker)
+(use-package column-enforce-mode
+  :hook (prog-mode 'column-enforce-mode))
 
 ;;spell checking
 (global-set-key (kbd "<f8>") 'ispell-word)
@@ -121,22 +128,12 @@
   (flyspell-goto-next-error)
   (ispell-word))
 
-;; Custom Keybindings
-(global-set-key (kbd "C-x g") 'magit-status)
 
 ;;Insert four spaces
 (defun my-insert-four ()
   (interactive)
   (insert "    "))
 (global-set-key (kbd "C-x <up>") 'my-insert-four)
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
 
 ;; enable which-key package
 (use-package which-key
@@ -145,6 +142,10 @@
   :config
   (setq which-key-idle-delay 1))
 
+;; turn off linum mode for terminals
+(defun nolinum ()
+  (linum-mode 0))
+(add-hook 'term-mode-hook 'nolinum)
 
 ;; enable doom modeline
 ;; want with all-the-icons as well
@@ -166,13 +167,13 @@
 
 
 ;; lsp-mode
-(defun efs/lsp-mode-setup ()
+(defun ethan/lsp-mode-setup ()
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
   (lsp-headerline-breadcrumb-mode))
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :hook (lsp-mode . efs/lsp-mode-setup)
+  :hook (lsp-mode . ethan/lsp-mode-setup)
   :init
   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
   :config
@@ -182,9 +183,8 @@
 (use-package lsp-treemacs
   :after lsp)
 
-;; lsp-ivy 
+;; lsp-ivy
 (use-package lsp-ivy)
-
 
 ;; enable dap-mode
 (use-package dap-mode)
@@ -198,7 +198,7 @@
   ;; ;; Set up Node debugging
   ;; (require 'dap-node)
   ;; (dap-node-setup) ;; Automatically installs Node debug adapter if needed
-  
+
   ;; ;; Bind `C-c l d` to `dap-hydra` for easy access
   ;; (general-define-key
   ;;   :keymaps 'lsp-mode-map
@@ -221,7 +221,6 @@
 (use-package company-box
   :hook (company-mode . company-box-mode))
 
-
 ;; projectile
 (use-package projectile
   :diminish projectile-mode
@@ -242,41 +241,85 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
-
+;; being evil
+;; largely taken from system crafters
+;; https://github.com/daviwil/dotfiles/blob/master/Emacs.org
+
+(defun dw/evil-hook ()
+  (dolist (mode '(custom-mode
+                  eshell-mode
+                  git-rebase-mode
+                  erc-mode
+                  circe-server-mode
+                  circe-chat-mode
+                  circe-query-mode
+                  sauron-mode
+                  term-mode))
+  (add-to-list 'evil-emacs-state-modes mode)))
+
+(use-package undo-tree
+  :init
+  (global-undo-tree-mode 1))
+
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-i-jump nil)
+  (setq evil-respect-visual-line-mode t)
+  (setq evil-undo-system 'undo-tree)
+ :config
+  (add-hook 'evil-mode-hook 'dw/evil-hook)
+  (evil-mode 1)
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+
+  (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
+  (key-chord-define evil-replace-state-map "jj" 'evil-normal-state)
+  ;; Use visual line motions even outside of visual-line-mode buffers
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+  (evil-set-initial-state 'messages-buffer-mode 'normal)
+  (evil-set-initial-state 'dashboard-mode 'normal))
+
+(use-package evil-collection
+  :after evil
+  :init
+  (setq evil-collection-company-use-tng nil)  ;; Is this a bug in evil-collection?
+  :custom
+  (evil-collection-outline-bind-tab-p nil)
+  :config
+  (setq evil-collection-mode-list
+        (remove 'lispy evil-collection-mode-list))
+  (evil-collection-init))
+
+
 
 ;; loading all the required init files
-;;(load "flymake")
+;; loading default inits, initialisations used across all my machines
+(load-file "~/.emacs.d/org_init.el")
+(load-file "~/.emacs.d/ivy_init.el")
+(load-file "~/.emacs.d/python_lsp_init.el")
+(load-file "~/.emacs.d/r_init.el")
+(load-file "~/.emacs.d/eshell_init.el")
+
+;; checking to see if additional inits used by desktop machines,
+;; such as inits for email etc should be loaded
 (defun load-inits (machine_type)
-  (if (string-equal machine_type "desktop")
-      (load-desktop)
-    ;; otherwise just load terminal packages
-    (load-terminal)))
-;; loading desktop packages
+  (if (or my/desktop my/laptop)
+      (load-desktop)))
+
 (defun load-desktop ()
   (load-file "~/.emacs.d/mu4e_init.el")
-  (load-file "~/.emacs.d/org_init.el")
   (load-file "~/.emacs.d/latex_init.el")
-  (load-file "~/.emacs.d/matlab_init.el")
-  (load-file "~/.emacs.d/python_lsp_init.el")
   ;;(load-file "~/.emacs.d/python_init.el")
   ;;(load-file "~/.emacs.d/ipython_init.el")
-  (load-file "~/.emacs.d/r_init.el")
-  (load-file "~/.emacs.d/ivy_init.el")
-  (load-file "~/.emacs.d/icons_init.el")
-  ;;(load-file "~/.emacs.d/flymake_init.el")
-  (load-file "~/.emacs.d/eshell_init.el"))
-;; loading terminal packages
-(defun load-terminal ()
-  (load-file "~/.emacs.d/org_init.el")
-  (load-file "~/.emacs.d/ivy_init.el")
-  ;; (load-file "~/.emacs.d/python_init.el")
-  (load-file "~/.emacs.d/python_lsp_init.el")
-  (load-file "~/.emacs.d/r_init.el")
-  ;;(load-file "~/.emacs.d/flymake_init.el")
-  (load-file "~/.emacs.d/eshell_init.el"))
+  (load-file "~/.emacs.d/icons_init.el"))
+
 
 (load-inits machine_type)
-
 
 ;; Some of my other custom set variables
 (custom-set-variables
@@ -293,16 +336,17 @@
  '(company-quickhelp-color-foreground "#DCDCCC")
  '(custom-enabled-themes '(zenburn))
  '(custom-safe-themes
-   '("78e9a3e1c519656654044aeb25acb8bec02579508c145b6db158d2cfad87c44e" "e6df46d5085fde0ad56a46ef69ebb388193080cc9819e2d6024c9c6e27388ba9" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "70f5a47eb08fe7a4ccb88e2550d377ce085fedce81cf30c56e3077f95a2909f2" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "f2c35f8562f6a1e5b3f4c543d5ff8f24100fae1da29aeb1864bbc17758f52b70" "76c5b2592c62f6b48923c00f97f74bcb7ddb741618283bdb2be35f3c0e1030e3" default))
+   '("3b8284e207ff93dfc5e5ada8b7b00a3305351a3fb222782d8033a400a48eca48" "e6df46d5085fde0ad56a46ef69ebb388193080cc9819e2d6024c9c6e27388ba9" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "70f5a47eb08fe7a4ccb88e2550d377ce085fedce81cf30c56e3077f95a2909f2" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "f2c35f8562f6a1e5b3f4c543d5ff8f24100fae1da29aeb1864bbc17758f52b70" "76c5b2592c62f6b48923c00f97f74bcb7ddb741618283bdb2be35f3c0e1030e3" default))
  '(elpy-rpc-python-command "python3")
- '(evil-emacs-state-cursor '("#E57373" hbar))
- '(evil-insert-state-cursor '("#E57373" bar))
- '(evil-normal-state-cursor '("#FFEE58" box))
- '(evil-visual-state-cursor '("#C5E1A5" box))
+ '(evil-emacs-state-cursor '("#E57373" hbar) t)
+ '(evil-insert-state-cursor '("#E57373" bar) t)
+ '(evil-normal-state-cursor '("#FFEE58" box) t)
+ '(evil-visual-state-cursor '("#C5E1A5" box) t)
  '(fci-rule-color "#073642")
  '(flycheck-checker-error-threshold 1000)
  '(flycheck-color-mode-line-face-to-color 'mode-line-buffer-id)
  '(frame-background-mode 'dark)
+ '(helm-minibuffer-history-key "M-p")
  '(highlight-indent-guides-auto-enabled nil)
  '(highlight-symbol-colors
    '("#FFEE58" "#C5E1A5" "#80DEEA" "#64B5F6" "#E1BEE7" "#FFCC80"))
@@ -331,7 +375,7 @@
 * %n
 ")
  '(package-selected-packages
-   '(rainbow-delimiters helpful dap-mode lsp-ivy all-the-icons-ivy doom-modeline doom-themes which-key counsel-projectile projectile org-journal lsp-python-ms ivy-bibtex calfw ivy-prescient prescient wgrep counsel all-the-icons-ivy-rich ivy-rich ivy helm-ls-git helm-org all-the-icons use-package org-kanban org-roam org-roam-bibtex languagetool ess jupyter org-ref pdf-tools pdf-view-restore org-bullets color-theme color-theme-sanityinc-solarized apropospriate-theme color-theme-sanityinc-tomorrow zenburn-theme flycheck flycheck-cython flycheck-julia async-await magic-latex-buffer px ein elpy forge cmake-mode wakatime-mode matlab-mode htmlize ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html))
+   '(vterm speed-type ivy-bibtex 0blayout org-noter evil-collection evil rainbow-delimiters helpful dap-mode lsp-ivy all-the-icons-ivy doom-modeline doom-themes which-key counsel-projectile projectile org-journal lsp-python-ms calfw ivy-prescient prescient wgrep counsel all-the-icons-ivy-rich ivy-rich ivy helm-ls-git helm-org all-the-icons use-package org-kanban org-roam org-roam-bibtex languagetool ess jupyter pdf-tools pdf-view-restore org-bullets color-theme color-theme-sanityinc-solarized apropospriate-theme color-theme-sanityinc-tomorrow zenburn-theme flycheck flycheck-cython flycheck-julia async-await magic-latex-buffer px ein elpy forge cmake-mode wakatime-mode matlab-mode htmlize ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(pos-tip-background-color "#3a933a933a93")
  '(pos-tip-foreground-color "#9E9E9E")
@@ -368,8 +412,11 @@
 
 
 (require 'calfw)
-
 (setq excorporate-configuration (quote ("n9197621@qut.edu.au" . "https://outlook.office365.com/EWS/Exchange.asmx")))
-
-
 (setq excorporate-calendar-show-day-function 'exco-calfw-show-day)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
