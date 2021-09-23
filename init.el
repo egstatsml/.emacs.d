@@ -21,6 +21,7 @@
 (defvar machine_type "desktop")
 
 (defvar my/desktop (equal (system-name) "abode"))
+(defvar my/lab (equal (system-name) "lab"))
 (defvar my/laptop (equal (system-name) "laptop"))
 (defvar my/greenbeacon (equal (system-name) "greenbeacon"))
 (defvar my/lyra (equal (user-login-name) "n9197621"))
@@ -304,11 +305,12 @@
 (load-file "~/.emacs.d/python_lsp_init.el")
 (load-file "~/.emacs.d/r_init.el")
 (load-file "~/.emacs.d/eshell_init.el")
+(load-file "~/.emacs.d/spell_init.el")
 
 ;; checking to see if additional inits used by desktop machines,
 ;; such as inits for email etc should be loaded
 (defun load-inits (machine_type)
-  (if (or my/desktop my/laptop)
+  (if (or my/desktop my/laptop my/lab)
       (load-desktop)))
 
 (defun load-desktop ()
