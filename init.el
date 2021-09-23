@@ -110,8 +110,8 @@
 ;;
 ;;
 ;;enable column-enforce mode for sorce code modes
-(use-package column-enforce-mode
-  :hook (prog-mode 'column-enforce-mode))
+;; (use-package column-enforce-mode
+;;   :hook (prog-mode 'column-enforce-mode))
 
 ;;spell checking
 (global-set-key (kbd "<f8>") 'ispell-word)
