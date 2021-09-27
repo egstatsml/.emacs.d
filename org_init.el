@@ -842,7 +842,7 @@ and https://emacs.stackexchange.com/questions/19403/how-do-i-change-key-bindings
    ;; Everything is relative to the rclone mega
    org-noter-notes-search-path ethan/bibliography-notes
    )
-  )
+  (require 'org-noter-pdftools))
 
 ;; (setq org-agenda-custom-commands
 ;;       `(("a" "Agenda"

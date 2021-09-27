@@ -21,6 +21,7 @@
 (defvar machine_type "desktop")
 
 (defvar my/desktop (equal (system-name) "abode"))
+(defvar my/lab (equal (system-name) "lab"))
 (defvar my/laptop (equal (system-name) "laptop"))
 (defvar my/greenbeacon (equal (system-name) "greenbeacon"))
 (defvar my/lyra (equal (user-login-name) "n9197621"))
@@ -66,16 +67,10 @@
   :bind
   ("C-x g" . 'magit-status))
 
-;;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
-(setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
-      url-history-file (expand-file-name "url/history" user-emacs-directory))
-;; NOTE: Make sure to configure a GitHub token before using this package!
-;; - https://magit.vc/manual/forge/Token-Creation.html#Token-Creation
-;; - https://magit.vc/manual/ghub/Getting-Started.html#Getting-Started
-(use-package forge)
-
-;; (with-eval-after-load 'magit
-;;   (require 'forge))
+;; adding use-package
+;; This is only needed once, near the top of the file
+;; (eval-when-compile
+;;   (require 'use-package))
 
 
 ;; Changing where backup files are saved
@@ -120,21 +115,6 @@
 ;;enable column-enforce mode for sorce code modes
 ;; (use-package column-enforce-mode
 ;;   :hook (prog-mode 'column-enforce-mode))
-
-;;spell checking
-(global-set-key (kbd "<f8>") 'ispell-word)
-(global-set-key (kbd "C-S-<f8>") 'flyspell-mode)
-(global-set-key (kbd "C-<f8>") 'flyspell-buffer)
-(global-set-key (kbd "<f10>") 'flyspell-buffer)
-(global-set-key (kbd "<f7>") 'flyspell-check-previous-highlighted-word)
-(global-set-key (kbd "<f9>") 'flyspell-check-next-highlighted-word)
-(setq ispell-dictionary "british")    ;set the default dictionary
-;;Go to next mispelt word
-(defun flyspell-check-next-highlighted-word ()
-  "Custom function to spell check next highlighted word"
-  (interactive)
-  (flyspell-goto-next-error)
-  (ispell-word))
 
 
 ;;Insert four spaces
@@ -318,11 +298,12 @@
 (load-file "~/.emacs.d/python_lsp_init.el")
 (load-file "~/.emacs.d/r_init.el")
 (load-file "~/.emacs.d/eshell_init.el")
+(load-file "~/.emacs.d/spell_init.el")
 
 ;; checking to see if additional inits used by desktop machines,
 ;; such as inits for email etc should be loaded
 (defun load-inits (machine_type)
-  (if (or my/desktop my/laptop)
+  (if (or my/desktop my/laptop my/lab)
       (load-desktop)))
 
 (defun load-desktop ()
@@ -392,7 +373,7 @@
 * %n
 ")
  '(package-selected-packages
-   '(gruvbox-theme ewal-doom-themes vterm speed-type ivy-bibtex 0blayout org-noter evil-collection evil rainbow-delimiters helpful dap-mode lsp-ivy all-the-icons-ivy doom-modeline doom-themes which-key counsel-projectile projectile org-journal lsp-python-ms calfw ivy-prescient prescient wgrep counsel all-the-icons-ivy-rich ivy-rich ivy helm-ls-git helm-org all-the-icons use-package org-kanban org-roam org-roam-bibtex languagetool ess jupyter pdf-tools pdf-view-restore org-bullets color-theme color-theme-sanityinc-solarized apropospriate-theme color-theme-sanityinc-tomorrow zenburn-theme flycheck flycheck-cython flycheck-julia async-await magic-latex-buffer px ein elpy forge cmake-mode wakatime-mode matlab-mode htmlize ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html))
+   '(evil-mu4e vterm speed-type ivy-bibtex 0blayout org-noter evil-collection evil rainbow-delimiters helpful dap-mode lsp-ivy all-the-icons-ivy doom-modeline doom-themes which-key counsel-projectile projectile org-journal lsp-python-ms calfw ivy-prescient prescient wgrep counsel all-the-icons-ivy-rich ivy-rich ivy helm-ls-git helm-org all-the-icons use-package org-kanban org-roam org-roam-bibtex languagetool ess jupyter pdf-tools pdf-view-restore org-bullets color-theme color-theme-sanityinc-solarized apropospriate-theme color-theme-sanityinc-tomorrow zenburn-theme flycheck flycheck-cython flycheck-julia async-await magic-latex-buffer px ein elpy forge cmake-mode wakatime-mode matlab-mode htmlize ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(pos-tip-background-color "#3a933a933a93")
  '(pos-tip-foreground-color "#9E9E9E")
