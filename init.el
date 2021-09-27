@@ -1,4 +1,4 @@
-;; init.el
+; init.el
 
 ;; Author: Ethan Goan (With a huge amount of help from the ELisp community)
 
@@ -41,6 +41,8 @@
         ("melpa" . 10)
         ("gnu" . 10)))
 
+;; setting up default font
+(set-face-attribute 'default t :font "Source Code Pro" :height 120)
 ;; adding use-package
 ;; This is only needed once, near the top of the file
 (eval-when-compile
@@ -64,6 +66,9 @@
   :bind
   ("C-x g" . 'magit-status))
 
+;;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
+(setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
+      url-history-file (expand-file-name "url/history" user-emacs-directory))
 ;; NOTE: Make sure to configure a GitHub token before using this package!
 ;; - https://magit.vc/manual/forge/Token-Creation.html#Token-Creation
 ;; - https://magit.vc/manual/ghub/Getting-Started.html#Getting-Started
@@ -113,8 +118,8 @@
 ;;
 ;;
 ;;enable column-enforce mode for sorce code modes
-(use-package column-enforce-mode
-  :hook (prog-mode 'column-enforce-mode))
+;; (use-package column-enforce-mode
+;;   :hook (prog-mode 'column-enforce-mode))
 
 ;;spell checking
 (global-set-key (kbd "<f8>") 'ispell-word)
@@ -145,11 +150,17 @@
   :config
   (setq which-key-idle-delay 1))
 
+;; I like using vterm
+(use-package vterm
+  :commands vterm
+  :config
+  (setq vterm-timer-delay 0.01)
+  (setq vterm-max-scrollback 10000))
 ;; turn off linum mode for terminals
 (defun nolinum ()
   (linum-mode 0))
 (add-hook 'term-mode-hook 'nolinum)
-
+(add-hook 'vterm-mode-hook 'nolinum)
 ;; enable doom modeline
 ;; want with all-the-icons as well
 (use-package all-the-icons)
@@ -339,7 +350,8 @@
  '(company-quickhelp-color-foreground "#DCDCCC")
  '(custom-enabled-themes '(zenburn))
  '(custom-safe-themes
-   '("3b8284e207ff93dfc5e5ada8b7b00a3305351a3fb222782d8033a400a48eca48" "e6df46d5085fde0ad56a46ef69ebb388193080cc9819e2d6024c9c6e27388ba9" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "70f5a47eb08fe7a4ccb88e2550d377ce085fedce81cf30c56e3077f95a2909f2" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "f2c35f8562f6a1e5b3f4c543d5ff8f24100fae1da29aeb1864bbc17758f52b70" "76c5b2592c62f6b48923c00f97f74bcb7ddb741618283bdb2be35f3c0e1030e3" default))
+   '("333958c446e920f5c350c4b4016908c130c3b46d590af91e1e7e2a0611f1e8c5" "d14f3df28603e9517eb8fb7518b662d653b25b26e83bd8e129acea042b774298" "83e0376b5df8d6a3fbdfffb9fb0e8cf41a11799d9471293a810deb7586c131e6" "7661b762556018a44a29477b84757994d8386d6edee909409fabe0631952dad9" "6b5c518d1c250a8ce17463b7e435e9e20faa84f3f7defba8b579d4f5925f60c1" "3b8284e207ff93dfc5e5ada8b7b00a3305351a3fb222782d8033a400a48eca48" "e6df46d5085fde0ad56a46ef69ebb388193080cc9819e2d6024c9c6e27388ba9" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "70f5a47eb08fe7a4ccb88e2550d377ce085fedce81cf30c56e3077f95a2909f2" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "f2c35f8562f6a1e5b3f4c543d5ff8f24100fae1da29aeb1864bbc17758f52b70" "76c5b2592c62f6b48923c00f97f74bcb7ddb741618283bdb2be35f3c0e1030e3" default))
+ '(diff-hl-show-hunk-posframe-internal-border-color "#357535753575")
  '(elpy-rpc-python-command "python3")
  '(evil-emacs-state-cursor '("#E57373" hbar) t)
  '(evil-insert-state-cursor '("#E57373" bar) t)
@@ -357,6 +369,8 @@
  '(highlight-tail-colors '(("#ed0547ad8099" . 0) ("#424242" . 100)))
  '(inhibit-startup-screen t)
  '(matlab-shell-command-switches '("-nodesktop -nosplash"))
+ '(mlscroll-in-color "#56bc56bc56bc")
+ '(mlscroll-out-color "#424242")
  '(nrepl-message-colors
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
  '(org-directory "~/org/wiki/roam")
@@ -378,7 +392,7 @@
 * %n
 ")
  '(package-selected-packages
-   '(vterm speed-type ivy-bibtex 0blayout org-noter evil-collection evil rainbow-delimiters helpful dap-mode lsp-ivy all-the-icons-ivy doom-modeline doom-themes which-key counsel-projectile projectile org-journal lsp-python-ms calfw ivy-prescient prescient wgrep counsel all-the-icons-ivy-rich ivy-rich ivy helm-ls-git helm-org all-the-icons use-package org-kanban org-roam org-roam-bibtex languagetool ess jupyter pdf-tools pdf-view-restore org-bullets color-theme color-theme-sanityinc-solarized apropospriate-theme color-theme-sanityinc-tomorrow zenburn-theme flycheck flycheck-cython flycheck-julia async-await magic-latex-buffer px ein elpy forge cmake-mode wakatime-mode matlab-mode htmlize ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html))
+   '(gruvbox-theme ewal-doom-themes vterm speed-type ivy-bibtex 0blayout org-noter evil-collection evil rainbow-delimiters helpful dap-mode lsp-ivy all-the-icons-ivy doom-modeline doom-themes which-key counsel-projectile projectile org-journal lsp-python-ms calfw ivy-prescient prescient wgrep counsel all-the-icons-ivy-rich ivy-rich ivy helm-ls-git helm-org all-the-icons use-package org-kanban org-roam org-roam-bibtex languagetool ess jupyter pdf-tools pdf-view-restore org-bullets color-theme color-theme-sanityinc-solarized apropospriate-theme color-theme-sanityinc-tomorrow zenburn-theme flycheck flycheck-cython flycheck-julia async-await magic-latex-buffer px ein elpy forge cmake-mode wakatime-mode matlab-mode htmlize ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(pos-tip-background-color "#3a933a933a93")
  '(pos-tip-foreground-color "#9E9E9E")
@@ -422,4 +436,45 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#3F3F3F" :foreground "#DCDCCC" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "ADBO" :family "Source Code Pro"))))
+ '(fixed-pitch ((t (:family "Fira Code Retina"))))
+ '(org-document-title ((t (:inherit default :weight bold :foreground "#d8d8d8" :family "Sans Serif" :height 1.75 :underline nil))))
+ '(org-done ((t (:foreground "PaleGreen" :strike-through t))))
+ '(org-headline-done ((t (:inherit default :weight normal :foreground "#d8d8d8" :family "Sans Serif" :strike-through t))))
+ '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+ '(org-level-1 ((t (:inherit default :weight normal :foreground "#d8d8d8" :family "Sans Serif" :height 1.4))))
+ '(org-level-2 ((t (:inherit default :weight normal :foreground "#d8d8d8" :family "Sans Serif" :height 1.2))))
+ '(org-level-3 ((t (:inherit default :weight normal :foreground "#d8d8d8" :family "Sans Serif" :height 1.1))))
+ '(org-level-4 ((t (:inherit default :weight normal :foreground "#d8d8d8" :family "Sans Serif"))))
+ '(org-level-5 ((t (:inherit default :weight normal :foreground "#d8d8d8" :family "Sans Serif"))))
+ '(org-level-6 ((t (:inherit default :weight normal :foreground "#d8d8d8" :family "Sans Serif"))))
+ '(org-level-7 ((t (:inherit default :weight normal :foreground "#d8d8d8" :family "Sans Serif"))))
+ '(org-level-8 ((t (:inherit default :weight normal :foreground "#d8d8d8" :family "Sans Serif"))))
+ '(variable-pitch ((t (:family "ETBembo")))))
+;; (let* ((variable-tuple
+;;         (cond ((x-list-fonts "ETBembo")         '(:font "ETBembo"))
+;;               ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+;;               ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+;;               ((x-list-fonts "Verdana")         '(:font "Verdana"))
+;;               ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+;;               (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+;;        (base-font-color     (face-foreground 'default nil 'default))
+;;        (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+
+;;   (custom-theme-set-faces
+;;    'user
+;;    `(org-level-8 ((t (,@headline ,@variable-tuple))))
+;;    `(org-level-7 ((t (,@headline ,@variable-tuple))))
+;;    `(org-level-6 ((t (,@headline ,@variable-tuple))))
+;;    `(org-level-5 ((t (,@headline ,@variable-tuple))))
+;;    `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+;;    `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
+;;    `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
+;;    `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
+;;    `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
+
+;; (custom-theme-set-faces
+;;  'user
+;;  '(variable-pitch ((t (:family "ETBembo" :height 180 :weight thin))))
+;;  '(fixed-pitch ((t ( :family "Fira Code Retina" :height 160)))))
+;; (add-hook 'org-mode-hook 'variable-pitch-mode)

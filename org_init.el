@@ -1,4 +1,4 @@
-;; Turn on indentation and auto-fill mode for Org files
+
 (defun dw/org-mode-setup ()
   (org-indent-mode)
   (variable-pitch-mode 1)
@@ -8,6 +8,14 @@
 (use-package org
   :defer t
   :hook (org-mode . dw/org-mode-setup)
+  :custom-face
+  (variable-pitch ((t (:family "ETBembo"))))
+  ;;(variable-pitch ((t (:family "Avenir Next" :height 160 :weight light))))
+  ;;    (fixed-pitch ((t (:family "Inconsolata Nerd Font"))))
+  (fixed-pitch ((t (:family "Fira Code Retina" ))))
+  (org-indent ((t (:inherit (org-hide fixed-pitch)))))
+  (org-done ((t (:foreground "PaleGreen"
+                 :strike-through t))))
   :config
   (setq org-ellipsis " ▾"
         org-hide-emphasis-markers t
@@ -29,13 +37,39 @@
 
   (setq org-outline-path-complete-in-steps nil)
   (setq org-refile-use-outline-path t)
+  ;; seting sizes for things and fonts
+  (let* ((variable-tuple
+          (cond ((x-list-fonts   "ETBembo")         '(:font   "ETBembo"))
+                ((x-list-fonts   "Source Sans Pro") '(:font   "Source Sans Pro"))
+                ((x-list-fonts   "Lucida Grande")   '(:font   "Lucida Grande"))
+                ((x-list-fonts   "Verdana")         '(:font   "Verdana"))
+                ((x-family-fonts "Sans Serif")      '(:family "Sans Serif"))
+                (nil (warn "Cannot find a Sans Serif Font."))))
+         (base-font-color (face-foreground 'default nil 'default))
+         (headline `(:inherit default
+                              :foreground ,base-font-color)))
 
+    (custom-theme-set-faces
+     'user
+     `(org-level-8        ((t (,@headline ,@variable-tuple))))
+     `(org-level-7        ((t (,@headline ,@variable-tuple))))
+     `(org-level-6        ((t (,@headline ,@variable-tuple))))
+     `(org-level-5        ((t (,@headline ,@variable-tuple))))
+     `(org-level-4        ((t (,@headline ,@variable-tuple))))
+     `(org-level-3        ((t (,@headline ,@variable-tuple :height 1.1))))
+     `(org-level-2        ((t (,@headline ,@variable-tuple :height 1.2))))
+     `(org-level-1        ((t (,@headline ,@variable-tuple :height 1.4))))
+     `(org-headline-done  ((t (,@headline ,@variable-tuple :strike-through t))))
+     `(org-document-title ((t (,@headline ,@variable-tuple
+                                          :height 1.75 :underline nil))))))
+ ;; babel languages
   (org-babel-do-load-languages
     'org-babel-load-languages
     '((emacs-lisp . t)
-      (ledger . t)))
+      (ledger . t))))
 
-  (push '("conf-unix" . conf-unix) org-src-lang-modes))
+
+
 
 ;;org-wiki mode
 ;; add timestamp when closing a task
@@ -571,147 +605,147 @@ and https://emacs.stackexchange.com/questions/19403/how-do-i-change-key-bindings
 (defun my/org-agenda-skip-scheduled ()
   (org-agenda-skip-entry-if 'scheduled 'deadline 'regexp "\n]+>"))
 
-(setq org-agenda-custom-commands
-      `(("a" "Agenda"
-         ((agenda "" ((org-agenda-span 2)))
-          ;; Projects
-          (tags "+PROJECT-someday-TODO=\"DONE\"-TODO=\"SOMEDAY\"-inactive-evilplans"
-                ((org-tags-exclude-from-inheritance '("PROJECT"))
-                 (org-agenda-prefix-format "  ")
-                 (org-agenda-overriding-header "Projects: ")
-                 (org-agenda-sorting-strategy '(priority-down tag-up category-keep effort-down))))
-          ;; Inbox
-          (alltodo ""
-                   ((org-agenda-prefix-format "%-6e ")
-                    (org-agenda-files '("~/org/wiki/inbox.org"))
-                    (org-agenda-overriding-header "Inbox: ")))
-          (todo "WAITING-inactive"
-                ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
-                 (org-agenda-prefix-format "%-6e ")
-                 (org-agenda-overriding-header "Waiting: ")
-                 (org-agenda-sorting-strategy '(priority-down effort-up tag-up category-keep))))
-          ;; Unscheduled
-          (tags-todo "TODO=\"TODO\"-project-cooking-routine-errands-shopping-video-evilplans"
-                     ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
-                      (org-agenda-prefix-format "%-6e ")
-                      (org-agenda-overriding-header "Unscheduled TODO entries: ")
-                      (org-agenda-sorting-strategy '(priority-down effort-up tag-up category-keep))))
-          ))
-        ("e" "Emacs" (tags "emacs"))
-        ("i" "Inbox" alltodo ""
-         ((org-agenda-files '("~/org/wiki/inbox.org"))))
-        ("t" tags-todo "-cooking"
-         ((org-agenda-sorting-strategy '(todo-state-up priority-down effort-up))))
-        ("T" tags-todo "TODO=\"TODO\"-goal-routine-cooking-SCHEDULED={.+}" nil "~/cloud/agenda/nonroutine.html")
-        ("f" tags-todo "focus-TODO=\"DONE\"-TODO=\"CANCELLED\"")
-        ("x" "Column view" todo ""  ; Column view
-         ((org-agenda-prefix-format "")
-          (org-agenda-cmp-user-defined 'my/org-sort-agenda-items-todo)
-          (org-agenda-view-columns-initially t)
-          ))
-        ;; Weekly review
-        ("w" "Weekly review" agenda ""
-         ((org-agenda-span 7)
-          (org-agenda-log-mode 1)) "~/org/wiki/this-week.html")
-        ("W" "Weekly review sans routines" agenda ""
-         ((org-agenda-span 7)
-          (org-agenda-log-mode 1)
-          (org-agenda-tag-filter-preset '("-routine"))) "~/org/wiki/this-week-nonroutine.html")
-        ("2" "Bi-weekly review" agenda "" ((org-agenda-span 14) (org-agenda-log-mode 1)))
-        ("5" "Quick tasks" tags-todo "EFFORT>=\"0:05\"&EFFORT<=\"0:15\"")
-        ("0" "Unestimated tasks" tags-todo "EFFORT=\"\"")
-        ("gc" "Coding" tags-todo "@coding"
-         ((org-agenda-view-columns-initially t)))
-        ("gw" "Writing" tags-todo "@writing"
-         ((org-agenda-view-columns-initially t)))
-        ("gp" "Phone" tags-todo "@phone"
-         ((org-agenda-view-columns-initially t)))
-        ("gd" "Drawing" tags-todo "@drawing"
-         ((org-agenda-view-columns-initially t)))
-        ("gh" "Home" tags-todo "@home"
-         ((org-agenda-view-columns-initially t)))
-        ("ge" "Errands" tags-todo "errands"
-         ((org-agenda-view-columns-initially t))
-         ("~/cloud/agenda/errands.html"))
-        ("c" "Top 3 by context"
-         ,my/org-agenda-contexts
-         ((org-agenda-sorting-strategy '(priority-up effort-down))
-          (org-agenda-max-entries 3)))
-        ("C" "All by context"
-         ,my/org-agenda-contexts
-         ((org-agenda-sorting-strategy '(priority-down effort-down))
-          (org-agenda-max-entries nil)))
-        ("9" "Unscheduled top 3 by context"
-         ,my/org-agenda-contexts
-         ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
-          (org-agenda-sorting-strategy '(priority-down effort-down))
-          (org-agenda-max-entries 3)))
-        ("(" "All unscheduled by context"
-         ,my/org-agenda-contexts
-         ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
-          (org-agenda-sorting-strategy '(priority-down effort-down))
-          ))
-        ("d" "Timeline for today" ((agenda "" ))
-         ((org-agenda-ndays 1)
-          (org-agenda-show-log t)
-          (org-agenda-log-mode-items '(clock closed))
-          (org-agenda-clockreport-mode t)
-          (org-agenda-entry-types '())))
-        ("." "Waiting for" todo "WAITING")
-        ("u" "Unscheduled tasks" tags-todo "-someday-TODO=\"SOMEDAY\"-TODO=\"DELEGATED\"-TODO=\"WAITING\"-project-cooking-routine"
-         ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
-          (org-agenda-view-columns-initially nil)
-          (org-tags-exclude-from-inheritance '("project"))
-          (org-agenda-overriding-header "Unscheduled TODO entries: ")
-          (org-columns-default-format "%50ITEM %TODO %3PRIORITY %Effort{:} %TAGS")
-          (org-agenda-sorting-strategy '(todo-state-up priority-down effort-up tag-up category-keep))))
-        ("r" "Unscheduled, untagged tasks" tags-todo "-someday-TODO=\"SOMEDAY\"-TODO=\"DELEGATED\"-TODO=\"WAITING\"-project-cooking-routine-evilplans-computer-writing-phone-sewing-home-errands-shopping"
-         ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
-          (org-agenda-view-columns-initially nil)
-          (org-tags-exclude-from-inheritance '("project"))
-          (org-agenda-overriding-header "Unscheduled TODO entries: ")
-          (org-columns-default-format "%50ITEM %TODO %3PRIORITY %Effort{:} %TAGS")
-          (org-agenda-sorting-strategy '(todo-state-up priority-down effort-up tag-up category-keep))))
-        ("s" "Someday" tags-todo "TODO=\"SOMEDAY\""
-         ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
-          (org-agenda-view-columns-initially nil)
-          (org-tags-exclude-from-inheritance '("project"))
-          (org-agenda-overriding-header "Someday: ")
-          (org-columns-default-format "%50ITEM %TODO %3PRIORITY %Effort{:} %TAGS")
-          (org-agenda-sorting-strategy '(todo-state-up priority-down effort-up tag-up category-keep))))
-        ("U" "Unscheduled tasks outside projects" tags-todo "-project-cooking-routine"
-         ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
-          (org-tags-exclude-from-inheritance nil)
-          (org-agenda-view-columns-initially nil)
-          (org-agenda-overriding-header "Unscheduled TODO entries outside projects: ")
-          (org-agenda-sorting-strategy '(todo-state-up priority-down tag-up category-keep effort-down))))
-        ("P" "By priority"
-         ((tags-todo "+PRIORITY=\"A\"")
-          (tags-todo "+PRIORITY=\"B\"")
-          (tags-todo "+PRIORITY=\"\"")
-          (tags-todo "+PRIORITY=\"C\""))
-         ((org-agenda-prefix-format "%-10c %-10T %e ")
-          (org-agenda-sorting-strategy '(priority-down tag-up category-keep effort-down))))
-        ("pp" tags "+project-someday-TODO=\"DONE\"-TODO=\"SOMEDAY\"-inactive"
-         ((org-tags-exclude-from-inheritance '("project"))
-          (org-agenda-sorting-strategy '(priority-down tag-up category-keep effort-down))))
-        ("p." tags "+project-TODO=\"DONE\""
-         ((org-tags-exclude-from-inheritance '("project"))
-          (org-agenda-sorting-strategy '(priority-down tag-up category-keep effort-down))))
-        ("S" tags-todo "TODO=\"STARTED\"")
-        ("C" "Cooking"
-         ((tags "vegetables")
-          (tags "chicken")
-          (tags "beef")
-          (tags "pork")
-          (tags "other"))
-         ((org-agenda-files '("~/orgzly/cooking.org"))
-          (org-agenda-view-columns-initially t)
-          (org-agenda-sorting-strategy '(scheduled-up time-down todo-state-up)))
-         )
-        ("8" "List projects with tasks" my/org-agenda-projects-and-tasks
-         "+PROJECT"
-         ((org-agenda-max-entries 3)))))
+;; (setq org-agenda-custom-commands
+;;       `(("a" "Agenda"
+;;          ((agenda "" ((org-agenda-span 2)))
+;;           ;; Projects
+;;           (tags "+PROJECT-someday-TODO=\"DONE\"-TODO=\"SOMEDAY\"-inactive-evilplans"
+;;                 ((org-tags-exclude-from-inheritance '("PROJECT"))
+;;                  (org-agenda-prefix-format "  ")
+;;                  (org-agenda-overriding-header "Projects: ")
+;;                  (org-agenda-sorting-strategy '(priority-down tag-up category-keep effort-down))))
+;;           ;; Inbox
+;;           (alltodo ""
+;;                    ((org-agenda-prefix-format "%-6e ")
+;;                     (org-agenda-files '("~/org/wiki/inbox.org"))
+;;                     (org-agenda-overriding-header "Inbox: ")))
+;;           (todo "WAITING-inactive"
+;;                 ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
+;;                  (org-agenda-prefix-format "%-6e ")
+;;                  (org-agenda-overriding-header "Waiting: ")
+;;                  (org-agenda-sorting-strategy '(priority-down effort-up tag-up category-keep))))
+;;           ;; Unscheduled
+;;           (tags-todo "TODO=\"TODO\"-project-cooking-routine-errands-shopping-video-evilplans"
+;;                      ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
+;;                       (org-agenda-prefix-format "%-6e ")
+;;                       (org-agenda-overriding-header "Unscheduled TODO entries: ")
+;;                       (org-agenda-sorting-strategy '(priority-down effort-up tag-up category-keep))))
+;;           ))
+;;         ("e" "Emacs" (tags "emacs"))
+;;         ("i" "Inbox" alltodo ""
+;;          ((org-agenda-files '("~/org/wiki/inbox.org"))))
+;;         ("t" tags-todo "-cooking"
+;;          ((org-agenda-sorting-strategy '(todo-state-up priority-down effort-up))))
+;;         ("T" tags-todo "TODO=\"TODO\"-goal-routine-cooking-SCHEDULED={.+}" nil "~/cloud/agenda/nonroutine.html")
+;;         ("f" tags-todo "focus-TODO=\"DONE\"-TODO=\"CANCELLED\"")
+;;         ("x" "Column view" todo ""  ; Column view
+;;          ((org-agenda-prefix-format "")
+;;           (org-agenda-cmp-user-defined 'my/org-sort-agenda-items-todo)
+;;           (org-agenda-view-columns-initially t)
+;;           ))
+;;         ;; Weekly review
+;;         ("w" "Weekly review" agenda ""
+;;          ((org-agenda-span 7)
+;;           (org-agenda-log-mode 1)) "~/org/wiki/this-week.html")
+;;         ("W" "Weekly review sans routines" agenda ""
+;;          ((org-agenda-span 7)
+;;           (org-agenda-log-mode 1)
+;;           (org-agenda-tag-filter-preset '("-routine"))) "~/org/wiki/this-week-nonroutine.html")
+;;         ("2" "Bi-weekly review" agenda "" ((org-agenda-span 14) (org-agenda-log-mode 1)))
+;;         ("5" "Quick tasks" tags-todo "EFFORT>=\"0:05\"&EFFORT<=\"0:15\"")
+;;         ("0" "Unestimated tasks" tags-todo "EFFORT=\"\"")
+;;         ("gc" "Coding" tags-todo "@coding"
+;;          ((org-agenda-view-columns-initially t)))
+;;         ("gw" "Writing" tags-todo "@writing"
+;;          ((org-agenda-view-columns-initially t)))
+;;         ("gp" "Phone" tags-todo "@phone"
+;;          ((org-agenda-view-columns-initially t)))
+;;         ("gd" "Drawing" tags-todo "@drawing"
+;;          ((org-agenda-view-columns-initially t)))
+;;         ("gh" "Home" tags-todo "@home"
+;;          ((org-agenda-view-columns-initially t)))
+;;         ("ge" "Errands" tags-todo "errands"
+;;          ((org-agenda-view-columns-initially t))
+;;          ("~/cloud/agenda/errands.html"))
+;;         ("c" "Top 3 by context"
+;;          ,my/org-agenda-contexts
+;;          ((org-agenda-sorting-strategy '(priority-up effort-down))
+;;           (org-agenda-max-entries 3)))
+;;         ("C" "All by context"
+;;          ,my/org-agenda-contexts
+;;          ((org-agenda-sorting-strategy '(priority-down effort-down))
+;;           (org-agenda-max-entries nil)))
+;;         ("9" "Unscheduled top 3 by context"
+;;          ,my/org-agenda-contexts
+;;          ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
+;;           (org-agenda-sorting-strategy '(priority-down effort-down))
+;;           (org-agenda-max-entries 3)))
+;;         ("(" "All unscheduled by context"
+;;          ,my/org-agenda-contexts
+;;          ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
+;;           (org-agenda-sorting-strategy '(priority-down effort-down))
+;;           ))
+;;         ("d" "Timeline for today" ((agenda "" ))
+;;          ((org-agenda-ndays 1)
+;;           (org-agenda-show-log t)
+;;           (org-agenda-log-mode-items '(clock closed))
+;;           (org-agenda-clockreport-mode t)
+;;           (org-agenda-entry-types '())))
+;;         ("." "Waiting for" todo "WAITING")
+;;         ("u" "Unscheduled tasks" tags-todo "-someday-TODO=\"SOMEDAY\"-TODO=\"DELEGATED\"-TODO=\"WAITING\"-project-cooking-routine"
+;;          ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
+;;           (org-agenda-view-columns-initially nil)
+;;           (org-tags-exclude-from-inheritance '("project"))
+;;           (org-agenda-overriding-header "Unscheduled TODO entries: ")
+;;           (org-columns-default-format "%50ITEM %TODO %3PRIORITY %Effort{:} %TAGS")
+;;           (org-agenda-sorting-strategy '(todo-state-up priority-down effort-up tag-up category-keep))))
+;;         ("r" "Unscheduled, untagged tasks" tags-todo "-someday-TODO=\"SOMEDAY\"-TODO=\"DELEGATED\"-TODO=\"WAITING\"-project-cooking-routine-evilplans-computer-writing-phone-sewing-home-errands-shopping"
+;;          ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
+;;           (org-agenda-view-columns-initially nil)
+;;           (org-tags-exclude-from-inheritance '("project"))
+;;           (org-agenda-overriding-header "Unscheduled TODO entries: ")
+;;           (org-columns-default-format "%50ITEM %TODO %3PRIORITY %Effort{:} %TAGS")
+;;           (org-agenda-sorting-strategy '(todo-state-up priority-down effort-up tag-up category-keep))))
+;;         ("s" "Someday" tags-todo "TODO=\"SOMEDAY\""
+;;          ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
+;;           (org-agenda-view-columns-initially nil)
+;;           (org-tags-exclude-from-inheritance '("project"))
+;;           (org-agenda-overriding-header "Someday: ")
+;;           (org-columns-default-format "%50ITEM %TODO %3PRIORITY %Effort{:} %TAGS")
+;;           (org-agenda-sorting-strategy '(todo-state-up priority-down effort-up tag-up category-keep))))
+;;         ("U" "Unscheduled tasks outside projects" tags-todo "-project-cooking-routine"
+;;          ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
+;;           (org-tags-exclude-from-inheritance nil)
+;;           (org-agenda-view-columns-initially nil)
+;;           (org-agenda-overriding-header "Unscheduled TODO entries outside projects: ")
+;;           (org-agenda-sorting-strategy '(todo-state-up priority-down tag-up category-keep effort-down))))
+;;         ("P" "By priority"
+;;          ((tags-todo "+PRIORITY=\"A\"")
+;;           (tags-todo "+PRIORITY=\"B\"")
+;;           (tags-todo "+PRIORITY=\"\"")
+;;           (tags-todo "+PRIORITY=\"C\""))
+;;          ((org-agenda-prefix-format "%-10c %-10T %e ")
+;;           (org-agenda-sorting-strategy '(priority-down tag-up category-keep effort-down))))
+;;         ("pp" tags "+project-someday-TODO=\"DONE\"-TODO=\"SOMEDAY\"-inactive"
+;;          ((org-tags-exclude-from-inheritance '("project"))
+;;           (org-agenda-sorting-strategy '(priority-down tag-up category-keep effort-down))))
+;;         ("p." tags "+project-TODO=\"DONE\""
+;;          ((org-tags-exclude-from-inheritance '("project"))
+;;           (org-agenda-sorting-strategy '(priority-down tag-up category-keep effort-down))))
+;;         ("S" tags-todo "TODO=\"STARTED\"")
+;;         ("C" "Cooking"
+;;          ((tags "vegetables")
+;;           (tags "chicken")
+;;           (tags "beef")
+;;           (tags "pork")
+;;           (tags "other"))
+;;          ((org-agenda-files '("~/orgzly/cooking.org"))
+;;           (org-agenda-view-columns-initially t)
+;;           (org-agenda-sorting-strategy '(scheduled-up time-down todo-state-up)))
+;;          )
+;;         ("8" "List projects with tasks" my/org-agenda-projects-and-tasks
+;;          "+PROJECT"
+;;          ((org-agenda-max-entries 3)))))
 
 (setq org-agenda-files
       (list "~/org/wiki/gtd.org"
@@ -721,7 +755,8 @@ and https://emacs.stackexchange.com/questions/19403/how-do-i-change-key-bindings
 
 
 ;; make sure tags don't over run multiple lines in agenda view
-(setq org-agenda-align-tags-to-column -150)
+(setq org-agenda-align-tags-to-column -100)
+(setq org-habit-graph-column 60)
 (setq bibtex-completion-library-path '("~/org/wiki/pdfs"))
 (setq ethan/bibliography-path "~/.emacs.d/ref.bib")
 (setq ethan/pdf-path  "~/org/wiki/pdfs/")
@@ -808,3 +843,145 @@ and https://emacs.stackexchange.com/questions/19403/how-do-i-change-key-bindings
    org-noter-notes-search-path ethan/bibliography-notes
    )
   )
+
+;; (setq org-agenda-custom-commands
+;;       `(("a" "Agenda"
+;;          ((agenda "" ((org-agenda-span 2)))
+;;           ;; Projects
+;;           (tags "+PROJECT-someday-TODO=\"DONE\"-TODO=\"SOMEDAY\"-inactive-evilplans"
+;;                 ((org-tags-exclude-from-inheritance '("PROJECT"))
+;;                  (org-agenda-prefix-format "  ")
+;;                  (org-agenda-overriding-header "Projects: ")
+;;                  (org-agenda-sorting-strategy '(priority-down tag-up category-keep effort-down))))
+;;           ;; Inbox
+;;           (alltodo ""
+;;                    ((org-agenda-prefix-format "%-6e ")
+;;                     (org-agenda-files '("~/org/wiki/inbox.org"))
+;;                     (org-agenda-overriding-header "Inbox: ")))
+;;           (todo "WAITING-inactive"
+;;                 ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
+;;                  (org-agenda-prefix-format "%-6e ")
+;;                  (org-agenda-overriding-header "Waiting: ")
+;;                  (org-agenda-sorting-strategy '(priority-down effort-up tag-up category-keep))))
+;;           ;; Unscheduled
+;;           (tags-todo "TODO=\"TODO\"-project-cooking-routine-errands-shopping-video-evilplans"
+;;                      ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
+;;                       (org-agenda-prefix-format "%-6e ")
+;;                       (org-agenda-overriding-header "Unscheduled TODO entries: ")
+;;                       (org-agenda-sorting-strategy '(priority-down effort-up tag-up category-keep))))
+;;           ))
+;;         ("e" "Emacs" (tags "emacs"))
+;;         ("i" "Inbox" alltodo ""
+;;          ((org-agenda-files '("~/org/wiki/inbox.org"))))
+;;         ("t" tags-todo "-cooking"
+;;          ((org-agenda-sorting-strategy '(todo-state-up priority-down effort-up))))
+;;         ("T" tags-todo "TODO=\"TODO\"-goal-routine-cooking-SCHEDULED={.+}" nil "~/cloud/agenda/nonroutine.html")
+;;         ("f" tags-todo "focus-TODO=\"DONE\"-TODO=\"CANCELLED\"")
+;;         ("x" "Column view" todo ""  ; Column view
+;;          ((org-agenda-prefix-format "")
+;;           (org-agenda-cmp-user-defined 'my/org-sort-agenda-items-todo)
+;;           (org-agenda-view-columns-initially t)
+;;           ))
+;;         ;; Weekly review
+;;         ("w" "Weekly review" agenda ""
+;;          ((org-agenda-span 7)
+;;           (org-agenda-log-mode 1)) "~/org/wiki/this-week.html")
+;;         ("W" "Weekly review sans routines" agenda ""
+;;          ((org-agenda-span 7)
+;;           (org-agenda-log-mode 1)
+;;           (org-agenda-tag-filter-preset '("-routine"))) "~/org/wiki/this-week-nonroutine.html")
+;;         ("2" "Bi-weekly review" agenda "" ((org-agenda-span 14) (org-agenda-log-mode 1)))
+;;         ("5" "Quick tasks" tags-todo "EFFORT>=\"0:05\"&EFFORT<=\"0:15\"")
+;;         ("0" "Unestimated tasks" tags-todo "EFFORT=\"\"")
+;;         ("gc" "Coding" tags-todo "@coding"
+;;          ((org-agenda-view-columns-initially t)))
+;;         ("gw" "Writing" tags-todo "@writing"
+;;          ((org-agenda-view-columns-initially t)))
+;;         ("gp" "Phone" tags-todo "@phone"
+;;          ((org-agenda-view-columns-initially t)))
+;;         ("gd" "Drawing" tags-todo "@drawing"
+;;          ((org-agenda-view-columns-initially t)))
+;;         ("gh" "Home" tags-todo "@home"
+;;          ((org-agenda-view-columns-initially t)))
+;;         ("ge" "Errands" tags-todo "errands"
+;;          ((org-agenda-view-columns-initially t))
+;;          ("~/cloud/agenda/errands.html"))
+;;         ("c" "Top 3 by context"
+;;          ,my/org-agenda-contexts
+;;          ((org-agenda-sorting-strategy '(priority-up effort-down))
+;;           (org-agenda-max-entries 3)))
+;;         ("C" "All by context"
+;;          ,my/org-agenda-contexts
+;;          ((org-agenda-sorting-strategy '(priority-down effort-down))
+;;           (org-agenda-max-entries nil)))
+;;         ("9" "Unscheduled top 3 by context"
+;;          ,my/org-agenda-contexts
+;;          ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
+;;           (org-agenda-sorting-strategy '(priority-down effort-down))
+;;           (org-agenda-max-entries 3)))
+;;         ("(" "All unscheduled by context"
+;;          ,my/org-agenda-contexts
+;;          ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
+;;           (org-agenda-sorting-strategy '(priority-down effort-down))
+;;           ))
+;;         ("d" "Timeline for today" ((agenda "" ))
+;;          ((org-agenda-ndays 1)
+;;           (org-agenda-show-log t)
+;;           (org-agenda-log-mode-items '(clock closed))
+;;           (org-agenda-clockreport-mode t)
+;;           (org-agenda-entry-types '())))
+;;         ("." "Waiting for" todo "WAITING")
+;;         ("u" "Unscheduled tasks" tags-todo "-someday-TODO=\"SOMEDAY\"-TODO=\"DELEGATED\"-TODO=\"WAITING\"-project-cooking-routine"
+;;          ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
+;;           (org-agenda-view-columns-initially nil)
+;;           (org-tags-exclude-from-inheritance '("project"))
+;;           (org-agenda-overriding-header "Unscheduled TODO entries: ")
+;;           (org-columns-default-format "%50ITEM %TODO %3PRIORITY %Effort{:} %TAGS")
+;;           (org-agenda-sorting-strategy '(todo-state-up priority-down effort-up tag-up category-keep))))
+;;         ("r" "Unscheduled, untagged tasks" tags-todo "-someday-TODO=\"SOMEDAY\"-TODO=\"DELEGATED\"-TODO=\"WAITING\"-project-cooking-routine-evilplans-computer-writing-phone-sewing-home-errands-shopping"
+;;          ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
+;;           (org-agenda-view-columns-initially nil)
+;;           (org-tags-exclude-from-inheritance '("project"))
+;;           (org-agenda-overriding-header "Unscheduled TODO entries: ")
+;;           (org-columns-default-format "%50ITEM %TODO %3PRIORITY %Effort{:} %TAGS")
+;;           (org-agenda-sorting-strategy '(todo-state-up priority-down effort-up tag-up category-keep))))
+;;         ("s" "Someday" tags-todo "TODO=\"SOMEDAY\""
+;;          ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
+;;           (org-agenda-view-columns-initially nil)
+;;           (org-tags-exclude-from-inheritance '("project"))
+;;           (org-agenda-overriding-header "Someday: ")
+;;           (org-columns-default-format "%50ITEM %TODO %3PRIORITY %Effort{:} %TAGS")
+;;           (org-agenda-sorting-strategy '(todo-state-up priority-down effort-up tag-up category-keep))))
+;;         ("U" "Unscheduled tasks outside projects" tags-todo "-project-cooking-routine"
+;;          ((org-agenda-skip-function 'my/org-agenda-skip-scheduled)
+;;           (org-tags-exclude-from-inheritance nil)
+;;           (org-agenda-view-columns-initially nil)
+;;           (org-agenda-overriding-header "Unscheduled TODO entries outside projects: ")
+;;           (org-agenda-sorting-strategy '(todo-state-up priority-down tag-up category-keep effort-down))))
+;;         ("P" "By priority"
+;;          ((tags-todo "+PRIORITY=\"A\"")
+;;           (tags-todo "+PRIORITY=\"B\"")
+;;           (tags-todo "+PRIORITY=\"\"")
+;;           (tags-todo "+PRIORITY=\"C\""))
+;;          ((org-agenda-prefix-format "%-10c %-10T %e ")
+;;           (org-agenda-sorting-strategy '(priority-down tag-up category-keep effort-down))))
+;;         ("pp" tags "+project-someday-TODO=\"DONE\"-TODO=\"SOMEDAY\"-inactive"
+;;          ((org-tags-exclude-from-inheritance '("project"))
+;;           (org-agenda-sorting-strategy '(priority-down tag-up category-keep effort-down))))
+;;         ("p." tags "+project-TODO=\"DONE\""
+;;          ((org-tags-exclude-from-inheritance '("project"))
+;;           (org-agenda-sorting-strategy '(priority-down tag-up category-keep effort-down))))
+;;         ("S" tags-todo "TODO=\"STARTED\"")
+;;         ("C" "Cooking"
+;;          ((tags "vegetables")
+;;           (tags "chicken")
+;;           (tags "beef")
+;;           (tags "pork")
+;;           (tags "other"))
+;;          ((org-agenda-files '("~/orgzly/cooking.org"))
+;;           (org-agenda-view-columns-initially t)
+;;           (org-agenda-sorting-strategy '(scheduled-up time-down todo-state-up)))
+;;          )
+;;         ("8" "List projects with tasks" my/org-agenda-projects-and-tasks
+;;          "+PROJECT"
+;;          ((org-agenda-max-entries 3)))))

@@ -14,13 +14,11 @@
 ;; setting package archives and priorities
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                          ("org" . "http://orgmode.org/elpa/")
-                         ("melpa" . "https://melpa.org/packages/")
-                         ("melpa-stable" . "https://stable.melpa.org/packages/")))
+                         ("melpa" . "https://melpa.org/packages/")))
 (setq package-archive-priorities
-      '(("melpa-stable" . 20)
-        ("org" . 20)
-        ("gnu" . 10)
-        ("melpa" . 100)))
+        '(("org" . 20)
+          ("gnu" . 10)
+          ("melpa" . 100)))
 
 
 ;; function that will install all the packages
@@ -180,5 +178,3 @@ zmq)) ;; (you probably want to format the packages.txt first, otherwise you get 
 	(delete-region (point) (point-min))
 	(kill-whole-line)
 	(package-install-from-buffer)))
-
-
