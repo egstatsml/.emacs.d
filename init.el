@@ -136,7 +136,7 @@
   ;; I like using vterm
 (use-package vterm
   :commands vterm
-  ;; :hook (vterm-set-evil-escape)
+  :hook (vterm-set-evil-escape)
   :bind ("<escape>" . vterm-send-escape)
   :config
   (setq vterm-timer-delay 0.01)
