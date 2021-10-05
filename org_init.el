@@ -780,7 +780,7 @@ and https://emacs.stackexchange.com/questions/19403/how-do-i-change-key-bindings
 (setq ethan/pdf-path  "~/org/wiki/pdfs/")
 (setq ethan/bibliography-notes "~/org/wiki/roam/references/")
 
-
+;;
 (use-package org-ref
     ;; :init
     ; code to run before loading org-ref

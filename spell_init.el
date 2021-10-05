@@ -93,3 +93,6 @@ When fixing a typo, avoid pass camel case option to cli program."
 (add-hook 'text-mode-hook 'text-mode-hook-setup)
 ;; setting up for prog mode spell checking
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+;; add spell checking for git commit messages
+(add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell)
