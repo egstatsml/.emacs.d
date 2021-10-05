@@ -298,7 +298,7 @@
 
 ;; loading all the required init files
 ;; loading default inits, initialisations used across all my machines
-(load-file "~/.emacs.d/org_init.el")
+;; (load-file "~/.emacs.d/org_init.el")
 (load-file "~/.emacs.d/ivy_init.el")
 (load-file "~/.emacs.d/python_lsp_init.el")
 (load-file "~/.emacs.d/r_init.el")
