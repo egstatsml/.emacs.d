@@ -381,6 +381,14 @@
       org-habit-show-habits-only-for-today t
       org-agenda-view-columns-initially nil)
 
+;; adding evil org mode so that I can use evil keys within org agenda specifically
+(use-package evil-org
+  :ensure t
+  :after org
+  :hook (org-mode . (lambda () evil-org-mode))
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
 ;;default org-modules = (ol-w3m ol-bbdb ol-bibtex ol-docview ol-gnus ol-info ol-irc ol-mhe ol-rmail ol-eww)
 (setq org-modules
       (quote
