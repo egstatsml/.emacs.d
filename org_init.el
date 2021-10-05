@@ -81,9 +81,6 @@
     '((emacs-lisp . t)
       (ledger . t))))
 
-
-
-
 ;;org-wiki mode
 ;; add timestamp when closing a task
 (setq org-log-done 'time)
@@ -193,7 +190,7 @@
 
 ;;add some more TODO list keywords
 (setq org-todo-keywords
-      '((sequence "TODO" "NEXT" "|" "DONE")
+      '((sequence "TODO" "NEXT" "INPROGRESS" "|" "DONE")
         (sequnce "TOREAD" "|" "DONE")
         (sequence "INPROGRESS" "FEEDBACK" "WAITING" "VERIFY" "|" "DONE")))
 
