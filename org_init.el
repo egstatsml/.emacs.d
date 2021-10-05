@@ -5,6 +5,17 @@
   (auto-fill-mode 0)
   (visual-line-mode 1))
 
+(defun my/org-todo-done ()
+  (interactive)
+  (let ((state (org-get-todo-state))
+        post-command-hook)
+    (if (not(string= state "TODO"))
+        (org-todo "DONE")
+      (org-todo "TODO"))
+    (run-hooks 'post-command-hook)
+    (org-flag-subtree t)))
+
+
 (use-package org
   :defer t
   :hook (org-mode . dw/org-mode-setup)
@@ -16,6 +27,8 @@
   (org-indent ((t (:inherit (org-hide fixed-pitch)))))
   (org-done ((t (:foreground "PaleGreen"
                  :strike-through t))))
+  :bind
+  ("C-c d" . 'my/org-todo-done)
   :config
   (setq org-ellipsis " ▾"
         org-hide-emphasis-markers t
