@@ -130,13 +130,18 @@
   :config
   (setq which-key-idle-delay 1))
 
-;; I like using vterm
+
+(defun vterm-set-evil-escape ()
+  (local-set-key (kbd "C-[") 'vterm-send-escape))
+  ;; I like using vterm
 (use-package vterm
   :commands vterm
+  ;; :hook (vterm-set-evil-escape)
+  :bind ("<escape>" . vterm-send-escape)
   :config
   (setq vterm-timer-delay 0.01)
   (setq vterm-max-scrollback 10000))
-;; turn off linum mode for terminals
+  ;;turn off linum mode for terminals
 (defun nolinum ()
   (linum-mode 0))
 (add-hook 'term-mode-hook 'nolinum)
@@ -293,7 +298,7 @@
 
 ;; loading all the required init files
 ;; loading default inits, initialisations used across all my machines
-(load-file "~/.emacs.d/org_init.el")
+;; (load-file "~/.emacs.d/org_init.el")
 (load-file "~/.emacs.d/ivy_init.el")
 (load-file "~/.emacs.d/python_lsp_init.el")
 (load-file "~/.emacs.d/r_init.el")

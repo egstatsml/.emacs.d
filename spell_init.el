@@ -91,3 +91,5 @@ When fixing a typo, avoid pass camel case option to cli program."
   ;; Turn off RUN-TOGETHER option when spell check text-mode
   (setq-local ispell-extra-args (flyspell-detect-ispell-args)))
 (add-hook 'text-mode-hook 'text-mode-hook-setup)
+;; setting up for prog mode spell checking
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
