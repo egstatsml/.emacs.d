@@ -41,13 +41,23 @@
       '(("org" . 20)
         ("melpa" . 10)
         ("gnu" . 10)))
-
-;; setting up default font
-(set-face-attribute 'default t :font "Source Code Pro" :height 120)
-;; adding use-package
+; adding use-package
 ;; This is only needed once, near the top of the file
 (eval-when-compile
   (require 'use-package))
+
+
+;; trying Fira code out for now.
+;; note that need to have the font itself and the additional
+;; symbols for the ligatures installed.
+;; so run
+;; yay -S nerd-fonts-fira-code otf-fira-code-symbol
+(use-package fira-code-mode
+  :custom (fira-code-mode-disabled-ligatures '("[]" "x"))  ; ligatures you don't want
+  :hook prog-mode)
+  ;; setting up default font
+(set-face-attribute 'default t :font "FiraCode Nerd Font" :height 140)
+
 
 ;;setting up faster access to init.el
 (defun find-user-init-file ()
@@ -94,7 +104,12 @@
 
 ;;highlighting parenthesis etc.
 (show-paren-mode 1)
-(global-linum-mode 1)
+;; linum mode
+;; don't want to enable it globally, as certain buffers
+;; like pdf-view, org and terminals can slow down with it on
+(use-package linum-mode
+  :hook (prog-mode . linum-mode))
+;; (global-linum-mode 1)
 ;;enable pretty control mode
 (require 'pp-c-l)           ; Load this library
 (pretty-control-l-mode 1)
@@ -298,7 +313,6 @@
 
 ;; loading all the required init files
 ;; loading default inits, initialisations used across all my machines
-;; (load-file "~/.emacs.d/org_init.el")
 (load-file "~/.emacs.d/ivy_init.el")
 (load-file "~/.emacs.d/python_lsp_init.el")
 (load-file "~/.emacs.d/r_init.el")
@@ -314,6 +328,7 @@
 (defun load-desktop ()
   (load-file "~/.emacs.d/mu4e_init.el")
   (load-file "~/.emacs.d/latex_init.el")
+  (load-file "~/.emacs.d/org_init.el")
   ;;(load-file "~/.emacs.d/python_init.el")
   ;;(load-file "~/.emacs.d/ipython_init.el")
   (load-file "~/.emacs.d/icons_init.el"))
@@ -385,7 +400,7 @@
 * %n
 ")
  '(package-selected-packages
-   '(sudo-edit mu4e-marker-icons org-noter-pdftools evil-mu4e vterm speed-type ivy-bibtex 0blayout org-noter evil-collection evil rainbow-delimiters helpful dap-mode lsp-ivy all-the-icons-ivy doom-modeline doom-themes which-key counsel-projectile projectile org-journal lsp-python-ms calfw ivy-prescient prescient wgrep counsel all-the-icons-ivy-rich ivy-rich ivy helm-ls-git helm-org all-the-icons use-package org-kanban org-roam org-roam-bibtex languagetool ess jupyter pdf-tools pdf-view-restore org-bullets color-theme color-theme-sanityinc-solarized apropospriate-theme color-theme-sanityinc-tomorrow zenburn-theme flycheck flycheck-cython flycheck-julia async-await magic-latex-buffer px ein elpy forge cmake-mode wakatime-mode matlab-mode htmlize ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html))
+   '(wucuo multi-vterm sudo-edit mu4e-marker-icons org-noter-pdftools evil-mu4e vterm speed-type ivy-bibtex 0blayout org-noter evil-collection evil rainbow-delimiters helpful dap-mode lsp-ivy all-the-icons-ivy doom-modeline doom-themes which-key counsel-projectile projectile org-journal lsp-python-ms calfw ivy-prescient prescient wgrep counsel all-the-icons-ivy-rich ivy-rich ivy helm-ls-git helm-org all-the-icons use-package org-kanban org-roam org-roam-bibtex languagetool ess jupyter pdf-tools pdf-view-restore org-bullets color-theme color-theme-sanityinc-solarized apropospriate-theme color-theme-sanityinc-tomorrow zenburn-theme flycheck flycheck-cython flycheck-julia async-await magic-latex-buffer px ein elpy forge cmake-mode wakatime-mode matlab-mode htmlize ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(pos-tip-background-color "#3a933a933a93")
  '(pos-tip-foreground-color "#9E9E9E")
@@ -431,8 +446,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :background "#3F3F3F" :foreground "#DCDCCC" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "ADBO" :family "Source Code Pro"))))
- '(fixed-pitch ((t (:family "Fira Code Retina"))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#3F3F3F" :foreground "#DCDCCC" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "ADBO" :family "FiraCode Nerd Font Mono"))))
+ '(fixed-pitch ((t (:family "FiraCode Nerd Font Mono"))))
  '(org-document-title ((t (:inherit default :foreground "#d8d8d8" :family "Sans Serif" :height 1.75 :underline nil))))
  '(org-done ((t (:foreground "PaleGreen" :strike-through t))))
  '(org-headline-done ((t (:inherit default :foreground "#d8d8d8" :family "Sans Serif" :strike-through t))))
