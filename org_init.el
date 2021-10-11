@@ -1,6 +1,6 @@
 
 (defun dw/org-mode-setup ()
-  (org-indent-mode)
+  (org-indent-mode 1)
   (variable-pitch-mode 1)
   (auto-fill-mode 0)
   (visual-line-mode 1))
@@ -9,7 +9,7 @@
   (interactive)
   (let ((state (org-get-todo-state))
         post-command-hook)
-    (if (not(string= state "TODO"))
+    (if (not(string= state "DONE"))
         (org-todo "DONE")
       (org-todo "TODO"))
     (run-hooks 'post-command-hook)
@@ -23,7 +23,7 @@
   (variable-pitch ((t (:family "ETBembo"))))
   ;;(variable-pitch ((t (:family "Avenir Next" :height 160 :weight light))))
   ;;    (fixed-pitch ((t (:family "Inconsolata Nerd Font"))))
-  (fixed-pitch ((t (:family "Fira Code Retina" ))))
+  (fixed-pitch ((t (:family "FiraCode Nerd Font Mono" ))))
   (org-indent ((t (:inherit (org-hide fixed-pitch)))))
   (org-done ((t (:foreground "PaleGreen"
                  :strike-through t))))
@@ -81,6 +81,13 @@
     '((emacs-lisp . t)
       (ledger . t))))
 
+
+;; adding org-bullets and setting it to indent-mode
+(use-package org-bullets
+  :after (org)
+  :hook (org-mode . org-bullets-mode))
+
+
 ;;org-wiki mode
 ;; add timestamp when closing a task
 (setq org-log-done 'time)
@@ -91,10 +98,11 @@
   (linum-mode 0))
 (add-hook 'org-mode-hook 'nolinum)
 ;; adding org-bullets and setting it to indent-mode
-(require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-(add-hook 'org-mode-hook (lambda () (org-indent-mode 1)))
-;;
+;; (require 'org-bullets)
+;; (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+;; (add-hook 'org-mode-hook (lambda () (org-indent-mode 1)))
+;; ;
+                                        ;
 (setq org-auto-align-tags 1)
 (setq org-wiki-location-list
       '(
@@ -392,7 +400,7 @@
 ;;default org-modules = (ol-w3m ol-bbdb ol-bibtex ol-docview ol-gnus ol-info ol-irc ol-mhe ol-rmail ol-eww)
 (setq org-modules
       (quote
-       (ol-w3m ol-bbdb ol-bibtex ol-docview ol-gnus ol-info ol-irc ol-mhe ol-rmail ol-eww org-habit org-temp)))
+       (ol-w3m ol-bbdb ol-bibtex ol-docview ol-gnus ol-info ol-irc ol-mhe ol-rmail ol-eww org-habit)))
 
 
 ;; setting the default column views
@@ -780,7 +788,7 @@ and https://emacs.stackexchange.com/questions/19403/how-do-i-change-key-bindings
 (setq ethan/pdf-path  "~/org/wiki/pdfs/")
 (setq ethan/bibliography-notes "~/org/wiki/roam/references/")
 
-;;
+
 (use-package org-ref
     ;; :init
     ; code to run before loading org-ref
