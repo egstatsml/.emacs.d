@@ -39,14 +39,17 @@
 (add-hook 'TeX-mode-hook '(lambda () (setq TeX-command-default "latexmk")))
 
 ;; setting the viewing program
-;; setting to qpdfview on Manjaro
-(with-eval-after-load "tex"
-  (add-to-list 'TeX-view-program-list '("evince" "/usr/bin/evince %o"))
-  (setcdr (assq 'output-pdf TeX-view-program-selection) '("evince")))
-;;for langtool
+;; setting to;;  qpdfview on Manjaro
+;; (with-eval-after-load "tex"
+;;   (add-to-list 'TeX-view-program-list '("evince" "/usr/bin/evince %o"))
+;;   (setcdr (assq 'output-pdf TeX-view-program-selection) '("evince")))
+;; ;;for langtool
 ;;
 ;; (setq langtool-language-tool-jar "~/.emacs.d/packages/LanguageTool-4.1/languagetool-commandline.jar")
 (require 'langtool)
+
+;; to get auctex to update pdf after compile
+(add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
 
 ;;config after we load a LaTeX doc.
 (eval-after-load "latex"
@@ -92,9 +95,9 @@
                          master)))
 
 ;; Use pdf-tools to open PDF files
-;; (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-;;       TeX-source-correlate-start-server t)
+(setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+      TeX-source-correlate-start-server t)
 
 ;; ;; Update PDF buffers after successful LaTeX runs
-;; (add-hook 'TeX-after-compilation-finished-functions
-;;            #'TeX-revert-document-buffer)
+(add-hook 'TeX-after-compilation-finished-functions
+          #'TeX-revert-document-buffer)
