@@ -1,4 +1,4 @@
-; init.el
+;; init.el
 
 ;; Author: Ethan Goan (With a huge amount of help from the ELisp community)
 
@@ -11,7 +11,6 @@
 ;; cluster without a display I'm probably not using LaTeX packages). To identify which
 ;; packages are to be loaded, it is required to first set the variable "machine_type"
 ;; This will determine which settings are loaded for the different environments
-
 
 
 ;; Setting the machine type
@@ -41,7 +40,7 @@
       '(("org" . 20)
         ("melpa" . 10)
         ("gnu" . 10)))
-; adding use-package
+;; adding use-package
 ;; This is only needed once, near the top of the file
 (eval-when-compile
   (require 'use-package))
@@ -53,10 +52,17 @@
 ;; so run
 ;; yay -S nerd-fonts-fira-code otf-fira-code-symbol
 (use-package fira-code-mode
+  :ensure t
   :custom (fira-code-mode-disabled-ligatures '("[]" "x"))  ; ligatures you don't want
   :hook prog-mode)
-  ;; setting up default font
-(set-face-attribute 'default t :font "FiraCode Nerd Font" :height 140)
+;; setting up default font
+;; want to use different sizes for different machines. For lab machine, have a smaller screen and am
+;; closer to it so happy to have smaller font
+(if my/lab
+    ;; smaller font for lab
+    (set-face-attribute 'default t :font "FiraCode Nerd Font" :height 120)
+  ;; larger font for everything else
+  (set-face-attribute 'default t :font "FiraCode Nerd Font" :height 140))
 
 
 ;;setting up faster access to init.el
@@ -72,6 +78,7 @@
 
 ;; using Forge with Magit
 (use-package magit
+  :ensure t
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
   :bind
@@ -430,7 +437,7 @@
 * %n
 ")
  '(package-selected-packages
-   '(modus-themes wucuo multi-vterm sudo-edit mu4e-marker-icons org-noter-pdftools evil-mu4e vterm speed-type ivy-bibtex 0blayout org-noter evil-collection evil rainbow-delimiters helpful dap-mode lsp-ivy all-the-icons-ivy doom-modeline doom-themes which-key counsel-projectile projectile org-journal lsp-python-ms calfw ivy-prescient prescient wgrep counsel all-the-icons-ivy-rich ivy-rich ivy helm-ls-git helm-org all-the-icons use-package org-kanban org-roam org-roam-bibtex languagetool ess jupyter pdf-tools pdf-view-restore org-bullets color-theme color-theme-sanityinc-solarized apropospriate-theme color-theme-sanityinc-tomorrow zenburn-theme flycheck flycheck-cython flycheck-julia async-await magic-latex-buffer px ein elpy forge cmake-mode wakatime-mode matlab-mode htmlize ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html))
+   '(org-super-agenda modus-themes wucuo multi-vterm sudo-edit mu4e-marker-icons org-noter-pdftools evil-mu4e vterm speed-type ivy-bibtex 0blayout org-noter evil-collection evil rainbow-delimiters helpful dap-mode lsp-ivy all-the-icons-ivy doom-modeline doom-themes which-key counsel-projectile projectile org-journal lsp-python-ms calfw ivy-prescient prescient wgrep counsel all-the-icons-ivy-rich ivy-rich ivy helm-ls-git helm-org all-the-icons use-package org-kanban org-roam org-roam-bibtex languagetool ess jupyter pdf-tools pdf-view-restore org-bullets color-theme color-theme-sanityinc-solarized apropospriate-theme color-theme-sanityinc-tomorrow zenburn-theme flycheck flycheck-cython flycheck-julia async-await magic-latex-buffer px ein elpy forge cmake-mode wakatime-mode matlab-mode htmlize ghub mu4e-alert mu4e-conversation mu4e-jump-to-list mu4e-maildirs-extension mu4e-query-fragments ebib xref-js2 writegood-mode stan-mode org-wiki markdown-mode magit langtool helm-bibtex excorporate ess-view ess-smart-underscore ess-smart-equals ess-R-data-view auto-complete-auctex ac-html))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(pos-tip-background-color "#3a933a933a93")
  '(pos-tip-foreground-color "#9E9E9E")
