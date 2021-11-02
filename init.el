@@ -12,20 +12,16 @@
 ;; packages are to be loaded, it is required to first set the variable "machine_type"
 ;; This will determine which settings are loaded for the different environments
 
-
 ;; Setting the machine type
 ;; This MUST be done
 ;; The only valid values for this variable are "desktop"
 ;; or "terminal"
-(defvar machine_type "desktop")
-
 (defvar my/desktop (equal (system-name) "abode"))
 (defvar my/lab (equal (system-name) "lab"))
 (defvar my/laptop (equal (system-name) "laptop"))
 (defvar my/greenbeacon (equal (system-name) "greenbeacon"))
 (defvar my/lyra (equal (user-login-name) "n9197621"))
 
-
 ;; Setting up directories that have additional plugins
 ;; this will look recursively throughout packages directory
 (let ((default-directory  "~/.emacs.d/packages/"))
@@ -45,69 +41,17 @@
 (eval-when-compile
   (require 'use-package))
 
-
-;; trying Fira code out for now.
-;; note that need to have the font itself and the additional
-;; symbols for the ligatures installed.
-;; so run
-;; yay -S nerd-fonts-fira-code otf-fira-code-symbol
-(use-package fira-code-mode
-  :ensure t
-  :custom (fira-code-mode-disabled-ligatures '("[]" "x"))  ; ligatures you don't want
-  :hook prog-mode)
-;; setting up default font
-;; want to use different sizes for different machines. For lab machine, have a smaller screen and am
-;; closer to it so happy to have smaller font
-(if my/lab
-    ;; smaller font for lab
-    (set-face-attribute 'default t :font "FiraCode Nerd Font" :height 120)
-  ;; larger font for everything else
-  (set-face-attribute 'default t :font "FiraCode Nerd Font" :height 140))
-
-
-;;setting up faster access to init.el
-(defun find-user-init-file ()
-  "Edit the `user-init-file', in another window."
-  (interactive)
-  (find-file-other-window user-init-file))
-(global-set-key (kbd "C-c I") 'find-user-init-file)
-
 ;; delete whitspace upon saving a file
 (add-hook 'before-save-hook
           'delete-trailing-whitespace)
 
-;; using Forge with Magit
-(use-package magit
-  :ensure t
-  :custom
-  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
-  :bind
-  ("C-x g" . 'magit-status))
-
-;; adding use-package
-;; This is only needed once, near the top of the file
-;; (eval-when-compile
-;;   (require 'use-package))
-
-
 ;; Changing where backup files are saved
 (setq backup-directory-alist '(("." . "~/.config/emacs/backups")))
 
-
 ;; Some global settings
-
 ;; disable tool-bar and menu bar
 (tool-bar-mode -1)
 (menu-bar-mode -1)
-;; want to default split to vertical
-;;(setq split-width-threshold 0)
-;;(setq split-height-threshold nil)
-;; new keybindings for windmove
-(global-set-key (kbd "C-x <left>")  'windmove-left)
-(global-set-key (kbd "C-x <right>") 'windmove-right)
-(global-set-key (kbd "C-x <up>")    'windmove-up)
-(global-set-key (kbd "C-x <down>")  'windmove-down)
-
 
 ;;highlighting parenthesis etc.
 (show-paren-mode 1)
@@ -116,67 +60,43 @@
 ;; like pdf-view, org and terminals can slow down with it on
 (use-package linum-mode
   :hook (prog-mode . linum-mode))
-;; (global-linum-mode 1)
-;;enable pretty control mode
-(require 'pp-c-l)           ; Load this library
-(pretty-control-l-mode 1)
-(setq pp^L-^L-string-function (lambda (win)
-				(make-string fill-column ?-)))
-(setq-default indent-tabs-mode nil)
 
+(setq-default indent-tabs-mode nil)
+;; GENERAL PACKAGE INITS
+;;
+;;
+;; using Forge with Magit
+(use-package magit
+  :ensure t
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+  :bind
+  ("C-x g" . 'magit-status))
+
+(use-package forge
+  :ensure t
+  :after magit)
 
 ;; enable wakatime
 (use-package wakatime-mode
+  :ensure t
   :init
   (setq wakatime-api-key "3ba9ed56-aa83-4b89-b415-f272f233b61f")
   (setq wakatime-cli-path "/home/ethan/.local/bin/wakatime")
   :config
   (global-wakatime-mode t))
-;;
-;;
-;;enable column-enforce mode for sorce code modes
-;; (use-package column-enforce-mode
-;;   :hook (prog-mode 'column-enforce-mode))
-
-
-;;Insert four spaces
-(defun my-insert-four ()
-  (interactive)
-  (insert "    "))
-(global-set-key (kbd "C-x <up>") 'my-insert-four)
 
 ;; enable which-key package
 (use-package which-key
+  :ensure t
   :init (which-key-mode)
   :diminish which-key-mode
   :config
   (setq which-key-idle-delay 1))
 
-
-(defun vterm-set-evil-escape ()
-  (local-set-key (kbd "C-[") 'vterm-send-escape))
-  ;; I like using vterm
-(use-package vterm
-  :commands vterm
-  :hook (vterm-set-evil-escape)
-  :bind ("<escape>" . vterm-send-escape)
-  :config
-  (setq vterm-timer-delay 0.01)
-  (setq vterm-max-scrollback 10000))
-  ;;turn off linum mode for terminals
-(defun nolinum ()
-  (linum-mode 0))
-(add-hook 'term-mode-hook 'nolinum)
-(add-hook 'vterm-mode-hook 'nolinum)
-;; enable doom modeline
-;; want with all-the-icons as well
-(use-package all-the-icons)
-(use-package doom-modeline
-  :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 15)))
-
 ;; helpful package
 (use-package helpful
+  :ensure t
   :custom
   (counsel-describe-function-function #'helpful-callable)
   (counsel-describe-variable-function #'helpful-variable)
@@ -186,49 +106,9 @@
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
 
-
-;; lsp-mode
-(defun ethan/lsp-mode-setup ()
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (lsp-headerline-breadcrumb-mode))
-
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :hook (lsp-mode . ethan/lsp-mode-setup)
-  :init
-  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-  :config
-  (lsp-enable-which-key-integration t))
-
-;; treemacs to get a nicer display of error messages
-(use-package lsp-treemacs
-  :after lsp)
-
-;; lsp-ivy
-(use-package lsp-ivy)
-
-;; enable dap-mode
-(use-package dap-mode)
-  ;; Uncomment the config below if you want all UI panes to be hidden by default!
-  ;; :custom
-  ;; (lsp-enable-dap-auto-configure nil)
-  ;; :config
-  ;; (dap-ui-mode 1)
-
-  ;; :config
-  ;; ;; Set up Node debugging
-  ;; (require 'dap-node)
-  ;; (dap-node-setup) ;; Automatically installs Node debug adapter if needed
-
-  ;; ;; Bind `C-c l d` to `dap-hydra` for easy access
-  ;; (general-define-key
-  ;;   :keymaps 'lsp-mode-map
-  ;;   :prefix lsp-keymap-prefix
-  ;;   "d" '(dap-hydra t :wk "debugger")))
-
-
-;;company mode for completion
+;; company mode for completion
 (use-package company
+  :ensure t
   :after lsp-mode
   :hook (lsp-mode . company-mode)
   :bind (:map company-active-map
@@ -240,81 +120,19 @@
   (company-idle-delay 0.0))
 
 (use-package company-box
+  :ensure t
   :hook (company-mode . company-box-mode))
-
-;; projectile
-(use-package projectile
-  :diminish projectile-mode
-  :config (projectile-mode)
-  :custom ((projectile-completion-system 'ivy))
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :init
-  ;; NOTE: Set this to the folder where you keep your Git repos!
-  (when (file-directory-p "~/code")
-    (setq projectile-project-search-path '("~/code")))
-  (setq projectile-switch-project-action #'projectile-dired))
-
-(use-package counsel-projectile
-  :config (counsel-projectile-mode))
 
 ;; rainbow delimeters
 (use-package rainbow-delimiters
+  :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
 
-;; being evil
-;; largely taken from system crafters
-;; https://github.com/daviwil/dotfiles/blob/master/Emacs.org
-
-(defun dw/evil-hook ()
-  (dolist (mode '(custom-mode
-                  eshell-mode
-                  git-rebase-mode
-                  erc-mode
-                  circe-server-mode
-                  circe-chat-mode
-                  circe-query-mode
-                  sauron-mode
-                  term-mode))
-  (add-to-list 'evil-emacs-state-modes mode)))
-
+;; giving undo tree a go, makes things a bit nicer
 (use-package undo-tree
+  :ensure t
   :init
   (global-undo-tree-mode 1))
-
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
-  (setq evil-respect-visual-line-mode t)
-  (setq evil-undo-system 'undo-tree)
- :config
-  (add-hook 'evil-mode-hook 'dw/evil-hook)
-  (evil-mode 1)
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-
-  (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
-  (key-chord-define evil-replace-state-map "jj" 'evil-normal-state)
-  ;; Use visual line motions even outside of visual-line-mode buffers
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
-
-(use-package evil-collection
-  :after evil
-  :init
-  (setq evil-collection-company-use-tng nil)  ;; Is this a bug in evil-collection?
-  :custom
-  (evil-collection-outline-bind-tab-p nil)
-  :config
-  (setq evil-collection-mode-list
-        (remove 'lispy evil-collection-mode-list))
-  (evil-collection-init))
 
 
 
@@ -325,10 +143,15 @@
 (load-file "~/.emacs.d/r_init.el")
 (load-file "~/.emacs.d/eshell_init.el")
 (load-file "~/.emacs.d/spell_init.el")
+(load-file "~/.emacs.d/term_init.el")
+(load-file "~/.emacs.d/evil_init.el")
+(load-file "~/.emacs.d/visuals_init.el")
+(load-file "~/.emacs.d/programming_init.el")
+(load-file "~/.emacs.d/kbds_init.el")
 
 ;; checking to see if additional inits used by desktop machines,
 ;; such as inits for email etc should be loaded
-(defun load-inits (machine_type)
+(defun load-additional-inits ()
   (if (or my/desktop my/laptop my/lab)
       (load-desktop)))
 
@@ -336,13 +159,10 @@
   (load-file "~/.emacs.d/mu4e_init.el")
   (load-file "~/.emacs.d/latex_init.el")
   (load-file "~/.emacs.d/org_init.el")
-  ;;(load-file "~/.emacs.d/python_init.el")
-  ;;(load-file "~/.emacs.d/ipython_init.el")
-  (load-file "~/.emacs.d/icons_init.el"))
+  (load-file "~/.emacs.d/icons_init.el")
+  (load-file "~/.emacs.d/calendar_init.el"))
 
-
-(load-inits machine_type)
-
+(load-additional-inits)
 ;; Some of my other custom set variables
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -479,10 +299,6 @@
 
 
 
-
-(require 'calfw)
-(setq excorporate-configuration (quote ("n9197621@qut.edu.au" . "https://outlook.office365.com/EWS/Exchange.asmx")))
-(setq excorporate-calendar-show-day-function 'exco-calfw-show-day)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -490,13 +306,13 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :extend nil :stipple nil :background "#3F3F3F" :foreground "#DCDCCC" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "ADBO" :family "FiraCode Nerd Font Mono"))))
  '(fixed-pitch ((t (:family "FiraCode Nerd Font Mono"))))
- '(org-document-title ((t (:inherit default :foreground "#d8d8d8" :family "Sans Serif" :height 1.75 :underline nil))))
+ '(org-document-title ((t (:inherit default :foreground "#d8d8d8" :family "Sans Serif" :height 1.4 :underline nil))))
  '(org-done ((t (:foreground "PaleGreen" :strike-through t))))
  '(org-headline-done ((t (:inherit default :foreground "#d8d8d8" :family "Sans Serif" :strike-through t))))
  '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
- '(org-level-1 ((t (:inherit default :foreground "#d8d8d8" :family "Sans Serif" :height 1.4))))
- '(org-level-2 ((t (:inherit default :foreground "#d8d8d8" :family "Sans Serif" :height 1.2))))
- '(org-level-3 ((t (:inherit default :foreground "#d8d8d8" :family "Sans Serif" :height 1.1))))
+ '(org-level-1 ((t (:inherit default :foreground "#d8d8d8" :family "Sans Serif" :height 1.2))))
+ '(org-level-2 ((t (:inherit default :foreground "#d8d8d8" :family "Sans Serif" :height 1.0))))
+ '(org-level-3 ((t (:inherit default :foreground "#d8d8d8" :family "Sans Serif" :height 1.0))))
  '(org-level-4 ((t (:inherit default :foreground "#d8d8d8" :family "Sans Serif"))))
  '(org-level-5 ((t (:inherit default :foreground "#d8d8d8" :family "Sans Serif"))))
  '(org-level-6 ((t (:inherit default :foreground "#d8d8d8" :family "Sans Serif"))))
