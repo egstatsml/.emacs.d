@@ -1,0 +1,238 @@
+;;; helheim-keybindings.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; Commentary:
+;;
+;; If you want to see all key bindings in a keymap, place point (cursor) on it
+;; and press "M", or press "<F1> M" and type the name of the keymap.
+;;
+;;; General
+(require 'hel-macros)
+(require 'hel-core)
+
+(hel-keymap-global-set :state 'insert
+  "C-/"   'hippie-expand)
+
+(hel-keymap-global-set :state 'normal
+		       "z SPC" 'cycle-spacing
+		       "z ."   'set-fill-prefix)
+
+;; avy commands
+(with-eval-after-load 'avy
+  (hel-keymap-global-set :state 'normal
+			 "#" #'flash-jump
+			 "$" #'avy-goto-char-timer
+			 "|" #'avy-goto-word-1))
+
+
+(hel-keymap-global-set
+ "C-x C-b" 'ibuffer-jump ; override `list-buffers'
+ "C-x C-r" 'recentf-open ; override `find-file-read-only'
+ "C-x C-d" 'dired-jump)  ; override `list-directory'
+
+;;; <Leader>
+(hel-keymap-set mode-specific-map
+		"RET" 'dired-jump
+		"," 'switch-to-buffer
+		"/" 'consult-ripgrep ; "/" is for search in Hel
+		"d" 'dired-jump
+		"b" (cons "buffer"
+			  (hel-keymap-set (or (keymap-lookup mode-specific-map "b")
+					      (make-sparse-keymap))
+					  "b" 'consult-buffer        ; "<leader> bb"
+					  "n" 'switch-to-buffer    ; next key after "b"
+					  "s" 'save-buffer
+					  "w" 'write-file
+					  "d" 'kill-current-buffer ; also "C-w d"
+					  "z" 'bury-buffer         ; also "C-w z"
+					  "g" 'revert-buffer       ; also "C-w r"
+					  "r" 'rename-buffer
+					  "x" 'scratch-buffer
+					  ;; Bookmarks
+					  "RET" 'bookmark-jump
+					  "m" 'bookmark-set
+					  "M" 'bookmark-delete))
+		"f" (cons "file"
+			  (hel-keymap-set (or (keymap-lookup mode-specific-map "f")
+					      (make-sparse-keymap))
+					  "b" 'switch-to-buffer
+					  "f" 'find-file  ; select file in current dir or create new one
+					  "/" 'consult-fd ; or `consult-find'
+					  "d" 'dired
+					  "l" 'locate
+					  "r" '("Recent files" . recentf-open)
+					  "w" 'write-file))
+
+		"h" (cons "help"
+			  (hel-keymap-set (or (keymap-lookup mode-specific-map "h")
+					      (make-sparse-keymap))
+			    "v" 'helpful-variable
+			    "f" 'helpful-function
+			    "c" 'helpful-callable
+                            "F" 'describe-face))
+                "w" (cons "window"
+			  (hel-keymap-set (or (keymap-lookup mode-specific-map "w")
+					      (make-sparse-keymap))
+                            "a" 'ace-window
+                            "h" 'windmove-left
+                            "k" 'windmove-up
+                            "j" 'windmove-down
+                            "l" 'windmove-right
+			    "w" 'ace-window))
+		"o" (cons "open"
+			  (hel-keymap-set (or (keymap-lookup mode-specific-map "o")
+					      (make-sparse-keymap))
+			    "t" 'treemacs ; from future
+			    "i" 'imenu-list-smart-toggle
+                            "a" 'ethan/open-agenda
+                            "g" 'ethan/open-gtd-file
+                            "c" 'ethan/open-config-file
+                            "i" 'ethan/open-inbox-file))
+                ;; im using projectile
+		;; "p" (cons "project"
+		;; 	  (hel-keymap-set project-prefix-map
+		;; 			  "RET" 'project-dired
+		;; 			  ","   'project-switch-to-buffer
+		;; 			  "/"   'project-find-regexp
+		;; 			  "B"   'project-list-buffers))
+                "t" (cons "toggle"
+			  (hel-keymap-set (or (keymap-lookup mode-specific-map "t")
+					      (make-sparse-keymap))
+					  "w" '("Wrap lines" . +word-wrap-mode)
+					  "r" '("Read only" . read-only-mode))) ;; "C-x C-q"
+		"s" (cons "search"
+			  (hel-keymap-set search-map
+					  "a" 'xref-find-apropos
+					  "r" 'query-replace
+					  "R" 'query-replace-regexp
+                                          "o" 'consult-outline
+                                          "l" 'consult-line
+                                          "d" 'deadgrep))
+		"v" (cons "version control"
+			  (or (keymap-lookup mode-specific-map "v")
+			      (make-sparse-keymap))))
+
+;;; Customize
+
+(hel-set-initial-state 'Custom-mode 'normal)
+
+(with-eval-after-load 'cus-edit
+  (hel-keymap-set custom-mode-map :state 'normal
+    "z j" 'widget-forward
+    "z k" 'widget-backward
+    "z u" 'Custom-goto-parent
+    "q"   'Custom-buffer-done))
+
+;;; Elpaca
+;; `elpaca-manager' and `elpaca-log' are the main entry points to the UI.
+
+(hel-set-initial-state 'elpaca-info-mode 'normal)
+
+;;; Ediff
+
+(hel-set-initial-state 'ediff-mode 'motion)
+(add-hook 'ediff-keymap-setup-hook #'helheim-ediff-setup-keys)
+
+;;; Help
+
+;; <F1>
+(hel-keymap-set help-map
+  "F" 'describe-face
+  "M" 'describe-keymap
+  "s" 'helpful-symbol
+  ;; Rebind `b' key from `describe-bindings' to prefix with more binding
+  ;; related commands.
+  "b" (cons "bindings"
+            (define-keymap
+              "b" 'describe-bindings
+              "B" 'embark-bindings ; alternative for `describe-bindings'
+              "i" 'which-key-show-minor-mode-keymap
+              "m" 'which-key-show-major-mode
+              "t" 'which-key-show-top-level
+              "f" 'which-key-show-full-keymap
+              "k" 'which-key-show-keymap)))
+
+;;; Info
+
+(hel-set-initial-state 'Info-mode 'normal)
+
+(with-eval-after-load 'info
+  (hel-keymap-set Info-mode-map :state 'normal
+    "C-j"   'Info-next
+    "C-k"   'Info-prev
+    "z j"   'Info-forward-node
+    "z k"   'Info-backward-node
+    "z u"   'Info-up
+    "z d"   'Info-directory
+    "z ~"   'Info-directory ;; ~ for "home"
+
+    "z h"   'Info-history
+    "u"     'Info-history-back
+    "U"     'Info-history-forward
+    "C-<i>" 'Info-history-forward
+    "C-o"   'Info-history-back
+
+    "g t"   'Info-toc
+    "g i"   'Info-index ; imenu
+    "g I"   'Info-virtual-index
+
+    "z i"   'Info-index
+    "z I"   'Info-virtual-index
+    "C-c s a" 'info-apropos
+
+    "M-h"   'Info-help))
+
+(hel-advice-add 'Info-next-reference :before #'hel-deactivate-mark-a)
+(hel-advice-add 'Info-prev-reference :before #'hel-deactivate-mark-a)
+
+;;; Man
+
+(hel-set-initial-state 'Man-mode 'normal)
+
+;; User may also enable `outline-minor-mode' in a Man buffer, so the keys
+;; should possibly not interfere with it.
+(with-eval-after-load 'man
+  (hel-keymap-set Man-mode-map :state 'normal
+    "] ]"   'Man-next-manpage
+    "[ ["   'Man-previous-manpage
+    "z h"   'Man-next-manpage     ; left
+    "z l"   'Man-previous-manpage ; right
+    "z j"   'Man-next-section     ; up
+    "z k"   'Man-previous-section ; down
+    "z /"   'Man-goto-section     ; Related to sections — that’s why on ‘z’ layer.
+    "g r"   'Man-follow-manual-reference ; go to reference
+    "C-w r" 'Man-update-manpage)) ; Hel's chord for revert.
+
+;;; Magit-Section
+
+(with-eval-after-load 'magit-section
+  (hel-keymap-set magit-section-mode-map
+    "<tab>"     'magit-section-cycle
+    "<backtab>" 'magit-section-cycle-global ; S-<tab>
+    "C-j"       'magit-section-forward-sibling
+    "C-k"       'magit-section-backward-sibling
+    "n"         'magit-section-forward
+    "N"         'magit-section-backward
+    "C-<tab>"   nil
+    "M-<tab>"   nil
+    "C-c TAB"   nil)
+  (hel-keymap-set magit-section-mode-map :state 'motion
+    "z j" 'magit-section-forward
+    "z k" 'magit-section-backward
+    "z u" 'magit-section-up
+    "z a" 'magit-section-toggle
+    "z c" 'magit-section-hide
+    "z o" 'magit-section-show
+    "z O" 'magit-section-show-children
+    "z m" 'magit-section-show-level-1-all
+    "z r" 'magit-section-show-level-4-all
+    "z 1" 'magit-section-show-level-1-all
+    "z 2" 'magit-section-show-level-2-all
+    "z 3" 'magit-section-show-level-3-all
+    "z 4" 'magit-section-show-level-4-all))
+
+;;; Repeat mode
+
+(put 'other-window 'repeat-map nil) ;; Use "." key instead.
+
+;;; .
+(provide 'helheim-keybindings)
+;;; helheim-keybindings.el ends here

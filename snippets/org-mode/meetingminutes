@@ -1,0 +1,30 @@
+# -*- mode: snippet -*-
+# name: minutes
+# uuid:
+# key: minutes
+# condition: t
+# --
+#+title: nil
+#+author: Ethan Goan
+#+options: toc:nil
+#+OPTIONS: tags:nil todo:nil num:nil toc:nil
+#+latex_class: minutes
+
+** ${1:Title}
++ When: `(format-time-string "%a %d/%m/%y")`
++ ${2:Where}
+**** Present:
++ ${3:}
+**** absent:
++ ${4:}
+
+
+*** Agenda
++
+
+*** Discussed
++
+
+*** Action Items 
++
+
