@@ -8,6 +8,18 @@
 (require 'hel-macros)
 (require 'hel-core)
 
+(use-package flash
+  :ensure t
+  :commands (flash-jump flash-jump-continue
+                        flash-treesitter)
+  :custom
+  (flash-multi-window t)
+  :config
+  ;; Search integration (labels during C-s, /, ?)
+  (require 'flash-isearch)
+  (flash-isearch-mode 1))
+
+
 (hel-keymap-global-set :state 'insert
   "C-/"   'hippie-expand)
 

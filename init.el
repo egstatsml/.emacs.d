@@ -197,6 +197,7 @@
 (require 'setup-vundo)
 (require 'setup-formatting)
 (require 'setup-bib)
+(require 'setup-ai)
 ;;; Org mode
 
 ;; The `org-directory' variable must be set before `helheim-org' is loaded!
