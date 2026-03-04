@@ -1,3 +1,5 @@
+;;; helheim-flycheck-lsp.el -*- lexical-binding: t; no-byte-compile: t; -*-
+
 ;; lsp
 (defun lsp-booster--advice-json-parse (old-fn &rest args)
   "Try to parse bytecode instead of json."

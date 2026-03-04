@@ -192,7 +192,7 @@
 (require 'helheim-python)
 (require 'setup-latex)
 ;; tools
-;; (require 'helheim-flycheck-lsp)
+(require 'helheim-flycheck-lsp)
 (require 'setup-projectile)
 (require 'setup-vundo)
 (require 'setup-formatting)
