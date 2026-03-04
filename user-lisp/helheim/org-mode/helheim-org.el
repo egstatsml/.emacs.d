@@ -232,7 +232,7 @@ ARG is file to open."
   (org-clock-in))
 
 (defun my/org-todo-done ()
-  "Set current state to INPROGRESS."
+  "Set current state to DONE."
   (interactive)
   (org-todo "DONE")
   (org-clock-out))
@@ -252,6 +252,29 @@ ARG is file to open."
   "Set current state to BLOCKED."
   (interactive)
   (org-todo "BLOCKED"))
+
+
+;; Archiving my Done Tasks
+(defun my/org-archive-subtree-done-tasks ()
+  "Archive done tasks in subtree.
+Got from https://stackoverflow.com/questions/6997387/how-to-archive-all-the-done-tasks-using-a-single-command"
+  (interactive)
+  (org-map-entries
+   (lambda ()
+     (org-archive-subtree)
+     (setq org-map-continue-from (org-element-property :begin (org-element-at-point))))
+   "/DONE" 'tree))
+
+(defun my/org-archive-all-done ()
+  "Iterate over all top-level headings in the current org buffer."
+  (interactive)
+  (org-map-entries
+   (lambda ()
+     (my/org-archive-subtree-done-tasks))
+   ;; Match all headlines
+   "LEVEL=1"
+   ;; Scope: current buffer
+   'file))
 
 (use-package org
   :custom
