@@ -20,6 +20,9 @@
   (flash-isearch-mode 1))
 
 
+(use-package expreg
+  :ensure t)
+
 (hel-keymap-global-set :state 'insert
   "C-/"   'hippie-expand)
 
@@ -30,9 +33,13 @@
 ;; avy commands
 (with-eval-after-load 'avy
   (hel-keymap-global-set :state 'normal
-			 "#" #'flash-jump
-			 "$" #'avy-goto-char-timer
-			 "|" #'avy-goto-word-1))
+    "#" #'flash-jump))
+
+
+(with-eval-after-load 'expreg
+  (hel-keymap-global-set :state 'normal
+			 "$" #'expreg-expand
+			 "|" #'expreg-contract))
 
 
 (hel-keymap-global-set
@@ -116,6 +123,7 @@
 					  "r" 'query-replace
 					  "R" 'query-replace-regexp
                                           "o" 'consult-outline
+                                          "s" 'consult-line
                                           "l" 'consult-line
                                           "d" 'deadgrep))
 		"v" (cons "version control"
