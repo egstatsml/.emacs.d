@@ -25,7 +25,6 @@
     "/"   nil ;; `org-sparse-tree' is moved to "z/"
     "RET" 'dired-jump ;; rebind `org-ctrl-c-ret', which is also on "z RET"
     "a"   'org-attach
-    "o"   'org-open-at-point
     "t i" 'org-toggle-inline-images
     "t l" 'org-toggle-link-display
     "t f" 'org-table-toggle-formula-debugger
