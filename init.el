@@ -173,7 +173,7 @@
 ;;; Other modules
 (require 'helheim-xref)     ; Go to defenition framework
 (require 'helheim-ibuffer)  ; Buffers menu
-(require 'helheim-dired)    ; File-manager
+;; (require 'helheim-dired)    ; File-manager
 ;;(require 'helheim-outline-mode) ; See "Outline Mode" in Emacs manual.
 (require 'helheim-window)    ; window utilities
 (require 'helheim-i3)    ; i3

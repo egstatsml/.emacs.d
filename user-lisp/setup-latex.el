@@ -51,26 +51,8 @@ ARG used for 'preivous-error' function."
     (previous-error arg)))
 
 ;; install auctex
-(use-package latex
-  :ensure `(auctex
-            :host nil
-            :repo "https://git.savannah.gnu.org/git/auctex.git"
-            :depth nil
-            :inherit nil
-            :pre-build (("sh" "-lc" "cd doc && makeinfo --no-split auctex.texi")
-                        ("sh" "-lc" "cd doc && makeinfo --no-split preview-latex.texi"))
-            :build (:not elpaca--compile-info)
-            :files ("*.el" "doc/*.info*" "etc" "images" "latex" "style"))
-  ;; :ensure (auctex
-  ;;          :host github
-  ;;          :repo "emacsmirror/auctex"
-  ;;          :tag "14.0.7"
-  ;;          :pre-build (("make" "elpa"))
-  ;;          :build (:not elpaca--compile-info) ;; Make will take care of this step
-  ;;          :files ("*.el" "doc/*.info*" "etc" "images" "latex" "style")
-  ;;          :version (lambda (_) (require 'auctex) AUCTeX-version))
-  ;; looks like the version command is not needed now
-  ;; :version (lambda (_) (require 'tex-site) AUCTeX-version))
+(use-package auctex
+  :ensure t
   :mode ("\\.tex\\'" . LaTeX-mode)
   :hook
   (latex-mode . LaTeX-mode) ;; absurd that this needs to be added
