@@ -148,6 +148,8 @@ org-clock has been loaded in"
 
 (use-package dashboard
   :ensure t
+  :init
+  (setq initial-buffer-choice 'dashboard-open)
   :config
   (dashboard-setup-startup-hook)
   (setq dashboard-banner-logo-title "")
@@ -158,13 +160,7 @@ org-clock has been loaded in"
   (setq dashboard-footer-messages
 	'("Welcome Home" "You're capable of so much"))
   ;; disable all the dashboards
-  (setq dashboard-items nil)
-  ;; making sure the dashboard is shown when starting from daemon
-  (add-hook 'server-after-make-frame-hook (lambda()
-					    (switch-to-buffer dashboard-buffer-name)
-					    (dashboard-mode)
-					    (dashboard-insert-startupify-lists)
-					    (dashboard-refresh-buffer))))
+  (setq dashboard-items nil))
 
 
 (use-package mixed-pitch
@@ -258,5 +254,17 @@ org-clock has been loaded in"
 (defun ethan/toggle-line-numbers ()
   (interactive)
   (setq display-line-numbers nil))
+
+(setopt display-line-numbers nil)
+
+;; perfect margins please
+(use-package perfect-margin
+  :ensure (perfect-margin
+	   :host github
+	   :repo "mpwang/perfect-margin")
+  :config
+  (setq perfect-margin-ignore-regexps '("^minibuf" "^[[:space:]]*\\*"))
+  (setq perfect-margin-ignore-modes '(doc-view-mode nov-mode helpful-mode))
+  (perfect-margin-mode))
 
 (provide 'setup-ui)
