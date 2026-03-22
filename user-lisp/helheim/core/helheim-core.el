@@ -213,19 +213,6 @@ The predicate is passed as argument to `buffer-match-p', which see."
                                        (and (eq hel-state 'motion)
                                             (not (use-region-p)))))))))
 
-;;;; Display line numbers
-
-(use-package display-line-numbers
-  :hook prog-mode-hook conf-mode-hook text-mode-hook
-  :custom
-  (display-line-numbers-width 3)
-  (display-line-numbers-type t)
-  (display-line-numbers-width-start t)
-  (display-line-numbers-grow-only t)
-  ;; Show absolute line numbers for narrowed regions to make it easier to tell
-  ;; the buffer is narrowed, and where you are, exactly.
-  (display-line-numbers-widen t))
-
 ;;;; Fringes
 
 ;; Disable visual indicators in the fringe for buffer boundaries and empty lines.
