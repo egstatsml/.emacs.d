@@ -27,8 +27,9 @@
   "C-/"   'hippie-expand)
 
 (hel-keymap-global-set :state 'normal
-		       "z SPC" 'cycle-spacing
-		       "z ."   'set-fill-prefix)
+  "+" 'end-of-line
+  "z SPC" 'cycle-spacing
+  "z ."   'set-fill-prefix)
 
 ;; avy commands
 (with-eval-after-load 'avy
