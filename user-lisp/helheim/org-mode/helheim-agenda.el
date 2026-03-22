@@ -7,7 +7,14 @@
   :bind (:map org-agenda-mode-map
 	      ("C-c C-t" . nil)
 	      ("C-c C-t C-t" . 'org-agenda-todo)
-	      ("C-c C-t C-d" . 'my/org-agenda-done)))
+	      ("C-c C-t C-d" . 'my/org-agenda-done))
+  :config
+  (defun my/org-agenda-done ()
+    "Mark current TODO as done.
+This changes the line at point, all other lines in the agenda referring to
+the same tree node, and the headline of the tree node in the Org-mode file."
+    (interactive)
+    (org-agenda-todo "DONE")))
 
 ;; Org-super-agenda
 (use-package org-super-agenda

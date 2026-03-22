@@ -549,6 +549,8 @@ Like `org-attach' but tuned for Emacs Helheim."
   :hook ((org-mode . org-modern-mode)
          (org-agenda-finalize . org-modern-agenda))
   :init
+  (add-hook 'org-mode-hook #'org-modern-mode)
+  (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
   (setq org-modern-hide-stars 'leading
         org-modern-table nil
         org-modern-tag t
