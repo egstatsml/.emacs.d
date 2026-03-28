@@ -19,4 +19,7 @@
 	   :host github
 	   :repo "nineluj/agent-review"))
 
+(use-package gptel
+  :ensure t)
+
 (provide 'setup-ai)

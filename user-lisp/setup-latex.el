@@ -52,11 +52,13 @@ ARG used for 'preivous-error' function."
 
 ;; install auctex
 (use-package auctex
-  :ensure t
+  :ensure (auctex :repo "https://git.savannah.gnu.org/git/auctex.git" :branch "main"
+          :pre-build (("make" "elpa"))
+          :build (:not elpaca--compile-info) ;; Make will take care of this step
+          :files ("*.el" "doc/*.info*" "etc" "images" "latex" "style")
+          :version (lambda (_) (require 'auctex) AUCTeX-version))
   :mode ("\\.tex\\'" . LaTeX-mode)
   :hook
-  (latex-mode . LaTeX-mode) ;; absurd that this needs to be added
-  ;; (LaTeX-mode . TeX-fold-mode)
   (LaTeX-mode . turn-on-reftex)
   (LaTeX-mode . czm-tex-setup-environments-and-outline-regexp)
   ;; (LaTeX-mode . czm-tex-buffer-face)
