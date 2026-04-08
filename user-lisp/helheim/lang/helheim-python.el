@@ -26,6 +26,13 @@
                                   pet-locate-dominating-file))
   (add-hook 'python-base-mode-hook 'pet-mode -10))
 
+
+(use-package conda
+  :ensure t
+  :custom
+  (conda-anaconda-home "~/miniforge")
+  (conda-env-home-directory "~/miniforge"))
+
 ;;; numpydoc
 (use-package numpydoc
   ;; use main repo and not emacsmirror as is a bit behind
