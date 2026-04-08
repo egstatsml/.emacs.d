@@ -29,11 +29,17 @@
 
 ;;; Config
 
+
+(use-package let-completion
+  :ensure t
+  :hook (emacs-lisp-mode . let-completion-mode))
+
 (use-package hel-paredit
-  :ensure paredit
-  :hook
-  (emacs-lisp-mode-hook . hel-paredit-mode)
-  (lisp-data-mode-hook .  hel-paredit-mode))
+  :ensure paredit)
+  ;; :hook
+  ;; leaving disabled for now
+  ;; (emacs-lisp-mode-hook . hel-paredit-mode)
+  ;; (lisp-data-mode-hook .  hel-paredit-mode))
 
 ;; ;; Treat `-' char as part of the word on `w', `e', `b', motions.
 ;; (modify-syntax-entry ?- "w" emacs-lisp-mode-syntax-table)
