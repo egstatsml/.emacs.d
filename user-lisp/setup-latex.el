@@ -51,13 +51,22 @@ ARG used for 'preivous-error' function."
     (previous-error arg)))
 
 ;; install auctex
-(use-package auctex
+(use-package latex
   :ensure (auctex :repo "https://git.savannah.gnu.org/git/auctex.git" :branch "main"
           :pre-build (("make" "elpa"))
           :build (:not elpaca--compile-info) ;; Make will take care of this step
           :files ("*.el" "doc/*.info*" "etc" "images" "latex" "style")
           :version (lambda (_) (require 'auctex) AUCTeX-version))
   :mode ("\\.tex\\'" . LaTeX-mode)
+  :defines (TeX-auto-save
+            TeX-parse-self
+            TeX-electric-escape
+            TeX-PDF-mode
+            TeX-source-correlate-method
+            TeX-newline-function
+            TeX-view-program-list
+            TeX-view-program-selection
+            TeX-mode-map)
   :hook
   (LaTeX-mode . turn-on-reftex)
   (LaTeX-mode . czm-tex-setup-environments-and-outline-regexp)
@@ -389,16 +398,75 @@ of the preamble part of REGION-TEXT."
   (kmacro "l t x SPC s-s s-p z C-n C-n C-c C-p C-a C-c C-p C-f"))
 
 ;; cdlatex
-(use-package cdlatex
-  :ensure t
-  :hook (LaTeX-mode . cdlatex-mode)
-  :hook (org-mode . org-cdlatex-mode)
-  ;; TODO: check doom config for info on keybindings that
-  ;; might conflict with yasnippet
-  :config
-  (setq cdlatex-sub-super-scripts-outside-math-mode nil ;; sometimes
-	cdlatex-simplify-sub-super-scripts nil))
+;; (use-package cdlatex
+;;   :ensure t
+;;   :hook (LaTeX-mode . cdlatex-mode)
+;;   :hook (org-mode . org-cdlatex-mode)
+;;   ;; TODO: check doom config for info on keybindings that
+;;   ;; might conflict with yasnippet
+;;   :config
+;;   (setq cdlatex-sub-super-scripts-outside-math-mode nil ;; sometimes
+;; 	cdlatex-simplify-sub-super-scripts nil))
 
+
+;; taken from karthink
+(use-package cdlatex
+  :after latex
+  :ensure t
+  ;; :commands turn-on-cdlatex
+  :hook ((LaTeX-mode . cdlatex-mode)
+         (LaTeX-mode . cdlatex-electricindex-mode))
+  :bind (:map cdlatex-mode-map
+              ("<tab>" . cdlatex-tab))
+  :defines (cdlatex-math-symbol-prefix cdlatex-command-alist)
+  :config
+  (setq cdlatex-math-symbol-prefix ?\;)
+  (define-key cdlatex-mode-map
+              (cdlatex-get-kbd-vector cdlatex-math-symbol-prefix)
+              #'cdlatex-math-symbol)
+  (dolist (cmd '(("vc" "Insert \\vect{}" "\\vect{?}"
+                  cdlatex-position-cursor nil nil t)
+                 ("tfr" "Insert \\tfrac{}{}" "\\tfrac{?}{}"
+                  cdlatex-position-cursor nil nil t)
+                 ("sfr" "Insert \\sfrac{}{}" "\\sfrac{?}{}"
+                  cdlatex-position-cursor nil nil t)
+                 ("abs" "Insert \\abs{}" "\\abs{?}"
+                  cdlatex-position-cursor nil nil t)
+                 ("equ*" "Insert equation* env"
+                  "\\begin{equation*}\n?\n\\end{equation*}"
+                  cdlatex-position-cursor nil t nil)
+                 ("sn*" "Insert section* env"
+                  "\\section*{?}"
+                  cdlatex-position-cursor nil t nil)
+                 ("ss*" "Insert subsection* env"
+                  "\\subsection*{?}"
+                  cdlatex-position-cursor nil t nil)
+                 ("sss*" "Insert subsubsection* env"
+                  "\\subsubsection*{?}"
+                  cdlatex-position-cursor nil t nil)))
+    (push cmd cdlatex-command-alist))
+
+  (setq cdlatex-env-alist
+        '(("align" "\\begin{align}
+?
+\\end{align}" "\\\\AUTOLABEL
+?")
+          ("equation" "\\begin{equation}
+?
+\\end{equation}" nil)))
+  
+  (setq cdlatex-math-symbol-alist '((?F ("\\Phi"))
+                                    (?o ("\\omega" "\\mho" "\\mathcal{O}"))
+                                    (?. ("\\cdot" "\\circ"))
+                                    (?6 ("\\partial"))
+                                    (?v ("\\vee" "\\forall"))
+                                    (?^ ("\\uparrow" "\\Updownarrow" "\\updownarrow"))))
+  (setq cdlatex-math-modify-alist '((?k "\\mathfrak" "\\textfrak" t nil nil)
+                                    (?b "\\mathbf" "\\textbf" t nil nil)
+                                    (?B "\\mathbb" "\\textbf" t nil nil)
+                                    (?t "\\text" nil t nil nil)))
+  (setq cdlatex-paired-parens "$[{(")
+  (cdlatex-reset-mode))
 ;; auctex-latexmk
 (use-package auctex-latexmk
   :ensure t
@@ -428,6 +496,26 @@ of the preamble part of REGION-TEXT."
 	      ("M-s a" . embrace-add)
 	      ("M-s c" . embrace-change)
 	      ("M-s d" . embrace-delete)))
+
+
+
+(use-package overleaf
+  :ensure t
+  ;; :config
+  ;; 
+  ;; ;; ;; Example: load cookies from firefox
+  ;; ;; (setq overleaf-cookies
+  ;; ;;       (overleaf-read-cookies-from-firefox "~/.mozilla/firefox/[YOUR PROFILE].default/cookies.sqlite")))
+  ;; 
+  ;; ;; Example: load/save cookies from GPG encrypted file.
+  ;; ;;          (remove the .gpg extension to save unencrypted)
+  ;; (let ((cookie-file "~/.overleaf-cookies.gpg"))
+  ;;   (setq overleaf-save-cookies
+  ;;         (overleaf-save-cookies-to-file cookie-file))
+  ;;   (setq overleaf-cookies
+  ;;         (overleaf-read-cookies-from-file cookie-file))))
+  :custom
+  (overleaf-use-nerdfont t "Use nerfont icons for the modeline."))
 
 
 ;; texfrag - preview latex segments in non-latex buffers
