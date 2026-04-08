@@ -299,7 +299,7 @@ unconditionally.
 
 ;;; Generated autoloads from setup-ui.el
 
-(register-definition-prefixes "setup-ui" '("display-line-numbers-mode-hook-setup" "ethan/toggle-" "my-linum-inhibit-modes"))
+(register-definition-prefixes "setup-ui" '("ethan/toggle-"))
 
 
 ;;; Generated autoloads from setup-latex.el
@@ -310,6 +310,7 @@ unconditionally.
 ;;; Generated autoloads from setup-bib.el
 
 (register-definition-prefixes "setup-bib" '("my/save-arxiv-to-local-db"))
+
 
 ;;; End of scraped data
 

@@ -28,6 +28,7 @@
 
 (require 'helheim-elpaca)
 ;; small emacs lisp functions
+;; loading early as some of these are used to write my config
 (require 'setup-elisp-utils)
 ;;; org-mode latex preview
 ;; following advice from karthink, putting very early just clone of it
@@ -38,7 +39,7 @@
   :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git"
                :branch "dev"))
 
-
+;; making sure exec-path-from shell is super early in config
 (use-package exec-path-from-shell
   :ensure t
   :init
@@ -54,16 +55,14 @@
   (when (daemonp)
     (exec-path-from-shell-initialize)))
 
-
+(require 'setup-emacs)
 (require 'setup-tramp)
 (require 'helheim-core)
 (require 'helheim-tree-sitter)
-
 (require 'cl-macs)
 
 ;;; ui
 (require 'setup-ui)
-
 ;;; Other modules
 (require 'helheim-xref)     ; Go to defenition framework
 (require 'helheim-ibuffer)  ; Buffers menu
@@ -71,8 +70,9 @@
 ;;(require 'helheim-outline-mode) ; See "Outline Mode" in Emacs manual.
 (require 'helheim-window)    ; window utilities
 (require 'helheim-i3)    ; i3
-;;; Search and completion
+(require 'setup-editing) ; editing/writing 
 
+;;; Search and completion
 (require 'helheim-corfu)    ; Code completion menus
 (require 'helheim-vertico)  ; Emacs version of command pallet
 (require 'helheim-consult)  ; A set of search commands with preview
@@ -80,7 +80,6 @@
 (require 'helheim-embark)   ; Context-aware action menus
 
 ;;; Major modes
-
 (require 'helheim-emacs-lisp)
 (require 'helheim-markdown)
 (require 'helheim-python)
@@ -96,23 +95,20 @@
 
 ;; The `org-directory' variable must be set before `helheim-org' is loaded!
 (setopt org-directory (expand-file-name "~/notes/"))
-
 ;; Which modules to load. Place cursor on variable and press "M" to see
 ;; all possible values.
 (setq org-modules '(ol-bibtex ol-docview ol-info))
-
 (require 'helheim-org)
 (require 'helheim-org-node)
 (require 'helheim-daily-notes)
 (require 'helheim-agenda)
 (require 'setup-org-noter)
-;;; Version control system
 
+;;; Version control system
 (require 'helheim-magit)
 (require 'helheim-diff-hl)
 
 ;;; Keybindings
-
 (require 'hel-leader)
 (require 'helheim-keybindings)
 (require 'helheim-disable-isearch)
