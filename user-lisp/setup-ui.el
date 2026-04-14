@@ -62,14 +62,28 @@
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
-
+  (doom-themes-org-config)
+  ;; change the pulse highlighting, they are a bit yucky and are used by
+  ;; hel when I copy a text
+  (custom-set-faces
+   `(pulse-highlight-start-face ((t (:foreground ,(doom-color 'base0)
+                                                 :background ,(doom-color 'builtin)))))))
 ;; Switching themes
 (defun ethan/toggle-theme ()
   (interactive)
   (if (eq (car custom-enabled-themes) 'doom-catppuccin-mocha)
       (load-theme 'doom-catppuccin-latte t)
     (load-theme 'doom-catppuccin-mocha t)))
+
+
+(use-package ember-theme
+  :ensure (ember-theme
+           :host github
+           :repo "https://github.com/ember-theme/emacs")
+  :init
+  (add-to-list 'custom-theme-load-path
+               (file-name-directory (locate-library "ember-theme")))
+  (load-theme 'ember-light t))
 
 
 (use-package mood-line
@@ -95,7 +109,7 @@
     '((normal . ("🅝" . font-lock-variable-name-face))
       (insert . ("🅘" . font-lock-string-face))
       (motion . ("🅜" . font-lock-constant-face)))
-    
+
     "Alist specifying indicators and faces corresponding `meow-mode' states.
 The face may be either a face symbol or a property list of key-value pairs;
 e.g., (:foreground \"red\")."
@@ -215,5 +229,17 @@ org-clock has been loaded in"
   (setq perfect-margin-ignore-regexps '("^minibuf" "^[[:space:]]*\\*"))
   (setq perfect-margin-ignore-modes '(doc-view-mode nov-mode helpful-mode))
   (perfect-margin-mode))
+
+
+;; viewing colours of things in emacvs
+(use-package colorful-mode
+  :ensure t
+  :custom
+  (colorful-use-prefix t)
+  (colorful-only-strings 'only-prog)
+  (css-fontify-colors nil)
+  :config
+  (global-colorful-mode t)
+  (add-to-list 'global-colorful-modes 'helpful-mode))
 
 (provide 'setup-ui)

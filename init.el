@@ -35,6 +35,7 @@
 ;; these needs to be done pretty much before anything else, otherwise will
 ;; use built in org
 (use-package org
+  :if my/graphical
   :defer
   :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git"
                :branch "dev"))
@@ -70,7 +71,7 @@
 ;;(require 'helheim-outline-mode) ; See "Outline Mode" in Emacs manual.
 (require 'helheim-window)    ; window utilities
 (require 'helheim-i3)    ; i3
-(require 'setup-editing) ; editing/writing 
+(require 'setup-editing) ; editing/writing
 
 ;;; Search and completion
 (require 'helheim-corfu)    ; Code completion menus
@@ -91,19 +92,20 @@
 (require 'setup-formatting)
 (require 'setup-bib)
 (require 'setup-ai)
+(require 'setup-term)
 ;;; Org mode
 
-;; The `org-directory' variable must be set before `helheim-org' is loaded!
-(setopt org-directory (expand-file-name "~/notes/"))
-;; Which modules to load. Place cursor on variable and press "M" to see
-;; all possible values.
-(setq org-modules '(ol-bibtex ol-docview ol-info))
-(require 'helheim-org)
-(require 'helheim-org-node)
-(require 'helheim-daily-notes)
-(require 'helheim-agenda)
-(require 'setup-org-noter)
-
+(when my/graphical
+  ;; The `org-directory' variable must be set before `helheim-org' is loaded!
+  (setopt org-directory (expand-file-name "~/notes/"))
+  ;; Which modules to load. Place cursor on variable and press "M" to see
+  ;; all possible values.
+  (setq org-modules '(ol-bibtex ol-docview ol-info))
+  (require 'helheim-org)
+  (require 'helheim-org-node)
+  (require 'helheim-daily-notes)
+  (require 'helheim-agenda)
+  (require 'setup-org-noter))
 ;;; Version control system
 (require 'helheim-magit)
 (require 'helheim-diff-hl)

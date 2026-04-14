@@ -122,4 +122,4 @@
                   vc-ignore-dir-regexp
                   tramp-file-name-regexp))))
 
-(require 'setup-tramp)
+(provide 'setup-tramp)
