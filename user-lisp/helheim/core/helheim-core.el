@@ -34,7 +34,10 @@
         avy-single-candidate-jump t))
 
 (use-package hel
-  :ensure (hel :host github :repo "anuvyklack/hel" :files (:defaults "**"))
+  :ensure (hel
+           :host github
+           :repo "anuvyklack/hel"
+           :files (:defaults "extensions/**/*.el"))
   :config
   (hel-mode)
   (setq hel-insert-state-cursor '(bar "pink"))
