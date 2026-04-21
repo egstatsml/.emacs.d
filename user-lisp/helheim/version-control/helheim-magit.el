@@ -367,6 +367,7 @@ with the key bindings used in Magit."
 (use-package magit
   :ensure t
   :defer t
+  :bind (("C-x g" . magit-status))
   :custom
   (magit-refresh-verbose debug-on-error)
   (magit-diff-refine-hunk t) ;; show granular diffs in selected hunk
