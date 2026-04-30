@@ -96,7 +96,9 @@
   (setq vertico-multiform-commands
 	'((consult-line (:not posframe))
 	  (consult-outline (:not posframe))
-	  (t posframe))))
+	  (t posframe)))
+  (vertico-multiform-mode 1))
+  
 
 (use-package marginalia
   :ensure t
