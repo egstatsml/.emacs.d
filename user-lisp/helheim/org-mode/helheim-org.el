@@ -514,33 +514,6 @@ Like `org-attach' but tuned for Emacs Helheim."
   (org-cliplink-max-length nil)
   (org-cliplink-ellipsis "…"))
 
-(with-eval-after-load 'org-keys
-  (hel-keymap-set org-mode-map
-    "<remap> <org-insert-link>" 'helheim-org-insert-link))
-
-;; Based on https://xenodium.com/emacs-dwim-do-what-i-mean/
-(defun helheim-org-insert-link ()
-  "Like `org-insert-link' but with some \"do what i mean\" behavior.
-- If URL is in clipboard — use it.
-- If selection is active — use it as link description.
-- Automatically fetch URL title from its HTML tag.
-- Fallback to `org-insert-link'."
-  (interactive)
-  (let ((point-at-link (org-in-regexp org-link-any-re 1))
-        (clipboard-url (if (string-match-p "^http" (current-kill 0))
-                           (current-kill 0)))
-        (region-content (if (region-active-p)
-                            (buffer-substring-no-properties (region-beginning)
-                                                            (region-end)))))
-    (cond ((and region-content clipboard-url (not point-at-link))
-           (delete-region (region-beginning) (region-end))
-           (insert (org-make-link-string clipboard-url region-content)))
-          ((and clipboard-url (not point-at-link))
-           (org-cliplink))
-          (t
-           (call-interactively 'org-insert-link)))))
-
-
 ;;  Making org pretty
 (use-package org-modern
   :ensure (org-modern
