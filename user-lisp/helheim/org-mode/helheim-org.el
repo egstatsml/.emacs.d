@@ -9,7 +9,8 @@
   ;; Normal state
   (hel-keymap-set org-mode-map :state 'normal
     "z '" 'org-edit-special
-    "z ," 'org-insert-structure-template
+    "z ," 'org-priority
+    ;; "z ," 'org-insert-structure-template
     "z /" 'org-sparse-tree
     ;; "z n" 'org-narrow-to-subtree
     "g i" 'consult-org-heading
@@ -21,7 +22,8 @@
   ;; <leader>
   (hel-keymap-set (keymap-lookup org-mode-map "C-c")
     "'"   nil ;; `org-edit-special' is moved to "z'"
-    ","   nil ;; `org-priority' is moved to "z,"
+    ;; I like having org priority in normal keymap still too
+    ;; ","   nil ;; `org-priority' is moved to "z,"
     "/"   nil ;; `org-sparse-tree' is moved to "z/"
     "RET" 'dired-jump ;; rebind `org-ctrl-c-ret', which is also on "z RET"
     "a"   'org-attach
