@@ -44,6 +44,12 @@
 	  search-ring regexp-search-ring))) ; persist searches
 
 
+(use-package persistent-scratch
+  :ensure t
+  :init
+  (setq persistent-scratch-save-file (expand-file-name "persistent-scratch.el" ethan/cache-dir))
+  (persistent-scratch-setup-default))
+
 ;; better defaults
 ;; https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emacs-configs/
 ;; which collected better defaults from a lot of other places
