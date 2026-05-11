@@ -242,4 +242,22 @@ org-clock has been loaded in"
   (global-colorful-mode t)
   (add-to-list 'global-colorful-modes 'helpful-mode))
 
+
+(use-package spacious-padding
+  :ensure t
+  :config
+  ;; These are the default values, but I keep them here for visibility.
+  ;; Also check `spacious-padding-subtle-frame-lines'.
+  (setq spacious-padding-widths
+        '( :internal-border-width 15
+           :header-line-width 4
+           :mode-line-width 6
+           :custom-button-width 3
+           :tab-width 4
+           :right-divider-width 30
+           :scroll-bar-width 8
+           :fringe-width 8))
+
+  (spacious-padding-mode 1))
+
 (provide 'setup-ui)
