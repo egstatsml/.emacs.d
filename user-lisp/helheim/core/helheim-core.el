@@ -40,15 +40,14 @@
            :files (:defaults "extensions/**/*.el"))
   :config
   (hel-mode)
-  (setq hel-insert-state-cursor '(bar "pink"))
-  (setq hel-normal-state-cursor '(box "pink")))
-
-
+  :custom
+  (hel-insert-state-cursor-type 'bar);;'(bar "pink"))
+  (hel-normal-state-cursor-type  'box));;'(box "pink")))
 
 (elpaca-wait)
 
-(use-package transient
-  :ensure t
+(use-package transient  
+  :ensure (:tag "v0.13.2")
   :defer t
   :custom
   (transient-common-command-prefix "SPC")
