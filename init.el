@@ -30,6 +30,11 @@
 ;; small emacs lisp functions
 ;; loading early as some of these are used to write my config
 (require 'setup-elisp-utils)
+
+;; new compat is needed for corfu/embark before migrate to Emacs 31.1
+(use-package compat
+  :ensure (:tag "31.0.0.1"))
+
 ;;; org-mode latex preview
 ;; following advice from karthink, putting very early just clone of it
 ;; these needs to be done pretty much before anything else, otherwise will

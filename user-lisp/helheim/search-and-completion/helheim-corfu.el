@@ -53,9 +53,8 @@
   "<remap> <beginning-of-buffer-other-window>" 'corfu-popupinfo-beginning)
 
 ;;; Config
-
 (use-package corfu
-  :ensure t
+  :ensure (:tag "2.9")
   :bind
   (:map corfu-map
 	("RET" . nil)

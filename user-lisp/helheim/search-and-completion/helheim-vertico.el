@@ -48,10 +48,7 @@
 ;;; Config
 
 (use-package vertico
-  :ensure (vertico
-	   :host github
-	   :repo "minad/vertico"
-	   :tag "2.6")
+  :ensure t
   :custom
   (vertico-resize 'grow-only) ; Grow and shrink the Vertico minibuffer
   (vertico-count 15) ; How many candidates to show
@@ -84,21 +81,32 @@
 
 
 (use-package vertico-posframe
-  :if my/graphical
+  :if nil
+  ;; :if my/graphical
   :ensure (vertoco-posframe
 	   :host github
 	   :repo "tumashu/vertico-posframe"
 	   :main "vertico-posframe.el")
   :after vertico
   :config
-  (vertico-posframe-mode 1)
+  (vertico-posframe-mode 0)
   ;; I don't want vertico posframe to work for these functions
   (setq vertico-multiform-commands
 	'((consult-line (:not posframe))
 	  (consult-outline (:not posframe))
 	  (t posframe)))
   (vertico-multiform-mode 1))
-  
+
+
+(use-package vertico-buffer-frame
+  :if my/graphical
+  :ensure (vertico-buffer-frame
+           :host github
+           :repo "kn66/vertico-buffer-frame")
+  :after vertico)
+  ;; :config
+  ;;  (vertico-buffer-frame-mode nil))
+
 
 (use-package marginalia
   :ensure t
