@@ -1,3 +1,7 @@
+;;; setup-library.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; Commentary:
+;;; Customization
+
 (use-package library
   :if my/graphical
   :defer t
@@ -143,3 +147,4 @@ to PDF directory, and rename it according to the BIBTEX entry."
   (with-eval-after-load 'org
     (add-to-list 'org-capture-templates
 		 '("j" "Journal" entry (file "~/org/reading.org")))))
+(provide 'setup-library)

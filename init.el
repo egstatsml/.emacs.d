@@ -90,6 +90,7 @@
 (require 'helheim-markdown)
 (require 'helheim-python)
 (require 'setup-latex)
+(require 'setup-library)
 ;; tools
 (require 'helheim-flycheck-lsp)
 (require 'setup-projectile)
