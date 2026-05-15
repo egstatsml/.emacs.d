@@ -10,4 +10,8 @@
   :config
   (kitty-graphics-mode 1))
 
+
+(use-package ghostel
+  :ensure t)
+
 (provide 'setup-term)
