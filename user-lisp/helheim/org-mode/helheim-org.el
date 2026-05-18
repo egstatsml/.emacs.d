@@ -69,7 +69,11 @@
 (with-eval-after-load 'org-indent
   (blackout 'org-indent-mode))
 
-(use-package hel-org :after org)
+(use-package hel-org
+  :ensure (hel-org
+           :host github
+           :repo "anuvyklack/hel-org")
+  :after org)
 
 (use-package org-eldoc
   :ensure org-contrib

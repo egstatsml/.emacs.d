@@ -117,7 +117,7 @@
 (require 'helheim-diff-hl)
 
 ;;; Keybindings
-(require 'hel-leader)
+;;(require 'hel-leader)
 (require 'helheim-keybindings)
 (require 'helheim-disable-isearch)
 

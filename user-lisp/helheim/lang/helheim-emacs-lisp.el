@@ -34,8 +34,8 @@
   :ensure t
   :hook (emacs-lisp-mode . let-completion-mode))
 
-(use-package hel-paredit
-  :ensure paredit)
+;; (use-package hel-paredit
+;;   :ensure paredit)
   ;; :hook
   ;; leaving disabled for now
   ;; (emacs-lisp-mode-hook . hel-paredit-mode)

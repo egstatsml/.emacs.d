@@ -14,4 +14,8 @@
 (use-package ghostel
   :ensure t)
 
+(use-package hel-ghostel
+  :after (ghostel hel)
+  :hook (ghostel-mode . hel-ghostel-mode))
+
 (provide 'setup-term)

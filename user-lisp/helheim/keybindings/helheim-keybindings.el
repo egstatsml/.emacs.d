@@ -7,7 +7,11 @@
 ;;; General
 (require 'hel-macros)
 (require 'hel-core)
-
+(use-package hel-leader
+  :ensure (hel-leader
+           :host github
+           :repo "anuvyklack/hel-leader")
+  :after hel)
 
 (defun helheim-leader-prefix-map (&optional keys keymap)
   "Return keymap that corresponds to KEY prefix inside KEYMAP."

@@ -82,8 +82,8 @@
            :repo "https://github.com/ember-theme/emacs")
   :init
   (add-to-list 'custom-theme-load-path
-               (file-name-directory (locate-library "ember-theme")))
-  (load-theme 'ember-light t))
+               (file-name-directory (locate-library "ember-theme"))))
+  ;; (load-theme 'ember-light t))
 
 
 (use-package mood-line
