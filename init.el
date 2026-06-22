@@ -27,13 +27,14 @@
 
 
 (require 'helheim-elpaca)
-;; small emacs lisp functions
-;; loading early as some of these are used to write my config
-(require 'setup-elisp-utils)
 
+
+(use-package tramp
+  :ensure t);;(:tag "2.8.1.4"))
+(elpaca-wait)
 ;; new compat is needed for corfu/embark before migrate to Emacs 31.1
 (use-package compat
-  :ensure (:tag "31.0.0.1"))
+  :ensure t)
 
 ;;; org-mode latex preview
 ;; following advice from karthink, putting very early just clone of it
@@ -44,6 +45,12 @@
   :defer
   :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git"
                :branch "dev"))
+
+;; small emacs lisp functions
+;; loading early as some of these are used to write my config
+(require 'setup-elisp-utils)
+
+
 
 ;; making sure exec-path-from shell is super early in config
 (use-package exec-path-from-shell
