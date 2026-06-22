@@ -332,8 +332,12 @@ Got from https://stackoverflow.com/questions/6997387/how-to-archive-all-the-done
 			        prepend))) t)
   ;; capture
   (setq org-gtd-inbox-file (concat org-directory "inbox.org"))
-  (setq org-capture-templates
-	`(("i" "Inbox" entry  (file org-gtd-inbox-file)
+  (setq
+   org-capture-templates
+   `(("i" "Inbox" entry  (file org-gtd-inbox-file)
+      ,(concat "* %?\n"
+	       "/Entered on/ %U"))
+     ("t" "TODO (inbox)" entry  (file org-gtd-inbox-file)
 	   ,(concat "* TODO %?\n"
 		    "/Entered on/ %U"))
 	  ("w"
