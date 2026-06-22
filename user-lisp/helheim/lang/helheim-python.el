@@ -16,14 +16,16 @@
   (unless (treesit-language-available-p 'toml)
     (treesit-install-language-grammar 'toml)))
 
+(use-package yaml
+  :ensure t)
 
 (use-package pet
   :ensure t
   :config
   (setq pet-debug t)
   ;; only using the fastest methods for finding pet stuffs
-  (setq pet-find-file-functions '(pet-find-file-from-project-root
-                                  pet-locate-dominating-file))
+  ;; (setq pet-find-file-functions '(pet-find-file-from-project-root
+  ;;                                 pet-locate-dominating-file))
   (add-hook 'python-base-mode-hook 'pet-mode -10))
 
 
