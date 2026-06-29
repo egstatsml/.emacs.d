@@ -311,6 +311,11 @@ unconditionally.
 
 (register-definition-prefixes "setup-bib" '("my/save-arxiv-to-local-db"))
 
+
+
+;;; Generated autoloads from helheim/keybindings/helheim-keybindings.el
+
+(register-definition-prefixes "helheim/keybindings/helheim-keybindings" '("helheim-"))
 
 ;;; End of scraped data
 
