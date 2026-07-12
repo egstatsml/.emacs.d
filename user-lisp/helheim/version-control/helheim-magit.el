@@ -13,7 +13,7 @@
   "v f"   'magit-file-dispatch)
 
 (with-eval-after-load 'with-editor
-  (hel-keymap-set with-editor-mode-map :state '(normal motion)
+  (hel-keymap-set with-editor-mode-map :state '(normal emacs)
     "Z Z" 'with-editor-finish
     "Z Q" 'with-editor-cancel))
 
@@ -37,7 +37,7 @@
           "+"          'magit-diff-more-context
           "-"          'magit-diff-less-context
           "0"          'magit-diff-default-context
-          ;; Use the default Hel motion commands instead of `magit-next-line'
+          ;; Use the default Hel emacs commands instead of `magit-next-line'
           ;; and `magit-previous-line', because they are surprisingly slow and
           ;; make little sense, since we have toggle selection on "v".
           "j"   'next-line
@@ -184,7 +184,7 @@
 
 ;;;;; Other
 
-  (hel-keymap-set magit-blob-mode-map :state 'motion
+  (hel-keymap-set magit-blob-mode-map :state 'emacs
     "z j" 'magit-blob-next       ;; "n"
     "z k" 'magit-blob-previous)) ;; "p"
 
@@ -220,7 +220,7 @@
 (with-eval-after-load 'magit
   (add-hook 'magit-blame-mode-hook (defun helheim-magit-blame-h ()
                                      (if magit-blame-mode
-                                         (hel-motion-state)
+                                         (hel-emacs-state)
                                        (hel-normal-state))))
   (hel-keymap-set magit-blame-read-only-mode-map
     "y"   'magit-blame-copy-hash

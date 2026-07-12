@@ -27,7 +27,7 @@
     "S"    nil))
 
 (with-eval-after-load 'diff-hl-show-hunk
-  (hel-keymap-set diff-hl-show-hunk-map :state 'motion
+  (hel-keymap-set diff-hl-show-hunk-map :state 'emacs
     "[" 'diff-hl-show-hunk-previous
     "]" 'diff-hl-show-hunk-next)
   (hel-keymap-set diff-hl-show-hunk-map
@@ -37,7 +37,7 @@
     "s"   'diff-hl-show-hunk-stage-hunk))
 
 (with-eval-after-load 'diff-hl-show-hunk-inline
-  (hel-keymap-set diff-hl-show-hunk-inline-transient-mode-map :state 'motion
+  (hel-keymap-set diff-hl-show-hunk-inline-transient-mode-map :state 'emacs
     "j"   'diff-hl-show-hunk-inline--popup-up
     "k"   'diff-hl-show-hunk-inline--popup-down
     "C-b" 'diff-hl-show-hunk-inline--popup-pagedown

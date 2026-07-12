@@ -36,9 +36,8 @@
 (use-package hel
   :ensure (hel
            :host github
-           :repo "anuvyklack/hel"
-           :files (:defaults "extensions/**/*.el"))
-  :config
+           :repo "anuvyklack/hel")
+  :init
   (hel-mode)
   :custom
   (hel-insert-state-cursor-type 'bar);;'(bar "pink"))
@@ -203,7 +202,7 @@ The predicate is passed as argument to `buffer-match-p', which see."
   :custom
   (global-hl-line-sticky-flag 'window) ;; Emacs 31
   ;; I want current line highlighting only in special modes that are in Hel
-  ;; motion state, and disable it when region is active. In text editing modes
+  ;; emacs state, and disable it when region is active. In text editing modes
   ;; it interferes with Hel selections.
   (global-hl-line-buffers `(and (or (derived-mode . special-mode)
                                     (major-mode . dired-mode))
@@ -212,7 +211,7 @@ The predicate is passed as argument to `buffer-match-p', which see."
                                 ,(native-compile
                                   '(lambda (buffer)
                                      (with-current-buffer buffer
-                                       (and (eq hel-state 'motion)
+                                       (and (eq hel-state 'emacs)
                                             (not (use-region-p)))))))))
 
 ;;;; Fringes
