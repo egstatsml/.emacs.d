@@ -52,16 +52,22 @@ ARG used for 'preivous-error' function."
 
 ;; install auctex
 (use-package latex
-  :ensure (auctex
-           :host github
-           :repo "emacsmirror/auctex"
-           :tag "14.1.2"
-           :branch "master"
-           ;; :repo "https://git.savannah.gnu.org/git/auctex.git" :branch "main"
-          :pre-build (("make" "elpa"))
-          :build (:not elpaca--compile-info) ;; Make will take care of this step
-          :files ("*.el" "doc/*.info*" "etc" "images" "latex" "style")
-          :version (lambda (_) (require 'auctex) AUCTeX-version))
+  :ensure (auctex :repo "https://git.savannah.gnu.org/git/auctex.git" :branch "main"
+                  :pre-build (("make" "elpa"))
+                  :build (:not elpaca--compile-info) ;; Make will take care of this step
+                  :files ("*.el" "doc/*.info*" "etc" "images" "latex" "style")
+                  :version (lambda (_) (require 'auctex) AUCTeX-version))
+
+  ;; :ensure (auctex
+  ;;          :host github
+  ;;          :repo "emacsmirror/auctex"
+  ;;          :tag "14.1.2"
+  ;;          :branch "master"
+  ;;          ;; :repo "https://git.savannah.gnu.org/git/auctex.git" :branch "main"
+  ;;         :pre-build (("make" "elpa"))
+  ;;         :build (:not elpaca--compile-info) ;; Make will take care of this step
+  ;;         :files ("*.el" "doc/*.info*" "etc" "images" "latex" "style")
+          ;; :version (lambda (_) (require 'auctex) AUCTeX-version))
   :mode ("\\.tex\\'" . LaTeX-mode)
   :defines (TeX-auto-save
             TeX-parse-self
