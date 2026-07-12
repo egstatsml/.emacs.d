@@ -5,23 +5,25 @@
   :commands (sudo-find-file sudo-this-file)
   :bind ("C-x C-S-f" . sudo-find-file)
   :config
+  ;; making it so that PATH from remote host is used by tramp
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
   ;; need to make sure terminal type is set to be a big ole dummy
   (setq tramp-terminal-type "tramp")
-  ;; ;; TODO: may want remote dir locals to be available as well, though will probably want
-  ;; ;; this to be specific to each directory/project
+  ;; TODO: may want remote dir locals to be available as well, though will probably want
+  ;; this to be specific to each directory/project
   ;; (setq enable-remote-dir-locals t)
   ;; ;; try add qsub method to tramp to log into hpc
-  ;; (add-to-list 'tramp-methods
-  ;;              ;; this is an internal method for interactive scripting, change to what your server uses
-  ;;              '("qsub"
-  ;;       	 (tramp-login-program        "qsub")
-  ;;       	 (tramp-login-args           (("-I -S /bin/bash -l select=1:ncpus=2:ngpus=1:mem=2g -l walltime=08:00:00"))) ; options here?
-  ;;       	 ;; the local $SHELL may contain conflicting configuration
-  ;;       	 ;; this should be good for most cases
-  ;;       	 (tramp-login-env            (("SHELL") ("/usr/local/qutsh/bin/bash")))
-  ;;       	 (tramp-remote-shell         "/usr/local/qutsh/bin/qutsh")
-  ;;       	 ;; (tramp-remote-shell-args    ("-c"))
-  ;;       	 (tramp-connection-timeout   10)))
+  (add-to-list 'tramp-methods
+               ;; this is an internal method for interactive scripting, change to what your server uses
+               '("qsub"
+        	 (tramp-login-program        "qsub")
+        	 (tramp-login-args           (("-I -S /bin/bash -l select=1:ncpus=2:ngpus=1:mem=2g -l walltime=08:00:00"))) ; options here?
+        	 ;; the local $SHELL may contain conflicting configuration
+        	 ;; this should be good for most cases
+        	 (tramp-login-env            (("SHELL") ("/usr/local/qutsh/bin/bash")))
+        	 (tramp-remote-shell         "/usr/local/qutsh/bin/qutsh")
+        	 ;; (tramp-remote-shell-args    ("-c"))
+        	 (tramp-connection-timeout   10)))
   ;; ;; settings to speed up tramp
   ;; ;; mostly from https://coredumped.dev/2025/06/18/making-tramp-go-brrrr./
   ;; (setq remote-file-name-inhibit-locks t
