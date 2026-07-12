@@ -106,6 +106,7 @@
 (require 'setup-bib)
 (require 'setup-ai)
 (require 'setup-term)
+(require 'setup-yasnippet)
 ;;; Org mode
 
 (when my/graphical
