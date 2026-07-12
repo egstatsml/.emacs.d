@@ -15,6 +15,7 @@
   :ensure t)
 
 (use-package hel-ghostel
+  :ensure t
   :after (ghostel hel)
   :hook (ghostel-mode . hel-ghostel-mode))
 
