@@ -60,7 +60,8 @@
   ;; it is all visible in a non-interactive shell.
   ;; If this is not the case, none of it will work.
   ;; See README for info.
-  (setq exec-path-from-shell-arguments '("-l" "-i"))
+  ;; (setq exec-path-from-shell-arguments '("-l" "-i"))
+  (setq exec-path-from-shell-arguments nil)
   ;; when launcing standalone
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize))
