@@ -107,6 +107,7 @@
 (require 'setup-bib)
 (require 'setup-ai)
 (require 'setup-term)
+(require 'setup-pdf)
 (require 'setup-yasnippet)
 ;;; Org mode
 
