@@ -24,6 +24,15 @@
 (elpaca pcre2el)
 (elpaca wgrep)
 
+;;;;; Scrolling with mouse wheel and touchpad
+
+(use-package ultra-scroll
+  :ensure (ultra-scroll :host github :repo "jdtsmith/ultra-scroll")
+  ;; :hook (elpaca-after-init-hook . ultra-scroll-mode)
+  :custom
+  (mouse-wheel-tilt-scroll t) ; Scroll horizontally with mouse side wheel.
+  (mouse-wheel-progressive-speed nil))
+
 (elpaca avy
   (setq avy-keys (number-sequence ?a ?z) ;; Any lower-case letter a-z.
         avy-style 'at-full
@@ -335,15 +344,6 @@ Give prefix to open in a new window"
   :bind
   ([remap scroll-up-command] . pixel-scroll-interpolate-down)
   ([remap scroll-down-command] . pixel-scroll-interpolate-up))
-
-;;;;; Scrolling with mouse wheel and touchpad
-
-(use-package ultra-scroll
-  :ensure (ultra-scroll :host github :repo "jdtsmith/ultra-scroll")
-  :hook (elpaca-after-init-hook . ultra-scroll-mode)
-  :custom
-  (mouse-wheel-tilt-scroll t) ; Scroll horizontally with mouse side wheel.
-  (mouse-wheel-progressive-speed nil))
 
 ;;; Text editing
 ;;;; Misc
