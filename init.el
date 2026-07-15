@@ -110,6 +110,7 @@
 (require 'setup-notmuch)
 (require 'setup-pdf)
 (require 'setup-yasnippet)
+(require 'setup-spell)
 ;;; Org mode
 
 (when my/graphical
