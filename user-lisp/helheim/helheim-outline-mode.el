@@ -14,7 +14,7 @@
       "m i h" 'helheim-outline-mark-subtree
       "m o"   'helheim-outline-mark-subtree ; "o" is for outline
       "m i o" 'helheim-outline-mark-subtree)
-    (hel-keymap-set keymap :state '(normal motion)
+    (hel-keymap-set keymap :state '(normal emacs)
       "z <tab>"     'outline-cycle
       "z <backtab>" 'outline-cycle-buffer
       "z <return>"  'outline-insert-heading

@@ -316,7 +316,6 @@ unconditionally.
 ;;; Generated autoloads from helheim/keybindings/helheim-keybindings.el
 
 (register-definition-prefixes "helheim/keybindings/helheim-keybindings" '("helheim-"))
-
 
 ;;; End of scraped data
 

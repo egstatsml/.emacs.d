@@ -24,6 +24,15 @@
 (elpaca pcre2el)
 (elpaca wgrep)
 
+;;;;; Scrolling with mouse wheel and touchpad
+
+(use-package ultra-scroll
+  :ensure (ultra-scroll :host github :repo "jdtsmith/ultra-scroll")
+  ;; :hook (elpaca-after-init-hook . ultra-scroll-mode)
+  :custom
+  (mouse-wheel-tilt-scroll t) ; Scroll horizontally with mouse side wheel.
+  (mouse-wheel-progressive-speed nil))
+
 (elpaca avy
   (setq avy-keys (number-sequence ?a ?z) ;; Any lower-case letter a-z.
         avy-style 'at-full
@@ -36,9 +45,8 @@
 (use-package hel
   :ensure (hel
            :host github
-           :repo "anuvyklack/hel"
-           :files (:defaults "extensions/**/*.el"))
-  :config
+           :repo "anuvyklack/hel")
+  :init
   (hel-mode)
   :custom
   (hel-insert-state-cursor-type 'bar);;'(bar "pink"))
@@ -203,7 +211,7 @@ The predicate is passed as argument to `buffer-match-p', which see."
   :custom
   (global-hl-line-sticky-flag 'window) ;; Emacs 31
   ;; I want current line highlighting only in special modes that are in Hel
-  ;; motion state, and disable it when region is active. In text editing modes
+  ;; emacs state, and disable it when region is active. In text editing modes
   ;; it interferes with Hel selections.
   (global-hl-line-buffers `(and (or (derived-mode . special-mode)
                                     (major-mode . dired-mode))
@@ -212,7 +220,7 @@ The predicate is passed as argument to `buffer-match-p', which see."
                                 ,(native-compile
                                   '(lambda (buffer)
                                      (with-current-buffer buffer
-                                       (and (eq hel-state 'motion)
+                                       (and (eq hel-state 'emacs)
                                             (not (use-region-p)))))))))
 
 ;;;; Fringes
@@ -336,15 +344,6 @@ Give prefix to open in a new window"
   :bind
   ([remap scroll-up-command] . pixel-scroll-interpolate-down)
   ([remap scroll-down-command] . pixel-scroll-interpolate-up))
-
-;;;;; Scrolling with mouse wheel and touchpad
-
-(use-package ultra-scroll
-  :ensure (ultra-scroll :host github :repo "jdtsmith/ultra-scroll")
-  :hook (elpaca-after-init-hook . ultra-scroll-mode)
-  :custom
-  (mouse-wheel-tilt-scroll t) ; Scroll horizontally with mouse side wheel.
-  (mouse-wheel-progressive-speed nil))
 
 ;;; Text editing
 ;;;; Misc

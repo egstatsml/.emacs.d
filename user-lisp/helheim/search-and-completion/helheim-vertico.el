@@ -4,13 +4,13 @@
 (require 'hel-core)
 
 ;;; Keybindings
+(with-eval-after-load 'hel
+  (hel-keymap-global-set :state '(normal emacs)
+    "C-c '"  '("vertico repeat" . vertico-repeat)
+    "C-c \"" '("select vertico session" . vertico-repeat-select))
 
-(hel-keymap-global-set :state '(normal motion)
-  "C-c '"  '("vertico repeat" . vertico-repeat)
-  "C-c \"" '("select vertico session" . vertico-repeat-select))
-
-(hel-keymap-set minibuffer-local-map
-  "M-a"  'marginalia-cycle)
+  (hel-keymap-set minibuffer-local-map
+    "M-a"  'marginalia-cycle)
 
 (with-eval-after-load 'vertico
   (hel-keymap-set vertico-map :state 'normal
@@ -43,7 +43,7 @@
     "<remap> <hel-smooth-scroll-down>"      'vertico-scroll-up
     "<remap> <hel-smooth-scroll-up>"        'vertico-scroll-down
     "<remap> <hel-smooth-scroll-page-down>" 'vertico-scroll-up
-    "<remap> <hel-smooth-scroll-page-up>"   'vertico-scroll-down))
+    "<remap> <hel-smooth-scroll-page-up>"   'vertico-scroll-down)))
 
 ;;; Config
 

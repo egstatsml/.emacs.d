@@ -108,7 +108,7 @@
   (defcustom mood-line-segment-modal-hel-state-alist
     '((normal . ("🅝" . font-lock-variable-name-face))
       (insert . ("🅘" . font-lock-string-face))
-      (motion . ("🅜" . font-lock-constant-face)))
+      (emacs . ("🅜" . font-lock-constant-face)))
 
     "Alist specifying indicators and faces corresponding `meow-mode' states.
 The face may be either a face symbol or a property list of key-value pairs;

@@ -23,7 +23,7 @@
   ;; is just right (only shows errors).
   (defvar yas-verbosity 2)
   ;; Remove default ~/.emacs.d/snippets
-  (setq yas-snippet-dirs (list (concat helhei-directory "snippets")))
+  (setq yas-snippet-dirs (list (concat helheim-root-directory "snippets")))
   ;; get functionality from yasnippet-snippets repo that I have copied across
   ;; (load-file (concat user-emacs-directory
   ;;		     "snippets/yasnippet-snippets.el"))

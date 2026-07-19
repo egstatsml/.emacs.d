@@ -2,7 +2,7 @@
 ;;; Keybindings
 (require 'hel-core)
 
-(hel-keymap-global-set :state '(normal motion)
+(hel-keymap-global-set :state '(normal emacs)
   "C-/" 'consult-line        ; "/" is for search
   "C-?" 'consult-line-multi) ; "C-S-/"
 

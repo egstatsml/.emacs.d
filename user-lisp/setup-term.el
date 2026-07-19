@@ -15,6 +15,9 @@
   :ensure t)
 
 (use-package hel-ghostel
+  :ensure (hel-ghostel
+           :host github
+           :repo "anuvyklack/hel-ghostel")
   :after (ghostel hel)
   :hook (ghostel-mode . hel-ghostel-mode))
 

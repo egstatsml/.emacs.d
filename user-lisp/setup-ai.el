@@ -21,15 +21,18 @@
 	   :host github
 	   :repo "nineluj/agent-review"))
 
-
-;; experimental agent shell with tramp
-(use-package agent-shell-tramp-rpc
-  :ensure (agent-shell-tramp-rpc
-             :host github
-             :repo "csheaff/agent-shell-tramp-rpc")
+(use-package agent-shell-tramp
+  :straight (:host github :repo "junyi-hou/agent-shell-tramp")
   :after agent-shell
   :config
-  (agent-shell-tramp-rpc-mode 1))
+  (agent-shell-tramp-mode 1))
+
+(use-package hel-agent-shell
+  :ensure (hel-agent-shell
+           :host github
+           :repo "anuvyklack/hel-agent-shell"
+           :branch "main")
+  :after agent-shell)
 
 (use-package gptel
   :ensure t)

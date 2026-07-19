@@ -181,7 +181,7 @@ If KEYMAP is not provided — return `mode-specific-map'."
 
 ;;; Ediff
 
-(hel-set-initial-state 'ediff-mode 'motion)
+(hel-set-initial-state 'ediff-mode 'emacs)
 (add-hook 'ediff-keymap-setup-hook #'helheim-ediff-setup-keys)
 
 ;;; Help
@@ -267,7 +267,7 @@ If KEYMAP is not provided — return `mode-specific-map'."
     "C-<tab>"   nil
     "M-<tab>"   nil
     "C-c TAB"   nil)
-  (hel-keymap-set magit-section-mode-map :state 'motion
+  (hel-keymap-set magit-section-mode-map :state 'emacs
     "z j" 'magit-section-forward
     "z k" 'magit-section-backward
     "z u" 'magit-section-up
