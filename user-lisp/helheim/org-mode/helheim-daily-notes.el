@@ -12,7 +12,7 @@
 
 ;;; Customization
 
-(defcustom helheimg-daily-directory (expand-file-name "daily/" org-directory)
+(defcustom helheimg-daily-directory (expand-file-name "journal/" org-directory)
   "Path to daily-notes."
   :group 'helheim
   :type 'string
