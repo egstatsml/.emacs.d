@@ -8,6 +8,13 @@
   (apheleia-remote-algorithm 'remote)
   :config
   ;; setting formatters
+  ;; formatting with ruff with pixi
+  ;; needed at the moment, Pet not finding pixi variables properly
+  (add-to-list 'apheleia-formatters '(pixi-ruff "pixi" "run" "ruff" "format" "--silent"
+                                                (apheleia-formatters-fill-column "--line-length") "--stdin-filename"
+                                                filepath "-"))
+  (add-to-list 'apheleia-formatters '(pixi-ruff-isort "pixi" "run" "ruff" "check" "-n" "--select" "I" "--fix" "--fix-only"
+                                                      "--stdin-filename" filepath "-"))
   ;; latex
   (setf (alist-get 'latexindent apheleia-formatters)
 	'("latexindent" "-y=/home/ethan/.config/latexindent/mysettings.yaml" "--logfile=/dev/null"))
