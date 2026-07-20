@@ -13,7 +13,9 @@
 (use-package agent-shell
   :ensure (agent-shell
 	   :host github
-	   :repo "xenodium/agent-shell"))
+	   :repo "xenodium/agent-shell")
+  :config
+  (setq agent-shell-thought-process-icon ""))
 
 
 (use-package agent-review
