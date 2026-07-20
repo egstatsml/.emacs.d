@@ -11,7 +11,7 @@
   (setq tramp-terminal-type "tramp")
   ;; TODO: may want remote dir locals to be available as well, though will probably want
   ;; this to be specific to each directory/project
-  ;; (setq enable-remote-dir-locals t)
+  (setq enable-remote-dir-locals t) 
   ;; ;; try add qsub method to tramp to log into hpc
   (add-to-list 'tramp-methods
                ;; this is an internal method for interactive scripting, change to what your server uses
