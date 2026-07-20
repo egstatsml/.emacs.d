@@ -4,6 +4,8 @@
   :ensure (apheleia
 	   :host github
 	   :repo "radian-software/apheleia")
+  :custom
+  (apheleia-remote-algorithm 'remote)
   :config
   ;; setting formatters
   ;; latex
