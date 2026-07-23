@@ -8,10 +8,10 @@
   ;; making it so that PATH from remote host is used by tramp
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
   ;; need to make sure terminal type is set to be a big ole dummy
-  (setq tramp-terminal-type "tramp")
+  (setq tramp-terminal-type "dumb")
   ;; TODO: may want remote dir locals to be available as well, though will probably want
   ;; this to be specific to each directory/project
-  (setq enable-remote-dir-locals t) 
+  (setq enable-remote-dir-locals t)
   ;; ;; try add qsub method to tramp to log into hpc
   (add-to-list 'tramp-methods
                ;; this is an internal method for interactive scripting, change to what your server uses
@@ -131,9 +131,12 @@
            :repo "ArthurHeymans/emacs-tramp-rpc"
            :pre-build (("bash" "scripts/build_all.sh")))
   :config
-  (setq tramp-rpc-deploy-git-build-policy 'release)
-  (setq tramp-rpc-deploy-local-cache-directory "/home/ethan/.emacs.d/var/")
-  (setq tramp-rpc-deploy-prefer-build t))
+  (setq tramp-rpc-deploy-git-build-policy 'release))
+  ;; (setq tramp-rpc-deploy-local-cache-directory "~/.cache/emacs/tramp-rpc-binaries")
+  ;; Remote installation directory (default: ~/.cache/emacs/tramp-rpc)
+  ;; (setq tramp-rpc-deploy-remote-directory "~/.local/bin/tramp-rpc")
+  ;; (setq tramp-rpc-deploy-local-cache-directory "/home/ethan/.emacs.d/var/"))
+  ;; (setq tramp-rpc-deploy-prefer-build t))
 
 
 (provide 'setup-tramp)
