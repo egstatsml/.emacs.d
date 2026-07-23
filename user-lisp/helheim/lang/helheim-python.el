@@ -24,13 +24,16 @@
   :config
   (setq pet-debug t)
   ;; only using the fastest methods for finding pet stuffs
-  ;; (setq pet-find-file-functions '(pet-find-file-from-project-root
-  ;;                                 pet-locate-dominating-file))
+  ;; can add back recursive file search if I desparately need it
+  (setq pet-find-file-functions '(pet-find-file-from-project-root
+                                  pet-locate-dominating-file
+                                  pet-find-file-from-project-root-natively))
   (add-hook 'python-base-mode-hook 'pet-mode -10))
 
 
 (use-package conda
   :ensure t
+  :defer t
   :custom
   (conda-anaconda-home "~/miniforge")
   (conda-env-home-directory "~/miniforge"))
