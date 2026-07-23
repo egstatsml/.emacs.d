@@ -1,60 +1,60 @@
 ;;; helheim-corfu.el -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;; Keybindings
 
-(defvar-keymap corfu-map
-  :doc "Keymap used when popup is shown."
-  "<tab>"     'corfu-next
-  "<backtab>" 'corfu-previous ; S-<tab>
-  "M-<tab>"   'corfu-expand
-  "RET"       'corfu-insert
-  "M-SPC"     'corfu-insert-separator
-  "C-g"       'corfu-quit
+;; (defvar-keymap corfu-map
+;;   :doc "Keymap used when popup is shown."
+;;   "<tab>"     'corfu-next
+;;   "<backtab>" 'corfu-previous ; S-<tab>
+;;   "M-<tab>"   'corfu-expand
+;;   "RET"       'corfu-insert
+;;   "M-SPC"     'corfu-insert-separator
+;;   "C-g"       'corfu-quit
 
-  "C-h"       'corfu-info-documentation
-  "C-j"       'corfu-next
-  "C-k"       'corfu-previous
-  "C-l"       'corfu-complete
-  "C-<i>"     'corfu-info-documentation
-  "C-d"       'corfu-info-location ; "gd" is go to definition
+;;   "C-h"       'corfu-info-documentation
+;;   "C-j"       'corfu-next
+;;   "C-k"       'corfu-previous
+;;   "C-l"       'corfu-complete
+;;   "C-<i>"     'corfu-info-documentation
+;;   "C-d"       'corfu-info-location ; "gd" is go to definition
 
-  ;; Scrolling
-  "C-f"       'corfu-scroll-down
-  "C-b"       'corfu-scroll-up
+;;   ;; Scrolling
+;;   "C-f"       'corfu-scroll-down
+;;   "C-b"       'corfu-scroll-up
 
-  ;; All versions of up/down
-  "M-j"       'corfu-next
-  "M-k"       'corfu-previous
-  "C-n"       'corfu-next
-  "C-p"       'corfu-previous
-  "M-n"       'corfu-next
-  "M-p"       'corfu-previous
-  "<down>"    'corfu-next
-  "<up>"      'corfu-previous
+;;   ;; All versions of up/down
+;;   "M-j"       'corfu-next
+;;   "M-k"       'corfu-previous
+;;   "C-n"       'corfu-next
+;;   "C-p"       'corfu-previous
+;;   "M-n"       'corfu-next
+;;   "M-p"       'corfu-previous
+;;   "<down>"    'corfu-next
+;;   "<up>"      'corfu-previous
 
-  "<remap> <next-line>" 'corfu-next
-  "<remap> <previous-line>" 'corfu-previous
-  "<remap> <move-beginning-of-line>" 'corfu-prompt-beginning
-  "<remap> <move-end-of-line>" 'corfu-prompt-end
-  "<remap> <scroll-down-command>" 'corfu-scroll-down
-  "<remap> <scroll-up-command>" 'corfu-scroll-up
-  "<remap> <beginning-of-buffer>" 'corfu-first
-  "<remap> <end-of-buffer>" 'corfu-last
-  "<remap> <completion-at-point>" 'corfu-complete
-  "<remap> <keyboard-escape-quit>" 'corfu-reset)
+;;   "<remap> <next-line>" 'corfu-next
+;;   "<remap> <previous-line>" 'corfu-previous
+;;   "<remap> <move-beginning-of-line>" 'corfu-prompt-beginning
+;;   "<remap> <move-end-of-line>" 'corfu-prompt-end
+;;   "<remap> <scroll-down-command>" 'corfu-scroll-down
+;;   "<remap> <scroll-up-command>" 'corfu-scroll-up
+;;   "<remap> <beginning-of-buffer>" 'corfu-first
+;;   "<remap> <end-of-buffer>" 'corfu-last
+;;   "<remap> <completion-at-point>" 'corfu-complete
+;;   "<remap> <keyboard-escape-quit>" 'corfu-reset)
 
-(defvar-keymap corfu-popupinfo-map
-  :doc "Additional keymap activated in popupinfo mode."
-  "C-<i>" 'corfu-popupinfo-toggle
-  "<remap> <corfu-info-documentation>" 'corfu-popupinfo-documentation
-  "<remap> <corfu-info-location>" 'corfu-popupinfo-location
-  "<remap> <scroll-other-window>" 'corfu-popupinfo-scroll-up
-  "<remap> <scroll-other-window-down>" 'corfu-popupinfo-scroll-down
-  "<remap> <end-of-buffer-other-window>" 'corfu-popupinfo-end
-  "<remap> <beginning-of-buffer-other-window>" 'corfu-popupinfo-beginning)
+;; (defvar-keymap corfu-popupinfo-map
+;;   :doc "Additional keymap activated in popupinfo mode."
+;;   "C-<i>" 'corfu-popupinfo-toggle
+;;   "<remap> <corfu-info-documentation>" 'corfu-popupinfo-documentation
+;;   "<remap> <corfu-info-location>" 'corfu-popupinfo-location
+;;   "<remap> <scroll-other-window>" 'corfu-popupinfo-scroll-up
+;;   "<remap> <scroll-other-window-down>" 'corfu-popupinfo-scroll-down
+;;   "<remap> <end-of-buffer-other-window>" 'corfu-popupinfo-end
+;;   "<remap> <beginning-of-buffer-other-window>" 'corfu-popupinfo-beginning)
 
 ;;; Config
 (use-package corfu
-  :ensure (:tag "2.9")
+  :ensure t
   :bind
   (:map corfu-map
 	("RET" . nil)
@@ -63,6 +63,29 @@
 	;; ("<tab>" . nil)
 	("M-<return>" . corfu-insert)
 	("M-RET" . corfu-insert))
+  :bind
+  (:map corfu-map
+	("C-g"       . corfu-quit)
+        ("<tab>"     . corfu-next)
+        ("<backtab>" . corfu-previous) ;; S-<tab>
+        ("M-<tab>"   . corfu-expand)
+        ("M-RET"       . corfu-insert)
+	("RET" . nil)
+        ("M-SPC"     . corfu-insert-separator)
+        ("C-h"       . corfu-info-documentation)
+        ("C-l"       . corfu-complete)
+        ("C-<i>"     . corfu-info-documentation)
+        ("C-d"       . corfu-info-location) ;; "gd" is go to definition
+        ;; Scrolling
+        ("C-f"       . corfu-scroll-down)
+        ("C-b"       . corfu-scroll-up)
+        ;; All versions of up/down
+        ("C-j"       . corfu-next)
+        ("C-k"       . corfu-previous)
+        ("M-j"       . corfu-next)
+        ("M-k"       . corfu-previous)
+        ("C-n"       . corfu-next)
+        ("C-p"       . corfu-previous))
   :custom
   (corfu-auto t)
   (corfu-auto-delay 0.24)
