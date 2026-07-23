@@ -52,7 +52,7 @@
           ;; having a face is that you can identify the message even
           ;; when the window is split and you don't see the tags.
           ("flag" . italic)))
-  
+  
   (setq notmuch-show-empty-saved-searches t)
   (setq notmuch-saved-searches
         `(( :name " inbox"
