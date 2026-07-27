@@ -272,6 +272,10 @@ cookies.")
        ;; this evaluates to false initially when run through daemon
        (display-graphic-p)))
 
+
+;; using plists for lsp mode
+(setenv "LSP_USE_PLISTS" "1")
+
 ;; Load "custom.el" file.
 (add-hook 'after-init-hook (lambda ()
                              (let ((inhibit-message t))
