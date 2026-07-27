@@ -133,4 +133,8 @@
 (require 'helheim-keybindings)
 (require 'helheim-disable-isearch)
 
+;; ensuring all init hooks are run
+;; https://github.com/progfolio/elpaca/issues/549
+(progn (elpaca-process-queues) (run-hooks 'elpaca-after-init-hook))
+
 ;;; init.el ends here
