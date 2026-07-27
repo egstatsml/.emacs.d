@@ -70,6 +70,8 @@
 	(funcall fn checker property)))
 
   (advice-add 'flycheck-checker-get :around 'my/flycheck-checker-get)
+  :custom
+  (lsp-use-plists t)
   ;; example of how to use it
   ;; (add-hook 'lsp-managed-mode-hook
   ;;           (lambda ()
