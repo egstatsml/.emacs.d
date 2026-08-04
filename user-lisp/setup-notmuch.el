@@ -4,7 +4,7 @@
 (use-package notmuch
   :ensure t
   :config
-  ;; (setq notmuch-command "/usr/bin/notmuch")
+  (setq notmuch-command "/usr/bin/notmuch")
   (setq notmuch-tagging-keys '(("a" notmuch-archive-tags "Archive")
                                ("u" notmuch-show-mark-read-tags "Mark read")
                                ("f" ("+flagged") "Flag")
@@ -52,15 +52,15 @@
           ;; having a face is that you can identify the message even
           ;; when the window is split and you don't see the tags.
           ("flag" . italic)))
-  
+
   (setq notmuch-show-empty-saved-searches t)
   (setq notmuch-saved-searches
         `(( :name " inbox"
             :query "tag:inbox"
             :sort-order newest-first
             :key ,(kbd "i"))
-          ( :name "󰺻 all unread (inbox)"
-            :query "tag:unread and tag:inbox"
+          ( :name " all unread"
+            :query "tag:unread"
             :sort-order newest-first
             :key ,(kbd "u"))))
   ;; tags.
