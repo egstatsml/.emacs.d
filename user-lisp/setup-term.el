@@ -21,4 +21,14 @@
   :after (ghostel hel)
   :hook (ghostel-mode . hel-ghostel-mode))
 
+
+;; when in emacs -nw, will make the cursor act how I want
+(use-package term-cursor
+  :ensure (term-cursor
+           :host github
+           :repo "h0d/term-cursor.el")
+  :config
+  (when (not my/graphical)
+    (global-term-cursor-mode)))
+
 (provide 'setup-term)
