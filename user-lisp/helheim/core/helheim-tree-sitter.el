@@ -6,7 +6,7 @@
   :defer t
   :hook (emacs-startup-hook . helheim-install-missing-treesit-grammars)
   :custom
-  (treesit-font-lock-level 4)
+  (treesit-font-lock-level 2)
   :preface
   (setq treesit-language-source-alist
         '((bash "https://github.com/tree-sitter/tree-sitter-bash"
