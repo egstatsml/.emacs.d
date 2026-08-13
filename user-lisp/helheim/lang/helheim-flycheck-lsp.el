@@ -40,6 +40,8 @@
   :hook (lsp-mode . lsp-enable-which-key-integration)
   :hook (lsp-completion-mode . my/lsp-mode-setup-completion)
   :config
+  ;; ignore watching files in pixi directory
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.pixi$")
   ;; disable lsp signature
   (setq lsp-signature-auto-activate nil)
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
