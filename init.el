@@ -101,6 +101,7 @@
 (require 'setup-library)
 ;; tools
 (require 'helheim-flycheck-lsp)
+(require 'setup-debug)
 (require 'setup-projectile)
 (require 'setup-vundo)
 (require 'setup-formatting)
