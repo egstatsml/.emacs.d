@@ -282,6 +282,12 @@ If KEYMAP is not provided — return `mode-specific-map'."
     "z 3" 'magit-section-show-level-3-all
     "z 4" 'magit-section-show-level-4-all))
 
+
+(with-eval-after-load 'compile
+  (hel-keymap-set compilation-mode-map :state 'emacs
+    "g"   nil                           ; was set to recompile
+    "g g" 'beginning-of-buffer
+    "r"   'recompile))
 ;;; Repeat mode
 
 (put 'other-window 'repeat-map nil) ;; Use "." key instead.
