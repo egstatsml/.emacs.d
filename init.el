@@ -29,13 +29,9 @@
 (require 'helheim-elpaca)
 
 
-(use-package tramp
-  :ensure t);;(:tag "2.8.1.4"))
-(elpaca-wait)
-;; new compat is needed for corfu/embark before migrate to Emacs 31.1
 (use-package compat
-  :ensure t)
-
+   :ensure t)
+(elpaca-wait)
 ;;; org-mode latex preview
 ;; following advice from karthink, putting very early just clone of it
 ;; these needs to be done pretty much before anything else, otherwise will
@@ -109,6 +105,7 @@
 (require 'setup-ai)
 (require 'setup-term)
 (require 'setup-notmuch)
+
 ;; (require 'setup-pdf)
 (require 'setup-yasnippet)
 (require 'setup-spell)
