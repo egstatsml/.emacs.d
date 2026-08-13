@@ -72,6 +72,11 @@
 	(funcall fn checker property)))
 
   (advice-add 'flycheck-checker-get :around 'my/flycheck-checker-get)
+
+
+  ;; setting servers
+  ;; LaTeX
+  (setq lsp-tex-server 'digestif) 
   :custom
   (lsp-use-plists t)
   ;; example of how to use it

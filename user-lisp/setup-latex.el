@@ -56,7 +56,7 @@ ARG used for 'preivous-error' function."
                   :pre-build (("make" "elpa"))
                   :build (:not elpaca--compile-info) ;; Make will take care of this step
                   :files ("*.el" "doc/*.info*" "etc" "images" "latex" "style")
-                  :version (lambda (_) (require 'auctex) AUCTeX-version))  
+                  :version (lambda (_) (require 'auctex) AUCTeX-version))
   ;; :ensure (auctex
   ;;          :host github
   ;;          :repo "emacsmirror/auctex"
@@ -252,15 +252,18 @@ ARG used for 'preivous-error' function."
   :ensure (consult-reftex
 	   :host github
 	   :repo "karthink/consult-reftex")
-  ;; :load-path "plugins/consult-reftex/"
   :after (reftex consult embark)
   :bind (:map reftex-mode-map
-	      ("C-c C-n r"   . consult-reftex-insert-reference)
-	      ("C-c M-." . consult-reftex-goto-label)
-	      :map org-mode-map
-	      ("C-c (" . consult-reftex-goto-label)
-	      ("C-c )"   . consult-reftex-insert-reference))
+              ("C-c )"   . nil)
+              ("C-c M-." . nil)
+              ("C-c )"   . consult-reftex-insert-reference)
+              ("C-c M-." . consult-reftex-goto-label)
+              :map org-mode-map
+              ("C-c (" . consult-reftex-goto-label)
+              ("C-c )"   . consult-reftex-insert-reference))
   :config
+  (define-key reftex-mode-map [remap reftex-reference] 'consult-reftex-insert-reference)
+  (define-key reftex-mode-map (kbd "C-c M-." 'consult-reftex-goto-label))
   (setq consult-reftex-preview-function
 	#'consult-reftex-make-window-preview
 	consult-reftex-preferred-style-order
@@ -462,7 +465,7 @@ of the preamble part of REGION-TEXT."
           ("equation" "\\begin{equation}
 ?
 \\end{equation}" nil)))
-  
+
   (setq cdlatex-math-symbol-alist '((?F ("\\Phi"))
                                     (?o ("\\omega" "\\mho" "\\mathcal{O}"))
                                     (?. ("\\cdot" "\\circ"))
@@ -510,11 +513,11 @@ of the preamble part of REGION-TEXT."
 (use-package overleaf
   :ensure t
   ;; :config
-  ;; 
+  ;;
   ;; ;; ;; Example: load cookies from firefox
   ;; ;; (setq overleaf-cookies
   ;; ;;       (overleaf-read-cookies-from-firefox "~/.mozilla/firefox/[YOUR PROFILE].default/cookies.sqlite")))
-  ;; 
+  ;;
   ;; ;; Example: load/save cookies from GPG encrypted file.
   ;; ;;          (remove the .gpg extension to save unencrypted)
   ;; (let ((cookie-file "~/.overleaf-cookies.gpg"))
