@@ -514,10 +514,6 @@ Use `delete-trailing-whitespace' command."
 
 ;;;; Minibuffer
 
-;; Allow opening new minibuffers from inside existing minibuffers.
-(setq enable-recursive-minibuffers t)
-(minibuffer-depth-indicate-mode)
-
 (setq resize-mini-windows 'grow-only
       history-delete-duplicates t)
 
