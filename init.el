@@ -109,6 +109,7 @@
 ;; (require 'setup-pdf)
 (require 'setup-yasnippet)
 (require 'setup-spell)
+(require 'setup-chess)
 ;;; Org mode
 
 (when my/graphical
