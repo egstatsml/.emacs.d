@@ -109,6 +109,14 @@
   (text-mode-ispell-word-completion nil)
   :hook (elpaca-after-init-hook . global-corfu-mode))
 
+(when (version< "31" emacs-version)
+  (use-package corfu-terminal
+    :ensure t
+    :after corfu
+    :init
+    (unless (display-graphic-p)
+      (corfu-terminal-mode +1))))
+
 (use-package corfu-history
   :hook (global-corfu-mode-hook . corfu-history-mode)
   :config
