@@ -55,7 +55,7 @@
 (elpaca-wait)
 
 (use-package transient  
-  :ensure (:tag "v0.13.2")
+  :ensure t
   :defer t
   :custom
   (transient-common-command-prefix "SPC")
