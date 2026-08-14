@@ -1,4 +1,4 @@
- ;;; setup-editing.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; setup-editing.el -*- lexical-binding: t; no-byte-compile: t; -*-
 
 ;; will auto save buffers for me a bit nicer
 (use-package super-save
