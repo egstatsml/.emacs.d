@@ -56,6 +56,19 @@
                             (#xe0cc . #xe0d7) ;;  
                             #xe0a3 #xe0ca))   ;;  
 
+;;; my setup
+;; All of my bib databases.
+(defconst ethan/bib-libraries (list "~/.local/ref.bib"))
+;; The main db is always the first
+(defconst ethan/main-bib-library (nth 0 ethan/bib-libraries))
+;; PDFs directories in a list
+(defconst ethan/main-pdfs-library-paths `("~/OneDrive/pdfs/"))
+;; Main PDFs directory
+(defconst ethan/main-pdfs-library-path (nth 0 ethan/main-pdfs-library-paths))
+;; I use org-roam to manage all my notes, including bib notes.
+(defconst ethan/bib-notes-dir "~/org/roam")
+
+
 ;;; Helheim core
 
 ;; In case you use VPN. Also Emacs populates `url-proxy-services' variable
@@ -67,18 +80,19 @@
 (setq helheim-package-manager 'elpaca) ;; or 'straight
 (require 'helheim-core)
 
-;;; Color theme
+;; Install use-package support
+(elpaca elpaca-use-package
+  ;; Enable use-package :ensure support for Elpaca.
+  (elpaca-use-package-mode))
 
-(setup helheim-modus-themes
-       (:require t)
-       (load-theme 'modus-operandi t))
 
-;; I can recommend `leuven' theme for org-mode work. It has so many nice little
-;; touches to spruce up org-mode elements that some users switch to it from
-;; their usual dark doom or modus themes when working on org-mode projects.
-;;   You may try it with ": load-theme" then type "leuven".
-(setup leuven-theme (:install t))
-
+;; (use-package org
+;;   :if my/graphical
+;;   :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git"
+;;                :branch "dev"))
+;; (elpaca-wait)
+;;; Visuals
+(require 'setup-ui)
 ;;; Essentials
 
 (require 'helheim-minibuffer) ; Vertico + Marginalia
@@ -89,9 +103,8 @@
 (require 'helheim-ibuffer)    ; Buffers menu
 (require 'helheim-dired)      ; File-manager
 (require 'helheim-embark)     ; Context-aware action menus
-(require 'helheim-modeline)   ; Normal people call this "status line"
+;; (require 'helheim-modeline)   ; Normal people call this "status line"
 (require 'helheim-outline)    ; See "Outline Mode" in Emacs manual
-(require 'helheim-tab-bar)    ; Each tab represents a set of windows, as in Vim
 
 ;;; Search
 
@@ -100,6 +113,7 @@
 
 ;;; IDE
 
+(require 'setup-project)
 (require 'helheim-xref)     ; Go to definition framework
 
 ;; (require 'helheim-eglot)    ; eglot + flymake (both built-in)
@@ -115,7 +129,7 @@
 ;;; Org mode
 
 ;; These variables must be set before `org' is loaded!
-(setopt org-directory (expand-file-name "~/notes/")
+(setopt org-directory (expand-file-name "~/org/")
         ;; Which modules to load.
         ;; Place cursor on variable and press "M" to see all possible values.
         org-modules '(ol-bibtex ol-docview ol-info))
@@ -132,7 +146,7 @@
 (require 'helheim-markdown)
 (require 'helheim-lua)
 (require 'helheim-sh)
-
+(require 'setup-python)
 ;;; Terminal emulators
 
 (require 'helheim-ghostel) ; based on libghostty (Zig) -- same as in Ghostty
@@ -140,9 +154,9 @@
 
 ;;; LLM
 
-(require 'helheim-agent-shell)
+;; (require 'helheim-agent-shell)
                                         ; (require 'helheim-mcp-server)
-
+(require 'setup-ai)
 ;;; Extra ficilities
 
                                         ; (require 'helheim-browser) ; Synchronize online text editor with Emacs buffer

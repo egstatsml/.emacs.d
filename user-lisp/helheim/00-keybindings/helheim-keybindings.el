@@ -6,6 +6,20 @@
 ;;
 ;;; General
 
+(use-package flash-jump
+  :ensure t
+  :commands (flash-jump flash-jump-continue
+                        flash-treesitter)
+  :custom
+  (flash-multi-window t)
+  :config
+  ;; Search integration (labels during C-s, /, ?)
+  (require 'flash-isearch)
+  (flash-isearch-mode 1))
+
+(use-package expreg
+  :ensure t)
+
 (setup hel-leader
   (:install hel-leader :host github :repo "helheim-emacs/hel-leader")
   (:require t))
@@ -13,7 +27,11 @@
 (setup helheim
   (:global-bind :state normal
     "z SPC" 'cycle-spacing
-    "z ."   'set-fill-prefix)
+    "z ."   'set-fill-prefix
+    "$" 'expreg-expand
+    "|" 'expreg-contract
+    "#" 'flash-jump)
+    
   (:global-bind :state insert
     "C-/"   'hippie-expand)
   (:global-bind
@@ -67,12 +85,6 @@
   ;; Open
   ;; "o f"   'treemacs ; for future
   ;; "o i"   'imenu-list-smart-toggle
-  ;; Project
-  "p"     (hel-keymap-set project-prefix-map
-            "RET" 'project-dired
-            ","   'project-switch-to-buffer
-            "/"   'project-find-regexp
-            "B"   'project-list-buffers)
   ;; Toggle
   "t d"   'display-line-numbers-mode
   "t r"   'read-only-mode        ;; "C-x C-q"

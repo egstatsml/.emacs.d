@@ -630,6 +630,7 @@ See `+wrap-line-mode' for more information on +Wrap-Line mode.
 
 (fn &optional ARG)" t)
 (register-definition-prefixes "helheim/wrap-line-mode/wrap-line" '("+wrap-line-"))
+
 
 ;;; End of scraped data
 

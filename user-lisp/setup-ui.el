@@ -83,7 +83,7 @@
   :init
   (add-to-list 'custom-theme-load-path
                (file-name-directory (locate-library "ember-theme"))))
-  ;; (load-theme 'ember-light t))
+;; (load-theme 'ember-light t))
 
 
 (use-package mood-line
@@ -93,17 +93,17 @@
   :init
 
   (defun mood-line-segment-modal ()
-  "Changing this to have hel mode as well"
-  (cond
-   ((bound-and-true-p hel-mode)
-    (mood-line-segment-modal--hel-fn))
-   ((bound-and-true-p meow-mode)
-    (mood-line-segment-modal--meow-fn))
-   ((bound-and-true-p xah-fly-keys)
-    (mood-line-segment-modal--xah-fn))
-   ((or (bound-and-true-p god-local-mode)
-        (bound-and-true-p god-global-mode))
-    (mood-line-segment-modal--god-fn))))
+    "Changing this to have hel mode as well"
+    (cond
+     ((bound-and-true-p hel-mode)
+      (mood-line-segment-modal--hel-fn))
+     ((bound-and-true-p meow-mode)
+      (mood-line-segment-modal--meow-fn))
+     ((bound-and-true-p xah-fly-keys)
+      (mood-line-segment-modal--xah-fn))
+     ((or (bound-and-true-p god-local-mode)
+          (bound-and-true-p god-global-mode))
+      (mood-line-segment-modal--god-fn))))
 
   (defcustom mood-line-segment-modal-hel-state-alist
     '((normal . ("🅝" . font-lock-variable-name-face))
@@ -180,7 +180,7 @@ org-clock has been loaded in"
 (use-package mixed-pitch
   :ensure t
   :hook ((LaTeX-mode . mixed-pitch-mode)
-	(org-mode . mixed-pitch-mode))
+	 (org-mode . mixed-pitch-mode))
   :config
   (ethan/append-to-list 'mixed-pitch-fixed-pitch-faces
 			'(solaire-line-number-face
