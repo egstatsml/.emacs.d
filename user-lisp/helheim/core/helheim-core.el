@@ -23,7 +23,7 @@
 (elpaca s)
 (elpaca pcre2el)
 (elpaca wgrep)
-
+(elpaca-wait)
 ;;;;; Scrolling with mouse wheel and touchpad
 
 (use-package ultra-scroll
