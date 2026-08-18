@@ -62,9 +62,7 @@
 	;; ("[tab]" . nil)
 	;; ("<tab>" . nil)
 	("M-<return>" . corfu-insert)
-	("M-RET" . corfu-insert))
-  :bind
-  (:map corfu-map
+	("M-RET" . corfu-insert)
 	("C-g"       . corfu-quit)
         ("<tab>"     . corfu-next)
         ("<backtab>" . corfu-previous) ;; S-<tab>
