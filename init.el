@@ -86,7 +86,9 @@
   ;; Enable use-package :ensure support for Elpaca.
   (elpaca-use-package-mode))
 
-
+;; small emacs lisp functions
+;; loading early as some of these are used to write my config
+(require 'setup-elisp-utils)
 ;; (use-package org
 ;;   :if my/graphical
 ;;   :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git"
