@@ -1,0 +1,25 @@
+* helheim-xref
+
+Xref is an Emacs *go-to definition* and *show references* framework.
+
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-xref)
+#+end_src
+
+** Packages
+- xref
+- [[https://github.com/jacktasia/dumb-jump][dumb-jump]]
+- [[https://github.com/hron/nerd-icons-xref][nerd-icons-xref]]
+
+** Hacks
+
+- Hack Xref to try all registered backends in sequence until the first
+  one succeeds.
+- Add [[https://github.com/jacktasia/dumb-jump][Dumb Jump]] as a universal fallback backend.
+
+** Usage
+
+| =g d=     | go to definition                  |
+| =C-w g d= | open definition in another window |
+| =g r=     | find references                   |

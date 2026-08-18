@@ -1,143 +1,153 @@
-;;; init.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; init.el -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Fonts
 ;;
-;; Set up fonts before anything else so error messages during startup were
-;; readable.
+;; Set up fonts before anything else so error messages during startup
+;; were readable.
 ;;
-;; Place cursor before character and press "ga" to see information about it.
-;; Press "<F1> k ga" to find out which command is bound to "ga".
+;; Press "ga" to see information about the character at the position, font used,
+;; faces, overlays, etc. (Press "<F1> k ga" to find out which command is bound
+;; to "ga".)
 
+(let* ((font "JetBrainsMono Nerd Font Mono") ;; <- replace with you font
+       (spec (font-spec :family font :size 13.0 :weight 'normal)))
+  (set-face-font 'default spec)
+  (set-face-font 'fixed-pitch spec)
+  ;; Prepend our font to the default fontset to make it the first fallback
+  ;; candidate for itself. This matters when text is bold or italic and the
+  ;; default font lacks glyphs for those styles but does provide them for the
+  ;; regular style. With this change, Emacs will use the regular glyphs from
+  ;; the default font when bold or italic variants are unavailable, instead of
+  ;; falling back to a different font.
+  ;;   BUG: Using `font-spec' with `set-fontset-font' doesn't work, despite
+  ;; documentation claims it is.
+  (set-fontset-font t 'unicode font nil 'prepend))
 
-;;; My constants
-;; All of my bib databases.
-(defconst ethan/bib-libraries (list "~/.local/ref.bib"))
-;; The main db is always the first
-(defconst ethan/main-bib-library (nth 0 ethan/bib-libraries))
-;; PDFs directories in a list
-(defconst ethan/main-pdfs-library-paths `("~/OneDrive/pdfs/"))
-;; Main PDFs directory
-(defconst ethan/main-pdfs-library-path (nth 0 ethan/main-pdfs-library-paths))
-;; I use org-roam to manage all my notes, including bib notes.
-(defconst ethan/bib-notes-dir "~/org/roam")
-
-
-(when (< emacs-major-version 31)
-  (load-file (expand-file-name "prepare-user-lisp.el" user-lisp-directory))
-  (prepare-user-lisp))
-
-
-(require 'helheim-elpaca)
-
-(use-package tramp
-  :ensure t)
-
-(use-package compat
-   :ensure t)
-(elpaca-wait)
-;;; org-mode latex preview
-;; following advice from karthink, putting very early just clone of it
-;; these needs to be done pretty much before anything else, otherwise will
-;; use built in org
-(use-package org
-  :if my/graphical
-  :defer
-  :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git"
-               :branch "dev"))
-
-;; small emacs lisp functions
-;; loading early as some of these are used to write my config
-(require 'setup-elisp-utils)
-
-
-
-;; making sure exec-path-from shell is super early in config
-(use-package exec-path-from-shell
-  :ensure t
-  :init
-  ;; this requires that I have set my shell paths correctly such that
-  ;; it is all visible in a non-interactive shell.
-  ;; If this is not the case, none of it will work.
-  ;; See README for info.
-  ;; (setq exec-path-from-shell-arguments '("-l" "-i"))
-  (setq exec-path-from-shell-arguments nil)
-  ;; when launcing standalone
-  (when (memq window-system '(mac ns x))
-    (exec-path-from-shell-initialize))
-  ;; when as a daemon
-  (when (daemonp)
-    (exec-path-from-shell-initialize)))
-
-(require 'setup-emacs)
-(require 'setup-tramp)
-(require 'helheim-core)
-(require 'helheim-tree-sitter)
 (require 'cl-macs)
 
-;;; ui
-(require 'setup-ui)
-;;; Other modules
-(require 'helheim-xref)     ; Go to defenition framework
-(require 'helheim-ibuffer)  ; Buffers menu
-;; (require 'helheim-dired)    ; File-manager
-;;(require 'helheim-outline-mode) ; See "Outline Mode" in Emacs manual.
-(require 'helheim-window)    ; window utilities
-(require 'helheim-i3)    ; i3
-(require 'setup-editing) ; editing/writing
+(cl-defun helheim-set-fontset-font (font charsets &key (fontset t) add)
+  "Force some code point diapasons to use particular FONT."
+  (declare (indent 1))
+  (dolist (charset charsets)
+    (set-fontset-font fontset charset font nil add)))
 
-;;; Search and completion
-(require 'helheim-corfu)    ; Code completion menus
-(require 'helheim-vertico)  ; Emacs version of command pallet
+(helheim-set-fontset-font "Symbols Nerd Font Mono"
+                          '((#xe5fa . #xe6b7) ;; Seti-UI + Custom  
+                            (#xe700 . #xe8ef) ;; Devicons  
+                            (#xed00 . #xf2ff) ;; Font Awesome  
+                            (#xe200 . #xe2a9) ;; Font Awesome Extension  
+                            (#xe300 . #xe3e3) ;; Weather  
+                            (#xf400 . #xf533) #x2665 #x26A1 ;; Octicons   ♥ ⚡
+                            (#x23fb . #x23fe) #x2b58 ;; IEC Power Symbols ⏻ ⏾ ⭘
+                            (#xf300 . #xf381) ;; Font Logos   
+                            (#xe000 . #xe00a) ;; Pomicons  
+                            (#xea60 . #xec1e) ;; Codicons  
+                            (#x276c . #x2771) ;; Heavy Angle Brackets ❬ ❱
+                            (#xee00 . #xee0b) ;; Progress  
+                            (#xf0001 . #xf1af0))) ;; Material Design Icons 󰀁 󱫰
+
+;; In the modeline, we’re not restricted by a rigid grid, and non-monospace
+;; Powerline symbols look better.
+(helheim-set-fontset-font "Symbols Nerd Font"
+                          `(;; Powerline Symbols
+                            (#xe0a0 . #xe0a2) ;;  
+                            (#xe0b0 . #xe0b3) ;;  
+                            ;; Powerline Extra Symbols
+                            (#xe0b4 . #xe0c8) ;;  
+                            (#xe0cc . #xe0d7) ;;  
+                            #xe0a3 #xe0ca))   ;;  
+
+;;; Helheim core
+
+;; In case you use VPN. Also Emacs populates `url-proxy-services' variable
+;; from: `https_proxy', `socks_proxy', `no_proxy' environment variables.
+;; (setopt url-proxy-services '(("socks" . "127.0.0.1:10808")
+;;                              ("https" . "127.0.0.1:10809"))
+;;         gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+
+(setq helheim-package-manager 'elpaca) ;; or 'straight
+(require 'helheim-core)
+
+;;; Color theme
+
+(setup helheim-modus-themes
+       (:require t)
+       (load-theme 'modus-operandi t))
+
+;; I can recommend `leuven' theme for org-mode work. It has so many nice little
+;; touches to spruce up org-mode elements that some users switch to it from
+;; their usual dark doom or modus themes when working on org-mode projects.
+;;   You may try it with ": load-theme" then type "leuven".
+(setup leuven-theme (:install t))
+
+;;; Essentials
+
+(require 'helheim-minibuffer) ; Vertico + Marginalia
+(require 'helheim-completion) ; Corfu + Orderless + Cape
+(require 'helheim-search)     ; Consult + Deadgrep
+(require 'helheim-keybindings)
+
+(require 'helheim-ibuffer)    ; Buffers menu
+(require 'helheim-dired)      ; File-manager
+(require 'helheim-embark)     ; Context-aware action menus
+(require 'helheim-modeline)   ; Normal people call this "status line"
+(require 'helheim-outline)    ; See "Outline Mode" in Emacs manual
+(require 'helheim-tab-bar)    ; Each tab represents a set of windows, as in Vim
+
+;;; Search
+
 (require 'helheim-consult)  ; A set of search commands with preview
-(require 'helheim-deadgrep) ; Interface to Ripgrep
-(require 'helheim-embark)   ; Context-aware action menus
+(require 'helheim-deadgrep) ; Interface for Ripgrep in Emacs
 
-;;; Major modes
-(require 'helheim-emacs-lisp)
-(require 'helheim-markdown)
-(require 'helheim-python)
-(require 'setup-latex)
-(require 'setup-library)
-(use-package csv-mode
-  :ensure t)
-;; tools
-(require 'helheim-flycheck-lsp)
-(require 'setup-debug)
-(require 'setup-projectile)
-(require 'setup-vundo)
-(require 'setup-formatting)
-(require 'setup-bib)
-(require 'setup-ai)
-(require 'setup-term)
-(require 'setup-notmuch)
+;;; IDE
 
-;; (require 'setup-pdf)
-(require 'setup-yasnippet)
-(require 'setup-spell)
-(require 'setup-chess)
+(require 'helheim-xref)     ; Go to definition framework
+
+;; (require 'helheim-eglot)    ; eglot + flymake (both built-in)
+;; or
+(require 'helheim-flycheck) ; Diagnostics
+(require 'helheim-lsp-mode) ; Lsp-mode
+
+;;; Version control
+
+(require 'helheim-magit)
+(require 'helheim-diff-hl)  ; git gutter indicators
+
 ;;; Org mode
 
-(when my/graphical
-  ;; The `org-directory' variable must be set before `helheim-org' is loaded!
-  (setopt org-directory (expand-file-name "~/notes/"))
-  ;; Which modules to load. Place cursor on variable and press "M" to see
-  ;; all possible values.
-  (setq org-modules '(ol-bibtex ol-docview ol-info))
-  (require 'helheim-org)
-  (require 'helheim-org-node)
-  (require 'helheim-daily-notes)
-  (require 'helheim-agenda)
-  (require 'setup-org-noter))
-;;; Version control system
-(require 'helheim-magit)
-(require 'helheim-diff-hl)
+;; These variables must be set before `org' is loaded!
+(setopt org-directory (expand-file-name "~/notes/")
+        ;; Which modules to load.
+        ;; Place cursor on variable and press "M" to see all possible values.
+        org-modules '(ol-bibtex ol-docview ol-info))
 
-;;; Keybindings
-;;(require 'hel-leader)
-(require 'helheim-keybindings)
-(require 'helheim-disable-isearch)
+(require 'helheim-org)
+(require 'helheim-org-node)
+(require 'helheim-daily-notes)
 
-;; ensuring all init hooks are run
-;; https://github.com/progfolio/elpaca/issues/549
-(progn (elpaca-process-queues) (run-hooks 'elpaca-after-init-hook))
+;;; Major modes
+
+(require 'helheim-cpp)
+(require 'helheim-emacs-lisp)
+(require 'helheim-json)
+(require 'helheim-markdown)
+(require 'helheim-lua)
+(require 'helheim-sh)
+
+;;; Terminal emulators
+
+(require 'helheim-ghostel) ; based on libghostty (Zig) -- same as in Ghostty
+                                        ; (require 'helheim-vterm)   ; based on libvterm (C) -- same as in Neovim
+
+;;; LLM
+
+(require 'helheim-agent-shell)
+                                        ; (require 'helheim-mcp-server)
+
+;;; Extra ficilities
+
+                                        ; (require 'helheim-browser) ; Synchronize online text editor with Emacs buffer
+                                        ; (require 'helheim-notmuch) ; Notmuch email client
+                                        ; (require 'helheim-whisper) ; Speech to text conversion
+                                        ; (require 'helheim-edit-indirect) ; Alternative "zn" binding
 
 ;;; init.el ends here

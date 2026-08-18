@@ -1,9 +1,25 @@
 * helheim-dired
-** Improvements
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-dired)
+#+end_src
 
-Dired local minor modes (such as ~dired-hide-details-mode~, ~dired-omit-mode~, etc.)
-are converted into global minor modes, so their state persists across Dired
-buffers.
+** Packages
+- dired
+- [[https://github.com/purcell/diredfl][diredfl]]
+- [[https://github.com/rainstormstudio/nerd-icons-dired][nerd-icons-dired]]
+- [[https://github.com/fuco1/dired-hacks][dired-narrow]]
+- [[https://github.com/fuco1/dired-hacks][dired-subtree]]
+- [[https://github.com/jsilve24/dired-copy-paste][dired-copy-paset]]
+- fd-dired
+- [[https://github.com/fuco1/dired-hacks][dired-filter]]
+- image-dired
+
+** Hacks
+
+- Dired local minor modes (such as ~dired-hide-details-mode~, ~dired-omit-mode~,
+  etc.) are converted into global minor modes, so their state persists across
+  Dired buffers.
 
 ** Keys
 
@@ -141,16 +157,16 @@ Following commands operate only on files marked with =*= mark or current file.
 | =r L= | Create relative symlinks for files whose names match REGEXP. |
 | =r h= | Create hardlinks for files whose names match REGEXP.         |
 
-*** View manipulation
+*** View
 
 | =s=        | Toggle sorting by date.                                       |
 | =S=        | Sorting menu                                                  |
-| =K=        | Remove marked lines from Dired buffer without removing files. |
+| =K=        | Remove marked lines from Dired buffer without deleting files. |
 | =,u= or =gv= | Restore marks / deleted lines (~dired-undo~)                    |
 | =zi= or =(=  | Toggle detailed information display.                          |
 | =z.= or =)=  | Toggle hidden files display.                                  |
 
-**** Filtering view ([[https://github.com/Fuco1/dired-hacks/blob/master/dired-filter.el][dired-filter]] from dired-hacks)
+**** [[https://github.com/Fuco1/dired-hacks/blob/master/dired-filter.el][dired-filter]] (from dired-hacks)
 
 The bindings follow a convention where the filters are mapped on lower-case
 letters or punctuation, operators are mapped on symbols (such as =!=, =|=, =*= etc.)
@@ -158,8 +174,13 @@ and group commands are mapped on upper-case letters. The exception to this is =p
 which is bound to ~dired-filter-pop~, which is a very common operation and
 warrants a quick binding.
 
-| =f=            | filter keymap                        |
-| =F= or =SPC t f= | filter-groups mode (like in Ibuffer) |
+| =f=            | filters keymap                                            |
+| =F= or =SPC t f= | filter-groups mode (like in Ibuffer)                      |
+
+**** [[https://github.com/Fuco1/dired-hacks/blob/master/dired-narrow.el][dired-narrow]] (from dired-hacks)
+
+| =zn= | Narrow view to the files matching a fuzzy string. |
+| =zN= | Narrow view to the files matching a REGEXP.       |
 
 **** Several directories in Dired buffer
 
@@ -182,7 +203,14 @@ warrants a quick binding.
 | =z J=   | subtree end       |
 | =z K=   | subtree beginning |
 | =z u=   | subtree up        |
-| =z n=   | narrow to subtree |
+
+*** Search
+
+| =SPC s /= | Find all matches for regexp in marked files                           |
+| =SPC s r= | Replace all matches for regexp in marked files                        |
+| =SPC s f= | ~fd-dired~: Run ~fd~ and show output in Dired buffer                      |
+| =SPC s n= | ~fd-name-dired~: Search recursively for files matching globbing PATTERN |
+| =SPC s g= | ~fd-grep-dired~: Find files that content matches REGEXP                 |
 
 *** Misc
 
@@ -196,10 +224,6 @@ warrants a quick binding.
 | ~=~       | ~dired-diff~                                 |
 | =?=       | Dired Casual menu                          |
 
-
-| =SPC s /= | Find all matches for regexp in marked files    |
-| =SPC s r= | Replace all matches for regexp in marked files |
-
 - =,i= or =ci= ::
   Prepend marked files names with timestamp-based IDs:
   #+begin_src
@@ -208,6 +232,12 @@ warrants a quick binding.
   The ID is the file’s creation time, formatted according to ISO 8601 —
   the same format used by the =helheim-org= module for Org IDs. This whole
   concept is inspired by [[https://protesilaos.com/emacs/denote][Denote]].
+
+**** Git
+
+| =SPC v i= | Initialize Git repository in current directory |
+| =SPC v s= | Stage marked files                             |
+| =SPC v u= | Unstage marked files                           |
 
 **** encryption and decryption (~epa-dired~)
 
@@ -219,7 +249,7 @@ warrants a quick binding.
 ** Tips
 *** How to narrow dired buffer to marked files
 1. Mark necessary files with =m=.
-2. =t= to revert marked files.
+2. =~= to revert marked files.
 3. =K= to kill marked lines. It does *not* delete the files,
    just the lines in the dired buffer.
 

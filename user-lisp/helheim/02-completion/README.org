@@ -1,0 +1,25 @@
+* helheim-completion
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-completion)
+#+end_src
+
+** Packages
+- [[https://github.com/oantolin/orderless][orderless]]
+- [[https://github.com/minad/corfu][corfu]]
+  - [[https://github.com/LuigiPiucco/nerd-icons-corfu][nerd-icons-corfu]]
+- [[https://github.com/minad/cape][cape]]
+
+** Usage
+*** When completion popup is active
+
+| =Tab= / =S-Tab= | next / previous candidate |
+| =C-j= / =C-k=   | next / previous candidate |
+| =M-j= / =M-k=   | next / previous candidate |
+| =C-f= / =C-b=   | Scroll candidates list    |
+
+
+| =Enter=      | Insert selected candidate                                                 |
+| =M-Space=    | Insert space without aborting completion                                  |
+| =C-l=        | Insert selected candidate or expands the common prefix of all candidates. |
+| =C-i= or =C-h= | Show documentation for current candidate.                                 |

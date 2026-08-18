@@ -1,0 +1,34 @@
+* helheim-org-node
+
+Install and configure [[https://github.com/meedstrom/org-node][Org-node]] — a more perfomant [[https://www.orgroam.com/][Org-roam]] alternative.
+
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-org-node)
+#+end_src
+
+** Hacks
+
+- New files use the [[https://protesilaos.com/emacs/denote][Denote]] naming convention:
+  #+begin_example
+  20250322T131856--my-node-title.org
+  #+end_example
+
+- Nodes with an =:IGNORE:= or =:ROAM_EXCLUDE:= property are ignored by org-node
+  commands.
+
+- ~org-agenda-files~ list is auto generated from the all files containing =TODO= nodes.
+
+- The backlinks buffer is displayed in another window when the frame contains
+  one or two windows, if more — it is displayed in the current window.
+
+** Keybindings
+
+The keys defined by this module are included in the general list in the
+helheim-org module's README.
+
+** Customization
+
+- ~helheim-org-node-visit-backlink-in-another-window~ ::
+  When set, pressing =Enter= in the backlinks buffer opens the target node in
+  another window instead of the current one. Default: =nil=.

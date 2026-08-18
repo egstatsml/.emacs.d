@@ -108,7 +108,7 @@ Like `helheim-xref-find-definitions' but switch to the other frame." t)
 
 ;;; Generated autoloads from helheim/search-and-completion/helheim-corfu.el
 
-(register-definition-prefixes "helheim/search-and-completion/helheim-corfu" '("+corfu-move-to-minibuffer" "corfu-"))
+(register-definition-prefixes "helheim/search-and-completion/helheim-corfu" '("+corfu-move-to-minibuffer"))
 
 
 ;;; Generated autoloads from helheim/org-mode/helheim-daily-notes.el
@@ -133,24 +133,12 @@ Like `helheim-xref-find-definitions' but switch to the other frame." t)
 
 ;;; Generated autoloads from helheim/dired/helheim-dired.el
 
-(register-definition-prefixes "helheim/dired/helheim-dired" '("helheim-dired-convert-to-global-minor-mode"))
+(register-definition-prefixes "helheim/dired/helheim-dired" '("helheim-dired--convert-to-global-minor-mode"))
 
 
 ;;; Generated autoloads from helheim/dired/helheim-dired-keys.el
 
-(autoload 'helheim-dired-do-add-id "helheim/dired/helheim-dired-keys" "\
-Prepend marked files names with timestamp based ID.
-If file already has ID — do nothing." '(dired-mode))
-(function-put 'helheim-dired-do-add-id 'interactive-only 't)
-(autoload 'helheim-dired-file-id "helheim/dired/helheim-dired-keys" "\
-Return FILE's ID if it has one.
-
-(fn FILEPATH)")
-(autoload 'helheim-dired-generate-file-id "helheim/dired/helheim-dired-keys" "\
-Return ID based on FILE creation time.
-
-(fn FILEPATH)")
-(register-definition-prefixes "helheim/dired/helheim-dired-keys" '("+dired-" "dired-subtree-" "helheim-dired-" "image-dired-"))
+(register-definition-prefixes "helheim/dired/helheim-dired-keys" '("helheim-dired-mark-map"))
 
 
 ;;; Generated autoloads from helheim/keybindings/helheim-ediff-keys.el
@@ -205,7 +193,7 @@ already an edit-indirect buffer active overlapping any portion of region, an
 
 ;;; Generated autoloads from helheim/ibuffer/helheim-ibuffer.el
 
-(register-definition-prefixes "helheim/ibuffer/helheim-ibuffer" '("helheim-" "ibuffer-jump"))
+(register-definition-prefixes "helheim/ibuffer/helheim-ibuffer" '("helheim-ibuffer-"))
 
 
 ;;; Generated autoloads from helheim/version-control/helheim-magit.el
@@ -316,6 +304,332 @@ unconditionally.
 ;;; Generated autoloads from helheim/keybindings/helheim-keybindings.el
 
 (register-definition-prefixes "helheim/keybindings/helheim-keybindings" '("helheim-"))
+
+
+
+;;; Generated autoloads from helheim/00-keybindings/autoload.el
+
+(autoload 'helheim-keyboard-quit "helheim/00-keybindings/autoload"
+"Improved `keyboard-quit'." t)
+
+
+;;; Generated autoloads from helheim/fill-paragraph/fill-paragraph.el
+
+(autoload '+flex-fill-paragraph "helheim/fill-paragraph/fill-paragraph"
+"Fill paragraph, incrementing fill column to cause a change when repeated.
+The global value of `fill-column' is not modified; it is only bound around
+calls to `fill-paragraph'.
+
+When called for the first time in a sequence, unfill to the default
+`fill-column'.
+
+When called repeatedly, increase `fill-column' until filling changes.
+
+With \\[universal-argument] justify paragraph.
+
+(fn &optional JUSTIFY)" t)
+(register-definition-prefixes "helheim/fill-paragraph/fill-paragraph" '("+flex-fill-paragraph-"))
+
+
+;;; Generated autoloads from helheim/02-completion/helheim-completion.el
+
+(register-definition-prefixes "helheim/02-completion/helheim-completion" '("+corfu-move-to-minibuffer"))
+
+
+;;; Generated autoloads from helheim/00-core/helheim-core.el
+
+(register-definition-prefixes "helheim/00-core/helheim-core" '("helheim-"))
+
+
+;;; Generated autoloads from helheim/org-mode/helheim-daily-notes/helheim-daily-notes.el
+
+(register-definition-prefixes "helheim/org-mode/helheim-daily-notes/helheim-daily-notes" '("helheimg-daily-directory"))
+
+
+;;; Generated autoloads from helheim/org-mode/helheim-daily-notes/helheim-daily-notes-lib.el
+
+(autoload 'helheim-daily--set-keys "helheim/org-mode/helheim-daily-notes/helheim-daily-notes-lib")
+(autoload 'helheimg-daily-note "helheim/org-mode/helheim-daily-notes/helheim-daily-notes-lib"
+"Open today's daily note.
+With \\[universal-argument], interactively choose a date and open the daily note
+for the specified date.
+
+(fn ARG)" t)
+(autoload 'helheim-daily-next "helheim/org-mode/helheim-daily-notes/helheim-daily-notes-lib"
+"Find next daily-note.
+With numeric argument N, find note N days in the future. If N is
+negative, find note N days in the past.
+
+(fn &optional N)" t)
+(autoload 'helheim-daily-previous "helheim/org-mode/helheim-daily-notes/helheim-daily-notes-lib"
+"Find previous daily-note.
+With numeric argument N, find note N days in the past. If N is
+negative, find note N days in the future.
+
+(fn &optional N)" t)
+(register-definition-prefixes "helheim/org-mode/helheim-daily-notes/helheim-daily-notes-lib" '("helheim-daily-"))
+
+
+;;; Generated autoloads from helheim/04-version-control/git-gutter/helheim-diff-hl.el
+
+(register-definition-prefixes "helheim/04-version-control/git-gutter/helheim-diff-hl" '("diff-hl-show-hunk-inline"))
+
+
+;;; Generated autoloads from helheim/dired/helheim-dired-lib.el
+
+(autoload 'helheim-dired-do-add-id "helheim/dired/helheim-dired-lib"
+"Prepend marked files names with timestamp based ID.
+If file already has ID — do nothing." '(dired-mode))
+(function-put 'helheim-dired-do-add-id 'interactive-only 't)
+(autoload 'helheim-dired-file-id "helheim/dired/helheim-dired-lib"
+"Return FILE's ID if it has one.
+
+(fn FILE)")
+(register-definition-prefixes "helheim/dired/helheim-dired-lib" '("+dired-" "dired-subtree-" "helheim-" "image-dired-show-all-from-dir"))
+
+
+;;; Generated autoloads from helheim/edit-indirect/helheim-edit-indirect-lib.el
+
+(autoload 'helheim-edit-region-indirect "helheim/edit-indirect/helheim-edit-indirect-lib"
+"Copy region without text properties, to a separate buffer.
+With \\[universal-argument] ask which major mode to use in edit-indirect buffer.
+
+The region is copied, without text properties, to a separate buffer. When done,
+exit with `edit-indirect-commit', which will remove the original region and
+replace it with the edited version; or with `edit-indirect-abort', which will
+drop the modifications.
+
+This differs from `hel-narrow-to-region-indirectly' which clones buffer
+inidrectly with narrowing in that the text properties are not shared, so the
+parent buffer major mode and the edit-indirect buffer major mode will not be
+able to tread on each other's toes by setting up potentially conflicting text
+properties, which happens surprisingly often when the font-lock mode is used.
+
+Edit-indirect buffers use the `edit-indirect-mode-map' keymap. Regions with
+active edit-indirect buffers use the edit-indirect-overlay-map keymap.
+
+If there's already an edit-indirect buffer for region, use that. If there's
+already an edit-indirect buffer active overlapping any portion of region, an
+`edit-indirect-overlapping' error is signaled.
+
+(fn ARG)" t)
+(register-definition-prefixes "helheim/edit-indirect/helheim-edit-indirect-lib" '("helheim-"))
+
+
+;;; Generated autoloads from helheim/00-core/helheim-elpaca.el
+
+(register-definition-prefixes "helheim/00-core/helheim-elpaca" '("elpaca-" "helheim-update"))
+
+
+;;; Generated autoloads from helheim/06-languages/emacs-lisp/helheim-emacs-lisp.el
+
+(register-definition-prefixes "helheim/06-languages/emacs-lisp/helheim-emacs-lisp" '("helheim-elisp-"))
+
+
+;;; Generated autoloads from helheim/embark/helheim-embark-lib.el
+
+(register-definition-prefixes "helheim/embark/helheim-embark-lib" '("+embark-"))
+
+
+;;; Generated autoloads from helheim/05-lsp/flycheck/helheim-flycheck-lib.el
+
+(register-definition-prefixes "helheim/05-lsp/flycheck/helheim-flycheck-lib" '("+flycheck-"))
+
+
+;;; Generated autoloads from helheim/ibuffer/helheim-ibuffer-lib.el
+
+(autoload 'helheim-ibuffer-project-buffers "helheim/ibuffer/helheim-ibuffer-lib"
+"List buffers for PROJECT using Ibuffer.
+If FILES-ONLY is non-nil, only show the file-visiting buffers.
+
+(fn PROJECT &optional FILES-ONLY)")
+(register-definition-prefixes "helheim/ibuffer/helheim-ibuffer-lib" '("helheim-"))
+
+
+;;; Generated autoloads from helheim/00-core/helheim-lib.el
+
+(register-definition-prefixes "helheim/00-core/helheim-lib" '("+buffer-file-name" "+display-buffer-based-on-window-count" "+hook-values" "+posframe-poshandler-window-bottom-right-corner-with-padding" "helheim-" "load-theme"))
+
+
+;;; Generated autoloads from helheim/05-lsp/lsp-mode/helheim-lsp-mode.el
+
+(register-definition-prefixes "helheim/05-lsp/lsp-mode/helheim-lsp-mode" '("+lsp-close-signature"))
+
+
+;;; Generated autoloads from helheim/04-version-control/magit/helheim-magit.el
+
+(autoload 'helheim-project-magit "helheim/04-version-control/magit/helheim-magit"
+"Open Magit status buffer in the current project's root." t)
+
+
+;;; Generated autoloads from helheim/06-languages/markdown/helheim-markdown.el
+
+(register-definition-prefixes "helheim/06-languages/markdown/helheim-markdown" '("markdown-match-generic-metadata"))
+
+
+;;; Generated autoloads from helheim/08-llm/mcp-server/helheim-mcp-server.el
+
+(register-definition-prefixes "helheim/08-llm/mcp-server/helheim-mcp-server" '("+mcp-server-transport-"))
+
+
+;;; Generated autoloads from helheim/email/notmuch/helheim-notmuch.el
+
+(register-definition-prefixes "helheim/email/notmuch/helheim-notmuch" '("+notmuch-" "helheim-notmuch-"))
+
+
+;;; Generated autoloads from helheim/email/notmuch/helheim-notmuch-lib.el
+
+(autoload '+notmuch-compose "helheim/email/notmuch/helheim-notmuch-lib"
+"Compose new mail" t)
+(register-definition-prefixes "helheim/email/notmuch/helheim-notmuch-lib" '("+notmuch-" "helheim-notmuch-"))
+
+
+;;; Generated autoloads from helheim/org-mode/helheim-org/helheim-org.el
+
+(register-definition-prefixes "helheim/org-mode/helheim-org/helheim-org" '("helheim-org-"))
+
+
+;;; Generated autoloads from helheim/org-mode/helheim-org/helheim-org-keys.el
+
+(register-definition-prefixes "helheim/org-mode/helheim-org/helheim-org-keys" '("helheim-org-"))
+
+
+;;; Generated autoloads from helheim/org-mode/helheim-org/helheim-org-lib.el
+
+(autoload 'helheim-org-agenda-align-tags-h "helheim/org-mode/helheim-org/helheim-org-lib"
+"Align the tag by pixel, not by column.
+`org-agenda-align-tags' pads the tag with space characters and counts them in
+columns, which assumes every glyph on the line is `default-font-width' wide.
+This function meant to be run in `org-agenda-finalize-hook' after everything
+that changes how the tags are drawn (like `org-pretty-tags') and align them
+pixel perfect.")
+(autoload '+markdown-to-org-region "helheim/org-mode/helheim-org/helheim-org-lib"
+"Convert region (START, END) from Markdown to Org-mode using pandoc.
+
+(fn START END)" t)
+(autoload '+org-to-markdown-region "helheim/org-mode/helheim-org/helheim-org-lib"
+"Convert region (START, END) from Org-mode to Markdown using pandoc.
+
+(fn START END)" t)
+(register-definition-prefixes "helheim/org-mode/helheim-org/helheim-org-lib" '("helheim"))
+
+
+;;; Generated autoloads from helheim/org-mode/helheim-org-node/helheim-org-node.el
+
+(register-definition-prefixes "helheim/org-mode/helheim-org-node/helheim-org-node" '("helheim-org-node-visit-backlink-in-another-window"))
+
+
+;;; Generated autoloads from helheim/org-mode/helheim-org-node/helheim-org-node-lib.el
+
+(register-definition-prefixes "helheim/org-mode/helheim-org-node/helheim-org-node-lib" '("helheim"))
+
+
+;;; Generated autoloads from helheim/00-core/helheim-setup.el
+
+(register-definition-prefixes "helheim/00-core/helheim-setup" '("helheim-" "setup"))
+
+
+;;; Generated autoloads from helheim/00-core/helheim-straight.el
+
+(register-definition-prefixes "helheim/00-core/helheim-straight" '("elpaca-wait" "helheim-update"))
+
+
+;;; Generated autoloads from helheim/tab-bar/helheim-tab-bar.el
+
+(register-definition-prefixes "helheim/tab-bar/helheim-tab-bar" '("helheim-tab-new"))
+
+
+;;; Generated autoloads from helheim/05-lsp/xref/helheim-xref-lib.el
+
+(autoload 'helheim-xref-find-definitions "helheim/05-lsp/xref/helheim-xref-lib"
+"Find the definition of the identifier at point.
+
+The original `xref-find-definitions' command tries all backends in
+`xref-backend-functions' in order to \"find suitable for current context\".
+The intended design seems to be that all possible backends for all
+major modes are stored in a single global variable, and then `xref-find-backend'
+selects an appropriate one.
+
+In practice, however, `xref-find-backend' simply calls each function in
+`xref-backend-functions' in order until it finds one that returns a symbol
+(`cl-defgeneric' will dispatch on). In practice typical get backend function
+looks like this:
+
+  (defun eglot-xref-backend ()
+    \"Eglot xref backend.\"
+    'eglot)
+
+Such functions contain no logic of their own, so Xref always picks the
+first backend in the list, and the rest are never tried.  Whoever first
+puts on the lab coat becomes the doctor.
+
+This command, in contrast, tries all registered backends in sequence until
+the first one succeeds in finding definitions." t)
+(autoload 'helheim-xref-find-references "helheim/05-lsp/xref/helheim-xref-lib"
+"Find the references of the identifier at point.
+Reed help for `helheim-xref-find-definitions' for the differences from
+`xref-find-references'." t)
+(autoload 'helheim-xref-find-definitions-other-window "helheim/05-lsp/xref/helheim-xref-lib"
+"Like `helheim-xref-find-definitions' but switch to the other window." t)
+(autoload 'helheim-xref-find-definitions-other-frame "helheim/05-lsp/xref/helheim-xref-lib"
+"Like `helheim-xref-find-definitions' but switch to the other frame." t)
+(register-definition-prefixes "helheim/05-lsp/xref/helheim-xref-lib" '("helheim-xref--create-fetcher"))
+
+
+;;; Generated autoloads from helheim/wrap-line-mode/wrap-line.el
+
+(autoload '+wrap-line-mode "helheim/wrap-line-mode/wrap-line"
+"Wrap long lines in the buffer with language-aware indentation.
+
+This mode configures `adaptive-wrap', `visual-line-mode' and
+`visual-fill-column-mode' to wrap long lines without modifying the buffer
+content. This is useful when dealing with legacy code which contains
+gratuitously long lines, or running emacs on your wrist-phone.
+
+Wrapped lines will be indented to match the preceding line. In code buffers,
+lines which are not inside a string or comment will have additional indentation
+according to the configuration of `+wrap-line-extra-indent'.
+
+This is a minor mode.  If called interactively, toggle the `+Wrap-Line
+mode' mode.  If the prefix argument is positive, enable the mode, and if
+it is zero or negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate the variable `+wrap-line-mode'.
+
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
+
+(fn &optional ARG)" t)
+(put '+global-wrap-line-mode 'globalized-minor-mode t)
+(defvar +global-wrap-line-mode nil
+"Non-nil if +Global-Wrap-Line mode is enabled.
+See the `+global-wrap-line-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `+global-wrap-line-mode'.")
+(custom-autoload '+global-wrap-line-mode "helheim/wrap-line-mode/wrap-line" nil)
+(autoload '+global-wrap-line-mode "helheim/wrap-line-mode/wrap-line"
+"Toggle +Wrap-Line mode in many buffers.
+Specifically, +Wrap-Line mode is enabled in all buffers where
+`+wrap-line--initialize' would do it.
+
+With prefix ARG, enable +Global-Wrap-Line mode if ARG is positive;
+otherwise, disable it.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.
+Enable the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+See `+wrap-line-mode' for more information on +Wrap-Line mode.
+
+(fn &optional ARG)" t)
+(register-definition-prefixes "helheim/wrap-line-mode/wrap-line" '("+wrap-line-"))
 
 ;;; End of scraped data
 

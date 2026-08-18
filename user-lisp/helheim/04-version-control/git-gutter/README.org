@@ -1,0 +1,21 @@
+* helheim-diff-hl
+
+Install and configure [[https://github.com/dgutov/diff-hl][diff-hl]] package which shows git-diffs indicators in the
+margin.
+
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-diff-hl)
+#+end_src
+
+** Usage
+
+| =[ v= / =] v= | Go to previous / next hunk |
+| =[ V= / =] V= | Show previous / next hunk |
+
+Related keys are under =SPC v= (=C-c v=) prefix.
+
+| =SPC v v= | Show hunk at point   |
+| =SPC v s= | Stage hunk at point  |
+| =SPC v r= | Revert hunk at point |
+| =SPC v == | Goto hunk            |

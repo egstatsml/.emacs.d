@@ -14,27 +14,29 @@
 ;;; Code:
 ;; In case of error start Emacs from command line with `--debug-init' key, or
 ;; uncomment:
-;;-----------------------
-;; (setq init-file-debug
+;;------------------------
+;; (setq init-file-debug t
 ;;       debug-on-error t
 ;;       debug-on-quit t)
-;;-----------------------
+;;------------------------
 
 ;;; Garbage collector
 
-(if noninteractive                      ; in CLI sessions
-    (setq gc-cons-threshold 134217728)  ; 128mb
+(if noninteractive ;; in CLI sessions
+    (setq gc-cons-threshold (* 128 1024 1024)) ; 128mb
   ;; Else, disable garbage collection during startup.
-  (setq-default gc-cons-threshold most-positive-fixnum))
+  (setq-default gc-cons-threshold most-positive-fixnum
+                gc-cons-percentage 1.0))
 
 ;; Enable garbage collection after start up.
 (add-hook 'emacs-startup-hook 'helheim--restore-original-gc-values 105)
 
 (defun helheim--restore-original-gc-values ()
-  "Reset `gc-cons-threshold' without user's config."
-  (when (= (default-value 'gc-cons-threshold)
-           most-positive-fixnum)
-    (setq-default gc-cons-threshold (* 16 1024 1024)))) ; 16mb
+  "Reset `gc-cons-threshold' and `gc-cons-percentage'."
+  (when (= (default-value 'gc-cons-threshold) most-positive-fixnum)
+    (setq-default gc-cons-threshold (* 16 1024 1024))) ; 16mb
+  (when (= (default-value 'gc-cons-percentage) 1.0)
+    (setq-default gc-cons-percentage 0.1)))
 
 ;;; Native compilation and Byte compilation
 
@@ -56,11 +58,6 @@
 ;; `set-language-environment' sets default-input-method, which is unwanted.
 (setq default-input-method nil)
 
-;; Increase how much is read from processes in a single chunk
-(setq read-process-output-max (* 2 1024 1024))  ; 1024kb
-
-(setq process-adaptive-read-buffering nil)
-
 ;; Don't ping things that look like domain names.
 (setq ffap-machine-p-known 'reject)
 
@@ -80,14 +77,19 @@
 
 ;;; Performance
 
-;; Font compacting can be very resource-intensive, especially when rendering
-;; icon fonts on Windows. This will increase memory usage.
+(setq process-adaptive-read-buffering nil)
+
+;; Increase how much is read from processes in a single chunk
+(setq read-process-output-max (* 2 1024 1024)) ; 1024kb
+
+;; Font compacting can be very resource-intensive.
+;; Disable it in cost of increasing memory usage.
 (setq inhibit-compacting-font-caches t)
 
 (when (and (not (daemonp))
            (not noninteractive))
-  ;; Resizing the Emacs frame can be costly when changing the font. Disable this
-  ;; to improve startup times with fonts larger than the system default.
+  ;; Resizing the Emacs frame can be costly when changing the font. Disable
+  ;; this to improve startup times with fonts larger than the system default.
   (setq frame-resize-pixelwise t)
 
   ;; Without this, Emacs will try to resize itself to a specific column size
@@ -209,8 +211,8 @@ This variable holds a list of Emacs UI features that can be enabled:
 ;;; use-package
 
 ;; Explicit is better than implicit.
-(setq use-package-always-ensure nil ; Do not auto `:ensure'.
-      use-package-hook-name-suffix nil) ; Specify the full hook name.
+(setq use-package-always-ensure nil) ; Do not auto `:ensure'.
+;; (setq use-package-hook-name-suffix nil) ; Specify the full hook name.
 
 (setq use-package-enable-imenu-support t)
 
@@ -239,6 +241,20 @@ You may place there any Emacs lisp files or directories with such files, and
 they all will be added to `load-path' bytecompiled an scrapped for autoload
 cookies.")
 
+(setq user-emacs-directory (expand-file-name "var/" helheim-root-directory)
+      package-user-dir     (locate-user-emacs-file "elpa/")
+      user-lisp-directory  (expand-file-name "user-lisp/" helheim-root-directory))
+
+;; Don't compile content of `user-emacs-directory' in `prepare-user-lisp'
+;; funciton. It is called to early when dependencies are not installed yet.
+;; And it will be compiled later by `compile-angel'.
+(setq user-lisp-auto-scrape nil)
+
+(when (< emacs-major-version 31)
+  (load (expand-file-name "prepare-user-lisp.el" user-lisp-directory) nil t)
+  (prepare-user-lisp (not user-lisp-auto-scrape)))
+
+
 (defvar ethan/cache-dir (expand-file-name "cache/" helheim-root-directory)
   "Where cache files will be stored.")
 
@@ -257,13 +273,6 @@ cookies.")
 (setq auto-save-file-name-transforms
       `((".*" ,ethan/autosave-dir t)))
 
-(setq user-emacs-directory   (expand-file-name "var/" helheim-root-directory)
-      user-lisp-directory    (expand-file-name "user-lisp/" helheim-root-directory)
-      package-user-dir       (expand-file-name "elpa/" user-emacs-directory)
-      custom-theme-directory (expand-file-name "themes/" helheim-root-directory)
-      custom-file            (expand-file-name "custom.el" helheim-root-directory))
-
-
 (setq my/graphical
       ;; if in daemon and have display
       (or
@@ -275,13 +284,6 @@ cookies.")
 
 ;; using plists for lsp mode
 (setenv "LSP_USE_PLISTS" "1")
-
-;; Load "custom.el" file.
-(add-hook 'after-init-hook (lambda ()
-                             (let ((inhibit-message t))
-                               (when (file-exists-p custom-file)
-                                 (load-file custom-file)))))
-
 ;; Local variables:
 ;; byte-compile-warnings: (not obsolete free-vars)
 ;; End:
