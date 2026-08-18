@@ -28,6 +28,8 @@
 
 (require 'helheim-elpaca)
 
+(use-package tramp
+  :ensure t)
 
 (use-package compat
    :ensure t)
@@ -95,6 +97,8 @@
 (require 'helheim-python)
 (require 'setup-latex)
 (require 'setup-library)
+(use-package csv-mode
+  :ensure t)
 ;; tools
 (require 'helheim-flycheck-lsp)
 (require 'setup-debug)
