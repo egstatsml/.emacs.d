@@ -76,6 +76,8 @@ Must be set before `helheim-core' is loaded!"
 
 (setup hel
   (:install hel :host github :repo "helheim-emacs/hel")
+  (:setopt  hel-insert-state-cursor-type 'bar;;'(bar "pink"))
+            hel-normal-state-cursor-type  'box);;'(box "pink"))))
   (hel-mode))
 
 (setup hel-collection
@@ -229,15 +231,15 @@ The predicate is passed as argument to `buffer-match-p', which see."
 
 ;;;; Display line numbers
 
-(setup display-line-numbers
-  (:hook (prog-mode-hook conf-mode-hook))
-  (:setopt display-line-numbers-width 3
-           display-line-numbers-type t
-           display-line-numbers-width-start t
-           display-line-numbers-grow-only t
-           ;; Show absolute line numbers for narrowed regions to make it easier
-           ;; to tell the buffer is narrowed, and where you are, exactly.
-           display-line-numbers-widen t))
+;; (setup display-line-numbers
+;;   (:hook (prog-mode-hook conf-mode-hook))
+;;   (:setopt display-line-numbers-width 3
+;;            display-line-numbers-type t
+;;            display-line-numbers-width-start t
+;;            display-line-numbers-grow-only t
+;;            ;; Show absolute line numbers for narrowed regions to make it easier
+;;            ;; to tell the buffer is narrowed, and where you are, exactly.
+;;            display-line-numbers-widen t))
 
 ;; (setopt indicate-empty-lines t)
 
@@ -350,7 +352,6 @@ Use `delete-trailing-whitespace' command."
 ;;;;; Scrolling with mouse wheel and touchpad
 
 (setup ultra-scroll
-  (:install t)
   (:after-init ultra-scroll-mode)
   (:setopt mouse-wheel-tilt-scroll t ; Scroll horizontally with mouse side wheel.
            mouse-wheel-progressive-speed nil))

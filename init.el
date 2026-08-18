@@ -8,19 +8,19 @@
 ;; faces, overlays, etc. (Press "<F1> k ga" to find out which command is bound
 ;; to "ga".)
 
-(let* ((font "JetBrainsMono Nerd Font Mono") ;; <- replace with you font
-       (spec (font-spec :family font :size 13.0 :weight 'normal)))
-  (set-face-font 'default spec)
-  (set-face-font 'fixed-pitch spec)
-  ;; Prepend our font to the default fontset to make it the first fallback
-  ;; candidate for itself. This matters when text is bold or italic and the
-  ;; default font lacks glyphs for those styles but does provide them for the
-  ;; regular style. With this change, Emacs will use the regular glyphs from
-  ;; the default font when bold or italic variants are unavailable, instead of
-  ;; falling back to a different font.
-  ;;   BUG: Using `font-spec' with `set-fontset-font' doesn't work, despite
-  ;; documentation claims it is.
-  (set-fontset-font t 'unicode font nil 'prepend))
+;; (let* ((font "JetBrainsMono Nerd Font Mono") ;; <- replace with you font
+;;        (spec (font-spec :family font :size 13.0 :weight 'normal)))
+;;   (set-face-font 'default spec)
+;;   (set-face-font 'fixed-pitch spec)
+;;   ;; Prepend our font to the default fontset to make it the first fallback
+;;   ;; candidate for itself. This matters when text is bold or italic and the
+;;   ;; default font lacks glyphs for those styles but does provide them for the
+;;   ;; regular style. With this change, Emacs will use the regular glyphs from
+;;   ;; the default font when bold or italic variants are unavailable, instead of
+;;   ;; falling back to a different font.
+;;   ;;   BUG: Using `font-spec' with `set-fontset-font' doesn't work, despite
+;;   ;; documentation claims it is.
+;;   (set-fontset-font t 'unicode font nil 'prepend))
 
 (require 'cl-macs)
 
