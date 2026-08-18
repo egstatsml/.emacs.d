@@ -24,37 +24,38 @@
 
 (require 'cl-macs)
 
-(cl-defun helheim-set-fontset-font (font charsets &key (fontset t) add)
-  "Force some code point diapasons to use particular FONT."
-  (declare (indent 1))
-  (dolist (charset charsets)
-    (set-fontset-font fontset charset font nil add)))
+(when my/graphical 
+  (cl-defun helheim-set-fontset-font (font charsets &key (fontset t) add)
+    "Force some code point diapasons to use particular FONT."
+    (declare (indent 1))
+    (dolist (charset charsets)
+      (set-fontset-font fontset charset font nil add)))
 
-(helheim-set-fontset-font "Symbols Nerd Font Mono"
-                          '((#xe5fa . #xe6b7) ;; Seti-UI + Custom  
-                            (#xe700 . #xe8ef) ;; Devicons  
-                            (#xed00 . #xf2ff) ;; Font Awesome  
-                            (#xe200 . #xe2a9) ;; Font Awesome Extension  
-                            (#xe300 . #xe3e3) ;; Weather  
-                            (#xf400 . #xf533) #x2665 #x26A1 ;; Octicons   ♥ ⚡
-                            (#x23fb . #x23fe) #x2b58 ;; IEC Power Symbols ⏻ ⏾ ⭘
-                            (#xf300 . #xf381) ;; Font Logos   
-                            (#xe000 . #xe00a) ;; Pomicons  
-                            (#xea60 . #xec1e) ;; Codicons  
-                            (#x276c . #x2771) ;; Heavy Angle Brackets ❬ ❱
-                            (#xee00 . #xee0b) ;; Progress  
-                            (#xf0001 . #xf1af0))) ;; Material Design Icons 󰀁 󱫰
+  (helheim-set-fontset-font "Symbols Nerd Font Mono"
+    '((#xe5fa . #xe6b7) ;; Seti-UI + Custom  
+      (#xe700 . #xe8ef) ;; Devicons  
+      (#xed00 . #xf2ff) ;; Font Awesome  
+      (#xe200 . #xe2a9) ;; Font Awesome Extension  
+      (#xe300 . #xe3e3) ;; Weather  
+      (#xf400 . #xf533) #x2665 #x26A1 ;; Octicons   ♥ ⚡
+      (#x23fb . #x23fe) #x2b58 ;; IEC Power Symbols ⏻ ⏾ ⭘
+      (#xf300 . #xf381) ;; Font Logos   
+      (#xe000 . #xe00a) ;; Pomicons  
+      (#xea60 . #xec1e) ;; Codicons  
+      (#x276c . #x2771) ;; Heavy Angle Brackets ❬ ❱
+      (#xee00 . #xee0b) ;; Progress  
+      (#xf0001 . #xf1af0))) ;; Material Design Icons 󰀁 󱫰
 
-;; In the modeline, we’re not restricted by a rigid grid, and non-monospace
-;; Powerline symbols look better.
-(helheim-set-fontset-font "Symbols Nerd Font"
-                          `(;; Powerline Symbols
-                            (#xe0a0 . #xe0a2) ;;  
-                            (#xe0b0 . #xe0b3) ;;  
-                            ;; Powerline Extra Symbols
-                            (#xe0b4 . #xe0c8) ;;  
-                            (#xe0cc . #xe0d7) ;;  
-                            #xe0a3 #xe0ca))   ;;  
+  ;; In the modeline, we’re not restricted by a rigid grid, and non-monospace
+  ;; Powerline symbols look better.
+  (helheim-set-fontset-font "Symbols Nerd Font"
+    `(;; Powerline Symbols
+      (#xe0a0 . #xe0a2) ;;  
+      (#xe0b0 . #xe0b3) ;;  
+      ;; Powerline Extra Symbols
+      (#xe0b4 . #xe0c8) ;;  
+      (#xe0cc . #xe0d7) ;;  
+      #xe0a3 #xe0ca)))   ;;  
 
 ;;; my setup
 ;; All of my bib databases.
