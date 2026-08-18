@@ -6,7 +6,7 @@
 ;;
 ;;; General
 
-(use-package flash-jump
+(use-package flash
   :ensure t
   :commands (flash-jump flash-jump-continue
                         flash-treesitter)
