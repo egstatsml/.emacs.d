@@ -161,7 +161,7 @@
                                         ; (require 'helheim-mcp-server)
 (require 'setup-ai)
 ;;; Extra ficilities
-
+(require 'setup-term)
                                         ; (require 'helheim-browser) ; Synchronize online text editor with Emacs buffer
                                         ; (require 'helheim-notmuch) ; Notmuch email client
                                         ; (require 'helheim-whisper) ; Speech to text conversion
