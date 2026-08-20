@@ -64,8 +64,10 @@
   ;; <leader> s
   (:keymap search-map
     (:bind
+      "s" 'consult-line
       "f" 'consult-fd ;; or `consult-find'
       "l" 'consult-locate
+      "o" 'consult-outline
       "g" 'consult-grep
       "v" 'consult-git-grep ; "v" for VC
       "/" 'consult-ripgrep
@@ -106,7 +108,7 @@
 (setup deadgrep
   (:install t)
   (:keymap search-map
-    (:bind "s" 'deadgrep)) ;; <leader> ss
+    (:bind "d" 'deadgrep)) ;; <leader> sd
   ;; (:hook deadgrep-mode-hook next-error-follow-minor-mode)
   )
 
