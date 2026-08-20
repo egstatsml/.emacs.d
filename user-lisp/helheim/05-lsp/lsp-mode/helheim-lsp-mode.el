@@ -55,12 +55,12 @@
       orig-result)))
 (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
 
-(use-package lsp-pyright
-  :ensure t
-  :custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp))))  ; or lsp-deferred
+;; (use-package lsp-pyright
+;;   :ensure t
+;;   :custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
+;;   :hook (python-mode . (lambda ()
+;;                          (require 'lsp-pyright)
+;;                          (lsp))))  ; or lsp-deferred
 
 (with-eval-after-load 'lsp-mode
   (defgroup lsp-python-refly nil
