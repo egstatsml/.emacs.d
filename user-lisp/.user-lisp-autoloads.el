@@ -453,7 +453,7 @@ If FILES-ONLY is non-nil, only show the file-visiting buffers.
 
 ;;; Generated autoloads from helheim/05-lsp/lsp-mode/helheim-lsp-mode.el
 
-(register-definition-prefixes "helheim/05-lsp/lsp-mode/helheim-lsp-mode" '("+lsp-close-signature"))
+(register-definition-prefixes "helheim/05-lsp/lsp-mode/helheim-lsp-mode" '("+lsp-close-signature" "lsp-booster--advice-"))
 
 
 ;;; Generated autoloads from helheim/04-version-control/magit/helheim-magit.el
