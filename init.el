@@ -136,10 +136,10 @@
         ;; Which modules to load.
         ;; Place cursor on variable and press "M" to see all possible values.
         org-modules '(ol-bibtex ol-docview ol-info))
-
-(require 'helheim-org)
-(require 'helheim-org-node)
-(require 'helheim-daily-notes)
+(when my/graphical
+  (require 'helheim-org)
+  (require 'helheim-org-node)
+  (require 'helheim-daily-notes))
 
 ;;; Major modes
 
