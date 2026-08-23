@@ -30,7 +30,8 @@
     "z ."   'set-fill-prefix
     "$" 'expreg-expand
     "|" 'expreg-contract
-    "#" 'flash-jump)
+    "#" 'flash-jump
+    "+" 'end-of-line)
     
   (:global-bind :state insert
     "C-/"   'hippie-expand)
@@ -59,7 +60,8 @@
   ","     'switch-to-buffer
   "/"     'consult-ripgrep ;; "/" is for search in Hel
   ;; Buffer
-  "b b"   '("ibuffer" . ibuffer-jump) ;; "<leader> bb"
+  "b b"   'consult-buffer
+  "b i"   '("ibuffer" . ibuffer-jump) ;; "<leader> bb"
   "b n"   'switch-to-buffer    ; next key after "b"
   "b s"   'save-buffer
   "b c"   '("copy buffers file" . bufferfile-copy)
