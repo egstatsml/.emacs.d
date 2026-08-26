@@ -631,6 +631,11 @@ See `+wrap-line-mode' for more information on +Wrap-Line mode.
 (fn &optional ARG)" t)
 (register-definition-prefixes "helheim/wrap-line-mode/wrap-line" '("+wrap-line-"))
 
+
+
+;;; Generated autoloads from setup-i3.el
+
+(register-definition-prefixes "setup-i3" '("i3-msg" "my/emacs-i3-"))
 
 ;;; End of scraped data
 
