@@ -153,7 +153,9 @@ Give prefix to open in a new window"
 (when my/graphical
   (require 'helheim-org)
   (require 'helheim-org-node)
-  (require 'helheim-daily-notes))
+  (require 'helheim-daily-notes)
+  (require 'setup-agenda))
+  
 
 ;;; Major modes
 
