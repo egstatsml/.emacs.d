@@ -89,6 +89,20 @@
 ;; small emacs lisp functions
 ;; loading early as some of these are used to write my config
 (require 'setup-elisp-utils)
+
+(defun ethan/open-file (path new-window)
+  (if new-window
+      (org-open-file path)
+    (find-file path)))
+
+;; my functions for loading files
+(defun ethan/open-config-file (arg)
+  "Edit the `user-init-file'.
+
+Give prefix to open in a new window"
+  (interactive "P")
+  (ethan/open-file "~/.emacs.d/init.el" arg))
+
 ;; (use-package org
 ;;   :if my/graphical
 ;;   :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git"
