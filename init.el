@@ -179,6 +179,14 @@ Give prefix to open in a new window"
 (require 'setup-ai)
 ;;; Extra ficilities
 (require 'setup-term)
+(require 'setup-i3)
+
+(use-package fancy-compilation
+  :ensure t
+  :commands (fancy-compilation-mode))
+
+(with-eval-after-load 'compile
+  (fancy-compilation-mode))
                                         ; (require 'helheim-browser) ; Synchronize online text editor with Emacs buffer
                                         ; (require 'helheim-notmuch) ; Notmuch email client
                                         ; (require 'helheim-whisper) ; Speech to text conversion
