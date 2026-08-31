@@ -28,7 +28,26 @@
   (setq pet-find-file-functions '(pet-find-file-from-project-root
                                   pet-locate-dominating-file
                                   pet-find-file-from-project-root-natively))
-  (add-hook 'python-base-mode-hook 'pet-mode -10))
+  (add-hook 'python-base-mode-hook 'pet-mode -10)
+
+  (defun pet-find-file-from-project-root-recursively (file)
+    "Find FILE by recursively searching down from the current project's root.
+
+  FILE is a file name or a wildcard.
+
+  Return absolute path to FILE if found, nil otherwise."
+    (when-let* ((root (pet-project-root)))
+      (when-let* ((fileset
+                   (cond ((functionp 'projectile-dir-files)
+                          (mapcar (apply-partially #'concat root) <------------- HERE
+                                  (projectile-dir-files (pet-project-root))))
+                         (t (project-files (project-current))))))
+        (seq-find (lambda (f)
+                    (string-match-p
+                     (wildcard-to-regexp file)
+                     (file-name-nondirectory f)))
+                  (sort fileset 'string<))))))
+ 
 
 
 (use-package conda
