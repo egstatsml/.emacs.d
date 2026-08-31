@@ -154,7 +154,8 @@ Give prefix to open in a new window"
   (require 'helheim-org)
   (require 'helheim-org-node)
   (require 'helheim-daily-notes)
-  (require 'setup-agenda))
+  (require 'setup-agenda)
+  (require 'setup-org))
   
 
 ;;; Major modes
