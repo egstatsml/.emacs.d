@@ -87,6 +87,10 @@
   ;; Open
   ;; "o f"   'treemacs ; for future
   ;; "o i"   'imenu-list-smart-toggle
+  "o a"  'ethan/open-agenda
+  "o g"  'ethan/open-gtd-file
+  "o c"  'ethan/open-config-file
+  "o i"  'ethan/open-inbox-file
   ;; Toggle
   "t d"   'display-line-numbers-mode
   "t r"   'read-only-mode        ;; "C-x C-q"

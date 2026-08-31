@@ -89,6 +89,20 @@
 ;; small emacs lisp functions
 ;; loading early as some of these are used to write my config
 (require 'setup-elisp-utils)
+
+(defun ethan/open-file (path new-window)
+  (if new-window
+      (org-open-file path)
+    (find-file path)))
+
+;; my functions for loading files
+(defun ethan/open-config-file (arg)
+  "Edit the `user-init-file'.
+
+Give prefix to open in a new window"
+  (interactive "P")
+  (ethan/open-file "~/.emacs.d/init.el" arg))
+
 ;; (use-package org
 ;;   :if my/graphical
 ;;   :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git"
@@ -139,7 +153,10 @@
 (when my/graphical
   (require 'helheim-org)
   (require 'helheim-org-node)
-  (require 'helheim-daily-notes))
+  (require 'helheim-daily-notes)
+  (require 'setup-agenda)
+  (require 'setup-org))
+  
 
 ;;; Major modes
 
@@ -162,6 +179,14 @@
 (require 'setup-ai)
 ;;; Extra ficilities
 (require 'setup-term)
+(require 'setup-i3)
+
+(use-package fancy-compilation
+  :ensure t
+  :commands (fancy-compilation-mode))
+
+(with-eval-after-load 'compile
+  (fancy-compilation-mode))
                                         ; (require 'helheim-browser) ; Synchronize online text editor with Emacs buffer
                                         ; (require 'helheim-notmuch) ; Notmuch email client
                                         ; (require 'helheim-whisper) ; Speech to text conversion
