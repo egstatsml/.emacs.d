@@ -185,6 +185,18 @@ Give prefix to open in a new window"
   :ensure t
   :commands (fancy-compilation-mode))
 
+
+(use-package kirigami
+  :ensure t
+  :custom
+  ;; Add Kirigami to the menu bar and context menu (`context-menu-mode').
+  (kirigami-show-menu-bar t)
+  (kirigami-show-context-menu t)
+  :init
+  (kirigami-global-mode 1))
+
+(require 'setup-yasnippet)
+
 (with-eval-after-load 'compile
   (fancy-compilation-mode))
                                         ; (require 'helheim-browser) ; Synchronize online text editor with Emacs buffer
