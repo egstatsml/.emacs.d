@@ -89,7 +89,20 @@
 ;; small emacs lisp functions
 ;; loading early as some of these are used to write my config
 (require 'setup-elisp-utils)
+(elpaca-wait)
 
+;; ;;; org-mode latex preview
+;; ;; following advice from karthink, putting very early just clone of it
+;; ;; these needs to be done pretty much before anything else, otherwise will
+;; ;; use built in org
+(use-package org
+  :if my/graphical
+  :defer
+  :ensure (org
+           :host github
+           :repo "karthink/org-mode"
+           :branch "olp"))
+(elpaca-wait)
 (defun ethan/open-file (path new-window)
   (if new-window
       (org-open-file path)
@@ -155,8 +168,8 @@ Give prefix to open in a new window"
   (require 'helheim-org-node)
   (require 'helheim-daily-notes)
   (require 'setup-agenda)
-  (require 'setup-org))
-  
+  (require 'setup-org)
+  (require 'setup-org-latex))
 
 ;;; Major modes
 
@@ -167,8 +180,8 @@ Give prefix to open in a new window"
 (require 'helheim-lua)
 (require 'helheim-sh)
 (require 'setup-python)
+(require 'setup-latex)
 ;;; Terminal emulators
-
 (require 'helheim-ghostel) ; based on libghostty (Zig) -- same as in Ghostty
                                         ; (require 'helheim-vterm)   ; based on libvterm (C) -- same as in Neovim
 
@@ -184,6 +197,25 @@ Give prefix to open in a new window"
 (use-package fancy-compilation
   :ensure t
   :commands (fancy-compilation-mode))
+
+(with-eval-after-load 'compile
+  (fancy-compilation-mode))
+
+(use-package kirigami
+  :ensure t
+  :custom
+  ;; Add Kirigami to the menu bar and context menu (`context-menu-mode').
+  (kirigami-show-menu-bar t)
+  (kirigami-show-context-menu t)
+  :init
+  (kirigami-global-mode 1))
+
+
+;; drawing nice diagrams within emacs
+(use-package uniline
+  :ensure t)
+
+(require 'setup-yasnippet)
 
 (with-eval-after-load 'compile
   (fancy-compilation-mode))

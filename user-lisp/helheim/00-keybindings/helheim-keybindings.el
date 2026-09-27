@@ -28,6 +28,11 @@
   (:global-bind :state normal
     "z SPC" 'cycle-spacing
     "z ."   'set-fill-prefix
+    "z f"   'kirigami-toggle-fold
+    "z c"   'kirigami-close-fold
+    "z C"   'kirigami-close-folds
+    "z o"   'kirigami-open-fold
+    "z O"   'kirigami-open-folds
     "$" 'expreg-expand
     "|" 'expreg-contract
     "#" 'flash-jump
