@@ -255,7 +255,7 @@ cookies.")
   (prepare-user-lisp (not user-lisp-auto-scrape)))
 
 
-(defvar ethan/cache-dir (expand-file-name "cache/" helheim-root-directory)
+(defvar ethan/cache-dir (expand-file-name "cache/" user-emacs-directory)
   "Where cache files will be stored.")
 
 (defvar ethan/backup-dir (expand-file-name "backup/" ethan/cache-dir)
