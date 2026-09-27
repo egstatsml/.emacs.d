@@ -28,7 +28,8 @@
 	   :default-weight medium
 	   ;; :variable-pitch-family "Merriweather"
 	   ;; :variable-pitch-weight light
-	   :variable-pitch-family "CMU Serif"
+	   :variable-pitch-family "cmr10"
+	   ;; :variable-pitch-family "CMU Serif"
 	   :variable-pitch-height 1.5)))
   ;; now set the preset
   ;; if is my laptop or lab machine, the screens are a bit smaller and I am sitting
@@ -259,5 +260,13 @@ org-clock has been loaded in"
            :fringe-width 8))
 
   (spacious-padding-mode 1))
+
+;; making tables align nicely
+(use-package valign
+  :ensure t
+  :hook ((org-mode . valign-mode)
+         (markdown-mode . valign-mode)
+         (markdown-ts-mode . valign-mode)))
+                        
 
 (provide 'setup-ui)
