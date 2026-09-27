@@ -1,0 +1,19 @@
+# -*- mode: snippet; -*-
+# contributor: kchenphy <https://www.github.com/kchenphy>
+# name: package header
+# key: header
+# --
+;;; ${1:name}.el --- ${2:summary} -*- lexical-binding: t -*-
+
+
+;;; Commentary:
+
+;; ${3:commentary}
+
+;;; Code:
+
+(buffer-name)
+
+(provide '$1)
+
+;;; $1.el ends here
