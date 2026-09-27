@@ -180,8 +180,8 @@ Give prefix to open in a new window"
 (require 'helheim-lua)
 (require 'helheim-sh)
 (require 'setup-python)
+(require 'setup-latex)
 ;;; Terminal emulators
-
 (require 'helheim-ghostel) ; based on libghostty (Zig) -- same as in Ghostty
                                         ; (require 'helheim-vterm)   ; based on libvterm (C) -- same as in Neovim
 
