@@ -210,6 +210,11 @@ Give prefix to open in a new window"
   :init
   (kirigami-global-mode 1))
 
+
+;; drawing nice diagrams within emacs
+(use-package uniline
+  :ensure t)
+
 (require 'setup-yasnippet)
 
 (with-eval-after-load 'compile
