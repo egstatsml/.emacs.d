@@ -509,6 +509,9 @@ Use `delete-trailing-whitespace' command."
     ;; (:treesit bibtex "https://github.com/latex-lsp/tree-sitter-bibtex")
     (:treesit make
       "https://github.com/tree-sitter-grammars/tree-sitter-make")
+    (:treesit markdown
+      "https://github.com/tree-sitter/tree-sitter-markdown"
+      :revision (if abi<15 "v0.4.1")) ;; "v0.24.1"
     (:treesit nix
       "https://github.com/nix-community/tree-sitter-nix")
     (:treesit perl
