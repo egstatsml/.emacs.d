@@ -39,14 +39,14 @@
 
 ;;; Config
 
-(setup paredit
- (:install paredit))
-
-(setup hel-paredit
-  (:install hel-paredit :host github :repo "helheim-emacs/hel-paredit")
-  (:require t)
-  (:hook (emacs-lisp-mode-hook
-          lisp-data-mode-hook) hel-paredit-mode))
+;; (setup paredit
+;;  (:install paredit))
+;; 
+;; (setup hel-paredit
+;;   (:install hel-paredit :host github :repo "helheim-emacs/hel-paredit")
+;;   (:require t)
+;;   (:hook (emacs-lisp-mode-hook
+;;           lisp-data-mode-hook) hel-paredit-mode))
 
 ;; ;; Treat `-' char as part of the word on `w', `e', `b', motions.
 ;; (modify-syntax-entry ?- "w" emacs-lisp-mode-syntax-table)
