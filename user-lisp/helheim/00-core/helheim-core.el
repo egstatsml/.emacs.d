@@ -457,13 +457,17 @@ Use `delete-trailing-whitespace' command."
 (setup treesit
   (:when (treesit-available-p))
   (:setopt treesit-font-lock-level 4
-           treesit-enabled-modes t) ;; Emacs 31
+           treesit-enabled-modes t
+           treesit-auto-install-grammar nil) ;; Emacs 31
   ;; XXX: Since Emacs 31 a missing grammar is installed when a file needing
   ;;   it is visited (see `treesit-auto-install-grammar'). Remove when we
   ;;   drop Emacs 30 support.
   (when (< emacs-major-version 31)
     (:after-init helheim-install-missing-treesit-grammars))
   (let ((abi<15 (< (treesit-library-abi-version) 15)))
+    (:treesit bash
+      "https://github.com/tree-sitter/tree-sitter-bash"
+      :revision (if abi<15 "v0.23.3")) ;; "v0.24.1"
     (:treesit c
       "https://github.com/tree-sitter/tree-sitter-c"
       :revision (if abi<15 "v0.23.6")) ;; "v0.24.1"
