@@ -279,8 +279,8 @@ cookies.")
        (and (not (equal (getenv "DISPLAY") nil)) (daemonp))
        ;; if normal and have display
        ;; this evaluates to false initially when run through daemon
-       (display-graphic-p)))
-
+       (display-graphic-p)
+       (string= (system-name) "work")))
 
 ;; using plists for lsp mode
 (setenv "LSP_USE_PLISTS" "1")
