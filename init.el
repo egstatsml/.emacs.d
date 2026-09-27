@@ -198,6 +198,8 @@ Give prefix to open in a new window"
   :ensure t
   :commands (fancy-compilation-mode))
 
+(with-eval-after-load 'compile
+  (fancy-compilation-mode))
 
 (use-package kirigami
   :ensure t
