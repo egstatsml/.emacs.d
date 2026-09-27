@@ -89,7 +89,20 @@
 ;; small emacs lisp functions
 ;; loading early as some of these are used to write my config
 (require 'setup-elisp-utils)
+(elpaca-wait)
 
+;; ;;; org-mode latex preview
+;; ;; following advice from karthink, putting very early just clone of it
+;; ;; these needs to be done pretty much before anything else, otherwise will
+;; ;; use built in org
+(use-package org
+  :if my/graphical
+  :defer
+  :ensure (org
+           :host github
+           :repo "karthink/org-mode"
+           :branch "olp"))
+(elpaca-wait)
 (defun ethan/open-file (path new-window)
   (if new-window
       (org-open-file path)
@@ -155,8 +168,8 @@ Give prefix to open in a new window"
   (require 'helheim-org-node)
   (require 'helheim-daily-notes)
   (require 'setup-agenda)
-  (require 'setup-org))
-  
+  (require 'setup-org)
+  (require 'setup-org-latex))
 
 ;;; Major modes
 

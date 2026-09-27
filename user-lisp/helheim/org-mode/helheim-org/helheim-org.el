@@ -2,8 +2,6 @@
 ;;; Config
 
 (setup org
-  (:install t)
-  ;; (:install nil)
   (:setopt org-insert-heading-respect-content nil
            org-M-RET-may-split-line '((default . t)
                                       (item . nil))
@@ -222,6 +220,38 @@ directory in dired and delete from there.\n")
            ;; Use "C-w r" to revert org agenda buffer.
            (setq-local revert-buffer-function (lambda (&rest _)
                                                 (org-agenda-redo))))))
+
+
+;;  Making org pretty
+(use-package org-modern
+  :ensure (org-modern
+	   :host github
+	   :repo "minad/org-modern")
+  :hook ((org-mode . org-modern-mode)
+         (org-agenda-finalize . org-modern-agenda))
+  :init
+  (add-hook 'org-mode-hook #'org-modern-mode)
+  (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
+  (setq org-modern-hide-stars 'leading
+        org-modern-table nil
+        org-modern-tag nil
+        org-modern-list
+        '(;; (?- . "-")
+	  (?* . "•")
+	  (?+ . "‣")))
+  :config
+  ;; org modern has a tough time with tables in variable-pitch mode when there
+  ;; are times in the cells. For org-clock-reports, this is pretty common, so I am
+  ;; going to just disable org modern for tables and ensured am using fixed pitch
+  (set-face-attribute 'org-table nil :inherit 'fixed-pitch))
+
+(use-package org-modern-indent
+  :ensure (org-modern-indent
+	   :host github
+	   :repo "jdtsmith/org-modern-indent")
+  :after org-modern
+  :config
+  (add-hook 'org-mode-hook #'org-modern-indent-mode 90))
 
 ;;; .
 (provide 'helheim-org)
