@@ -26,8 +26,7 @@
   ;; only using the fastest methods for finding pet stuffs
   ;; can add back recursive file search if I desparately need it
   (setq pet-find-file-functions '(pet-find-file-from-project-root
-                                  pet-locate-dominating-file
-                                  pet-find-file-from-project-root-natively))
+                                  pet-locate-dominating-file))
   (add-hook 'python-base-mode-hook 'pet-mode -10))
 
 
