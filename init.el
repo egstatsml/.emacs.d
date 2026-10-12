@@ -196,10 +196,10 @@ Give prefix to open in a new window"
 
 (use-package fancy-compilation
   :ensure t
-  :commands (fancy-compilation-mode))
-
-(with-eval-after-load 'compile
-  (fancy-compilation-mode))
+  :commands (fancy-compilation-mode)
+  :config
+  (with-eval-after-load 'compile
+    (fancy-compilation-mode)))
 
 (use-package kirigami
   :ensure t
@@ -215,10 +215,13 @@ Give prefix to open in a new window"
 (use-package uniline
   :ensure t)
 
+(use-package ws-butler
+  :ensure t
+  :hook (prog-mode . ws-butler-mode))
+
+
 (require 'setup-yasnippet)
 
-(with-eval-after-load 'compile
-  (fancy-compilation-mode))
                                         ; (require 'helheim-browser) ; Synchronize online text editor with Emacs buffer
                                         ; (require 'helheim-notmuch) ; Notmuch email client
                                         ; (require 'helheim-whisper) ; Speech to text conversion
