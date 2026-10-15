@@ -63,26 +63,26 @@
 ;;                          (lsp))))  ; or lsp-deferred
 
 (with-eval-after-load 'lsp-mode
-  (defgroup lsp-python-refly nil
+  (defgroup lsp-python-pyrefly nil
     "LSP support for Python(pyrefly)."
     :group 'lsp-mode
     :link '(url-link "https://pyrefly.org"))
 
-  (defcustom lsp-python-refly-clients-server-command '("pyrefly" "lsp")
+  (defcustom lsp-python-pyrefly-clients-server-command '("pyrefly" "lsp")
     "Command to start the python pyrefly language server."
-    :group 'lsp-python-refly
+    :group 'lsp-python-pyrefly
     :risky t
     :type '(repeat string))
 
 
   (lsp-register-client
-   (make-lsp-client :new-connection (lsp-stdio-connection (lambda () lsp-python-refly-clients-server-command))
+   (make-lsp-client :new-connection (lsp-stdio-connection (lambda () lsp-python-pyrefly-clients-server-command))
                     :activation-fn (lsp-activate-on "python")
                     :priority -1
                     :add-on? t
-                    :server-id 'py-refly))
+                    :server-id 'py-pyrefly))
 
-  (lsp-consistency-check lsp-python-refly))
+  (lsp-consistency-check lsp-python-pyrefly))
 
 (setup lsp-ui
   (:install t)
