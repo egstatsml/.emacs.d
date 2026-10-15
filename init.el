@@ -156,7 +156,8 @@ Give prefix to open in a new window"
 
 (require 'helheim-magit)
 (require 'helheim-diff-hl)  ; git gutter indicators
-
+(use-package git-auto-commit-mode
+  :ensure t)
 ;;; Org mode
 
 ;; These variables must be set before `org' is loaded!
