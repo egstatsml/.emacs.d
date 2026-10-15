@@ -95,14 +95,15 @@
 ;; ;; following advice from karthink, putting very early just clone of it
 ;; ;; these needs to be done pretty much before anything else, otherwise will
 ;; ;; use built in org
-(use-package org
-  :if my/graphical
-  :defer
-  :ensure (org
-           :host github
-           :repo "karthink/org-mode"
-           :branch "olp"))
-(elpaca-wait)
+;; (use-package org
+;;   :if my/graphical
+;;   :defer
+;;   :ensure (org
+;;            :host github
+;;            :repo "karthink/org-mode"
+;;            :branch "olp"))
+;; (elpaca-wait)
+
 (defun ethan/open-file (path new-window)
   (if new-window
       (org-open-file path)
@@ -169,7 +170,8 @@ Give prefix to open in a new window"
   (require 'helheim-daily-notes)
   (require 'setup-agenda)
   (require 'setup-org)
-  (require 'setup-org-latex))
+  (require 'setup-latex-preview))
+  ;; (require 'setup-org-latex))
 
 ;;; Major modes
 
