@@ -167,6 +167,8 @@ Give prefix to open in a new window"
 (require 'helheim-lua)
 (require 'helheim-sh)
 (require 'setup-python)
+(require 'setup-latex)
+
 ;;; Terminal emulators
 
 (require 'helheim-ghostel) ; based on libghostty (Zig) -- same as in Ghostty
@@ -180,7 +182,8 @@ Give prefix to open in a new window"
 ;;; Extra ficilities
 (require 'setup-term)
 (require 'setup-i3)
-
+(require 'setup-pdf)
+(require 'setup-spell)
 (use-package fancy-compilation
   :ensure t
   :commands (fancy-compilation-mode))
