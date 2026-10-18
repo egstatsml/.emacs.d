@@ -90,7 +90,7 @@ Must be set with `setopt' function!"
                         helheim-org-prettify-blocks
                         helheim-org-local-variables-h))
   (:setopt org-todo-keywords
-           '((sequence "MAYBE" "TODO" "NEXT" "WAIT" "|" "DONE" "CANCELLED")
+           '((sequence "TODO" "NEXT" "WAIT" "|" "DONE" "CANCELLED")
              (sequence "READ" "NEXT" "|" "DONE"))))
 
 (defun helheim-org-local-variables-h ()
