@@ -1,36 +1,42 @@
 ;;; setup-org.el -*- lexical-binding: t; no-byte-compile: t; -*-
 
+(defvar ethan/gtd-file "~/org/gtd.org")
+(defvar ethan/inbox-file "~/org/inbox.org")
+(defvar ethan/someday-file "~/org/someday.org")
+(defvar ethan/tickler-file "~/org/tickler.org")
+(defvar ethan/calendar-file "~/org/calendar.org")
+(defvar ethan/recipe-file "~/org/recipe.org")
+
 ;; setting up faster access to GTD file
 (defun ethan/open-gtd-file (arg)
   "Edit the gtd file.
 ARG is file to open."
   (interactive "P")
-  (ethan/open-file "~/org/gtd.org" arg))
+  (ethan/open-file ethan/gtd-file arg))
 
 (defun ethan/open-inbox-file (arg)
   "Edit the inbox file.
 ARG is file to open."
   (interactive "P")
-  (ethan/open-file "~/org/inbox.org" arg))
+  (ethan/open-file ethan/inbox-file arg))
 
 (defun ethan/open-someday-file (arg)
   "Edit the someday file.
 ARG is file to open."
   (interactive "P")
-  (ethan/open-file "~/org/someday.org" arg))
+  (ethan/open-file ethan/someday-file arg))
 
 (defun ethan/open-calendar-file (arg)
   "Edit the calendar file.
 ARG is file to open."
   (interactive "P")
-  (ethan/open-file "~/org/calendar.org" arg))
+  (ethan/open-file ethan/calendar-file arg))
 
 (defun ethan/open-tickler-file (arg)
   "Edit the tickler file.
 ARG is file to open."
   (interactive "P")
-  (ethan/open-file "~/org/tickler.org" arg))
-
+  (ethan/open-file ethan/tickler-file arg))
 
 (defun my/org-todo ()
   "Set current state to TODO."
@@ -130,14 +136,11 @@ Got from https://stackoverflow.com/questions/6997387/how-to-archive-all-the-done
 
   (setq doct-after-conversion-functions '(+doct-iconify-capture-templates))
 
-  (defvar +org-capture-recipies  "~/org/recipies.org")
-  (defvar +org-capture-todo-file  "~/org/gtd.org")
-
   (defun set-org-capture-templates ()
     (setq org-capture-templates
           (doct `(("Personal todo" :keys "t"
                    :icon ("nf-oct-checklist" :set "octicon" :color "green")
-                   :file +org-capture-todo-file
+                   :file ethan/gtd-file
                    :prepend t
                    :headline "Inbox"
                    :type entry
@@ -145,7 +148,7 @@ Got from https://stackoverflow.com/questions/6997387/how-to-archive-all-the-done
                               "%i %a"))
                   ("Personal note" :keys "n"
                    :icon ("nf-fa-sticky_note_o" :set "faicon" :color "green")
-                   :file +org-capture-todo-file
+                   :file ethan/gtd-file
                    :prepend t
                    :headline "Inbox"
                    :type entry
@@ -153,7 +156,7 @@ Got from https://stackoverflow.com/questions/6997387/how-to-archive-all-the-done
                               "%i %a"))
                   ("Email" :keys "e"
                    :icon ("nf-fa-envelope" :set "faicon" :color "blue")
-                   :file +org-capture-todo-file
+                   :file ethan/gtd-file
                    :prepend t
                    :headline "Inbox"
                    :type entry
@@ -163,7 +166,7 @@ Got from https://stackoverflow.com/questions/6997387/how-to-archive-all-the-done
                               "%U %i %a"))
                   ("Interesting" :keys "i"
                    :icon ("nf-fa-eye" :set "faicon" :color "lcyan")
-                   :file +org-capture-todo-file
+                   :file ethan/gtd-file
                    :prepend t
                    :headline "Interesting"
                    :type entry
@@ -179,7 +182,7 @@ Got from https://stackoverflow.com/questions/6997387/how-to-archive-all-the-done
                                :i-type "read:reaserch")
                               ("\tRecipie" :keys "r"
                                :icon ("nf-fa-spoon" :set "faicon" :color "dorange")
-                               :file +org-capture-recipies
+                               :file ethan/recipe-file
                                :headline "Unsorted"
                                :template "%(org-chef-get-recipe-from-url)")
                               ("Information" :keys "i"
@@ -192,7 +195,7 @@ Got from https://stackoverflow.com/questions/6997387/how-to-archive-all-the-done
                                :i-type "idea")))
                   ("Tasks" :keys "k"
                    :icon ("nf-oct-inbox" :set "octicon" :color "yellow")
-                   :file +org-capture-todo-file
+                   :file ethan/gtd-file
                    :prepend t
                    :headline "Tasks"
                    :type entry
@@ -220,16 +223,16 @@ Got from https://stackoverflow.com/questions/6997387/how-to-archive-all-the-done
                    :children (("Project-local todo" :keys "t"
                                :icon ("nf-oct-checklist" :set "octicon" :color "green")
                                :time-or-todo "TODO"
-                               :file +org-capture-project-todo-file)
+                               :file ethan/gtd-file)
                               ("Project-local note" :keys "n"
                                :icon ("nf-fa-sticky_note" :set "faicon" :color "yellow")
                                :time-or-todo "%U"
-                               :file +org-capture-project-notes-file)
+                               :file ethan/gtd-file)
                               ("Project-local changelog" :keys "c"
                                :icon ("nf-fa-list" :set "faicon" :color "blue")
                                :time-or-todo "%U"
                                :heading "Unreleased"
-                               :file +org-capture-project-changelog-file)))
+                               :file ethan/gtd-file)))
                   ("\tCentralised project templates"
                    :keys "o"
                    :type entry
@@ -242,17 +245,17 @@ Got from https://stackoverflow.com/questions/6997387/how-to-archive-all-the-done
                                :prepend nil
                                :time-or-todo "TODO"
                                :heading "Tasks"
-                               :file +org-capture-central-project-todo-file)
+                               :file ethan/gtd-file)
                               ("Project note"
                                :keys "n"
                                :time-or-todo "%U"
                                :heading "Notes"
-                               :file +org-capture-central-project-notes-file)
+                               :file ethan/gtd-file)
                               ("Project changelog"
                                :keys "c"
                                :time-or-todo "%U"
                                :heading "Unreleased"
-                               :file +org-capture-central-project-changelog-file)))))))
+                               :file ethan/gtd-file)))))))
 
   (set-org-capture-templates)
   (unless (display-graphic-p)
