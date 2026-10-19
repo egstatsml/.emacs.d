@@ -24,7 +24,7 @@
 
 (require 'cl-macs)
 
-(when my/graphical 
+(when my/graphical
   (cl-defun helheim-set-fontset-font (font charsets &key (fontset t) add)
     "Force some code point diapasons to use particular FONT."
     (declare (indent 1))
@@ -143,15 +143,15 @@ Give prefix to open in a new window"
 (require 'helheim-deadgrep) ; Interface for Ripgrep in Emacs
 
 ;;; IDE
+(when (not my/android)
+  (require 'setup-project)
+  (require 'helheim-xref) ; Go to definition framework
 
-(require 'setup-project)
-(require 'helheim-xref)     ; Go to definition framework
-
-;; (require 'helheim-eglot)    ; eglot + flymake (both built-in)
-;; or
-(require 'helheim-flycheck) ; Diagnostics
-(require 'helheim-lsp-mode) ; Lsp-mode
-(require 'setup-formatting) ; Lsp-mode
+  ;; (require 'helheim-eglot)    ; eglot + flymake (both built-in)
+  ;; or
+  (require 'helheim-flycheck) ; Diagnostics
+  (require 'helheim-lsp-mode) ; Lsp-mode
+  (require 'setup-formatting)) ; Lsp-mode
 ;;; Version control
 
 (require 'helheim-magit)
@@ -175,15 +175,15 @@ Give prefix to open in a new window"
   ;; (require 'setup-org-latex))
 
 ;;; Major modes
-
-(require 'helheim-cpp)
-(require 'helheim-emacs-lisp)
-(require 'helheim-json)
-(require 'helheim-markdown)
-(require 'helheim-lua)
-(require 'helheim-sh)
-(require 'setup-python)
-(require 'setup-latex)
+(when (not my/android)
+  (require 'helheim-cpp)
+  (require 'helheim-emacs-lisp)
+  (require 'helheim-json)
+  (require 'helheim-markdown)
+  (require 'helheim-lua)
+  (require 'helheim-sh)
+  (require 'setup-python)
+  (require 'setup-latex))
 ;;; Terminal emulators
 (require 'helheim-ghostel) ; based on libghostty (Zig) -- same as in Ghostty
                                         ; (require 'helheim-vterm)   ; based on libvterm (C) -- same as in Neovim
@@ -192,39 +192,38 @@ Give prefix to open in a new window"
 
 ;; (require 'helheim-agent-shell)
                                         ; (require 'helheim-mcp-server)
-(require 'setup-ai)
+(when (not my/android)
+  (require 'setup-ai))
 ;;; Extra ficilities
-(require 'setup-term)
-(require 'setup-i3)
-(require 'setup-elfeed)
+(when (not my/android)
+  (require 'setup-term)
+  (require 'setup-i3)
+  (require 'setup-elfeed)
 
-(use-package fancy-compilation
-  :ensure t
-  :commands (fancy-compilation-mode)
-  :config
-  (with-eval-after-load 'compile
-    (fancy-compilation-mode)))
+  (use-package
+   fancy-compilation
+   :ensure t
+   :commands (fancy-compilation-mode)
+   :config
+   (with-eval-after-load 'compile
+     (fancy-compilation-mode)))
 
-(use-package kirigami
-  :ensure t
-  :custom
-  ;; Add Kirigami to the menu bar and context menu (`context-menu-mode').
-  (kirigami-show-menu-bar t)
-  (kirigami-show-context-menu t)
-  :init
-  (kirigami-global-mode 1))
-
-
-;; drawing nice diagrams within emacs
-(use-package uniline
-  :ensure t)
-
-(use-package ws-butler
-  :ensure t
-  :hook (prog-mode . ws-butler-mode))
+  (use-package
+   kirigami
+   :ensure t
+   :custom
+   ;; Add Kirigami to the menu bar and context menu (`context-menu-mode').
+   (kirigami-show-menu-bar t) (kirigami-show-context-menu t)
+   :init (kirigami-global-mode 1))
 
 
-(require 'setup-yasnippet)
+  ;; drawing nice diagrams within emacs
+  (use-package uniline :ensure t)
+
+  (use-package ws-butler :ensure t :hook (prog-mode . ws-butler-mode))
+
+
+  (require 'setup-yasnippet))
 
                                         ; (require 'helheim-browser) ; Synchronize online text editor with Emacs buffer
                                         ; (require 'helheim-notmuch) ; Notmuch email client
