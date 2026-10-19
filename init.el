@@ -151,7 +151,7 @@ Give prefix to open in a new window"
 ;; or
 (require 'helheim-flycheck) ; Diagnostics
 (require 'helheim-lsp-mode) ; Lsp-mode
-
+(require 'setup-formatting) ; Lsp-mode
 ;;; Version control
 
 (require 'helheim-magit)
