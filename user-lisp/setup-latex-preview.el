@@ -6,7 +6,6 @@
            :repo "alberti42/latex-to-svg-backend"))
 
 
-
 (use-package latex-to-svg-frontend
   :ensure (latex-to-svg-frontend
            :host github
