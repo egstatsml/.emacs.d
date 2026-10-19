@@ -196,6 +196,7 @@ Give prefix to open in a new window"
 ;;; Extra ficilities
 (require 'setup-term)
 (require 'setup-i3)
+(require 'setup-elfeed)
 
 (use-package fancy-compilation
   :ensure t
