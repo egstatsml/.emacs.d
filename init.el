@@ -208,15 +208,6 @@ Give prefix to open in a new window"
    (with-eval-after-load 'compile
      (fancy-compilation-mode)))
 
-  (use-package
-   kirigami
-   :ensure t
-   :custom
-   ;; Add Kirigami to the menu bar and context menu (`context-menu-mode').
-   (kirigami-show-menu-bar t) (kirigami-show-context-menu t)
-   :init (kirigami-global-mode 1))
-
-
   ;; drawing nice diagrams within emacs
   (use-package uniline :ensure t)
 

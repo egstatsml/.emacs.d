@@ -20,6 +20,14 @@
 (use-package expreg
   :ensure t)
 
+(use-package
+  kirigami
+  :ensure t
+  :custom
+  ;; Add Kirigami to the menu bar and context menu (`context-menu-mode').
+  (kirigami-show-menu-bar t) (kirigami-show-context-menu t)
+  :init (kirigami-global-mode 1))
+
 (setup hel-leader
   (:install hel-leader :host github :repo "helheim-emacs/hel-leader")
   (:require t))
