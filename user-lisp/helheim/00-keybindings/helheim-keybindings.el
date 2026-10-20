@@ -24,6 +24,12 @@
   (:install hel-leader :host github :repo "helheim-emacs/hel-leader")
   (:require t))
 
+
+;; port of vim-matchit to emacs
+;; doesn't need evil mode
+(use-package evil-matchit
+  :ensure t)
+
 (setup helheim
   (:global-bind :state normal
     "z SPC" 'cycle-spacing
@@ -33,11 +39,11 @@
     "z C"   'kirigami-close-folds
     "z o"   'kirigami-open-fold
     "z O"   'kirigami-open-folds
+    "%"     'evilmi-jump-items-native
     "$" 'expreg-expand
     "|" 'expreg-contract
     "#" 'flash-jump
     "+" 'end-of-line)
-    
   (:global-bind :state insert
     "C-/"   'hippie-expand)
   (:global-bind
