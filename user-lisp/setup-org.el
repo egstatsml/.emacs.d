@@ -377,4 +377,18 @@ is selected, only the bare key is returned."
 (advice-add 'org-mks :override #'org-mks-pretty)
 
 
+(when (not my/android)
+  (use-package org-semantic
+   :ensure t
+   :custom (org-semantic-vault-root "~/notes")
+   :bind
+   (("C-c n s" . org-semantic-find)
+    ("C-c n S" . org-semantic-find-in-directory)
+    ("C-c n ." . org-semantic-find-at-point)
+    ("C-c n R" . org-semantic-reindex))
+   ;; Follow mode, on for every results buffer.
+   :hook (org-semantic-results-mode . next-error-follow-minor-mode)
+   ;; Reindex a vault as its notes are saved.
+   :init (org-semantic-auto-reindex-mode 1)))
+
 (provide 'setup-org)
