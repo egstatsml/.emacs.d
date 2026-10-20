@@ -44,6 +44,7 @@ Must be set before `helheim-core' is loaded!"
   (cl-callf nconc compile-angel-excluded-files
     '("/init.el"
       "/custom.el"
+      "/early-init.el"
       "/var/elpaca/builds/doom-themes/doom-catppuccin-mocha-theme.el"))
   (blackout 'compile-angel-on-load-mode)
   ;; Start compile-angel only after Elpaca has finished, so its just-in-time
