@@ -22,17 +22,19 @@
 
 
 ;;; device and funcitonality
-(setq my/graphical
+(defvar my/graphical
       ;; if in daemon and have display
       (or
        (and (not (equal (getenv "DISPLAY") nil)) (daemonp))
        ;; if normal and have display
        ;; this evaluates to false initially when run through daemon
        (display-graphic-p)
-       (string= (system-name) "work")))
+       (string= (system-name) "work"))
+      "Predicate to say if using graphical emacs.")
 
 ;; setting up for andriod
-(setq my/android (eq system-type 'android))
+(defvar my/android (eq system-type 'android)
+  "Predicate to say if on Android.")
 (when my/android
   (message "yes")
   (setenv "PATH" (format "%s:%s" "/data/data/com.termux/files/usr/bin"
