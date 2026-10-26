@@ -4,7 +4,7 @@
   `(start-process "emacs-i3-windmove" nil "i3-msg" ,@args))
 
 (defun my/emacs-i3-windmove (dir)
-  (let ((other-window (windmove-find-other-window dir)))
+  (let ((other-window (window-in-direction dir)))
     (if (or (null other-window) (window-minibuffer-p other-window))
         (i3-msg "focus" (symbol-name dir))
       (windmove-do-window-select dir))))
@@ -14,14 +14,14 @@
 
 Does not take the minibuffer into account."
   (cl-some (lambda (dir)
-             (let ((win (windmove-find-other-window dir)))
+             (let ((win (window-in-direction dir)))
                (and win (not (window-minibuffer-p win)))))
            (pcase dir
              ('width '(left right))
              ('height '(up down)))))
 
 (defun my/emacs-i3-move-window (dir)
-  (let ((other-window (windmove-find-other-window dir))
+  (let ((other-window (window-in-direction dir))
         (other-direction (my/emacs-i3-direction-exists-p
                           (pcase dir
                             ('up 'width)
