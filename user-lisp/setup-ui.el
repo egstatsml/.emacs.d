@@ -26,9 +26,9 @@
 	   ;; :default-family "AporeticSerifMonoNerdFont"
 	   ;; :default-family "GeistMono Nerd Font"
 	   :default-weight medium
-	   ;; :variable-pitch-family "Merriweather"
+	   :variable-pitch-family "Merriweather"
 	   ;; :variable-pitch-weight light
-	   :variable-pitch-family "cmr10"
+	   ;; :variable-pitch-family "cmr10"
 	   ;; :variable-pitch-family "CMU Serif"
 	   :variable-pitch-height 1.5)))
   ;; now set the preset
