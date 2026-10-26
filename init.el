@@ -86,6 +86,13 @@
   ;; Enable use-package :ensure support for Elpaca.
   (elpaca-use-package-mode))
 
+(use-package org
+  :ensure (org
+           :host github
+           :repo "karthink/org-mode"
+           :branch "feature/org-latex-preview"
+           ))
+
 ;; small emacs lisp functions
 ;; loading early as some of these are used to write my config
 (require 'setup-elisp-utils)
@@ -199,6 +206,8 @@ Give prefix to open in a new window"
   (require 'setup-term)
   (require 'setup-i3)
   (require 'setup-elfeed)
+  (require 'setup-notmuch)
+  (require 'setup-pdf)
 
   (use-package
    fancy-compilation
