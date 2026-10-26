@@ -171,8 +171,8 @@ Give prefix to open in a new window"
   (require 'helheim-daily-notes)
   (require 'setup-agenda)
   (require 'setup-org)
-  (require 'setup-latex-preview))
-  ;; (require 'setup-org-latex))
+  (require 'setup-anki))
+;; (require 'setup-org-latex))
 
 ;;; Major modes
 
