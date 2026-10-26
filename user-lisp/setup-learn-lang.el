@@ -422,5 +422,47 @@ Returns them concatenated as a string."
       (when (eq done 'feedback)
         (sacha-learn-lang-get-audio-feedback filename extra t)))))
 
+
+(require 'url)
+(require 'json)
+
+(defun my/french-word-of-the-day ()
+  "Fetch FrenchDictionary.com's word of the day."
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://www.frenchdictionary.com/wordoftheday"
+       t t)
+    (goto-char (point-min))
+    (re-search-forward "^$")
+
+    (let ((html (buffer-substring-no-properties
+                 (point)
+                 (point-max))))
+
+      (unless
+          (string-match
+           "window\\.SD_COMPONENT_DATA = \\({.*?}\\);"
+           html)
+        (error "Could not find SD_COMPONENT_DATA"))
+
+      (let* ((json-object-type 'alist)
+             (json-array-type 'list)
+             (data (json-parse-string
+                    (match-string 1 html)
+                    :object-type 'alist
+                    :array-type 'list))
+             (today (car (alist-get 'wotdList data))))
+
+        `((word . ,(alist-get 'word today))
+          (translation . ,(alist-get 'translation today))
+          (example-fr . ,(alist-get 'exampleSource today))
+          (example-en . ,(alist-get 'exampleTranslated today))
+          (pronunciation . ,(alist-get 'paDisplay today))
+          (part-of-speech . ,(alist-get 'pos today))
+          (published . ,(alist-get 'publishedAt today)))))))
+
+
+(setq french-word-of-day-alist (my/french-word-of-the-day))
+
 (provide 'setup-learn-lang)
 ;;; setup-learn-lang.el ends here
