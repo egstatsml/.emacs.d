@@ -264,7 +264,32 @@ Got from https://stackoverflow.com/questions/6997387/how-to-archive-all-the-done
                 (when (display-graphic-p)
                   (set-org-capture-templates)
                   (remove-hook 'server-after-make-frame-hook
-                               #'org-capture-reinitialise-hook))))))
+                               #'org-capture-reinitialise-hook)))))
+
+
+  ;; new refile commands, allows me to refile to agenda files or to
+  ;; node files
+  (defun my/org-refile-to-node ()
+    (interactive)
+    (let* ((node (org-node-read))
+           ;; (file (org-node-get node 'file)))
+           (file (org-mem-file node)))
+      (org-cut-subtree)
+      (with-current-buffer (find-file-noselect file)
+        (goto-char (point-max))
+        (org-paste-subtree))))
+
+  (defun my/org-refile-dwim ()
+    (interactive)
+    (pcase
+        (completing-read
+         "Refile to: "
+         '("Agenda target" "Org-node")
+         nil t)
+      ("Agenda target"
+       (call-interactively #'org-refile))     
+      ("Org-node"
+       (call-interactively #'my/org-refile-to-node)))))
 
 
 (defun org-capture-select-template-prettier (&optional keys)
