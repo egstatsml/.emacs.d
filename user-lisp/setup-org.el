@@ -404,8 +404,10 @@ is selected, only the bare key is returned."
 
 (when (not my/android)
   (use-package org-semantic
-   :ensure t
-   :custom (org-semantic-vault-root "~/notes")
+    :ensure (org-semantic
+             :host github
+             :repo "alberti42/org-semantic")
+   :custom (org-semantic-vault-root "~/org/roam/")
    :bind
    (("C-c n s" . org-semantic-find)
     ("C-c n S" . org-semantic-find-in-directory)
