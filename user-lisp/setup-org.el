@@ -264,7 +264,32 @@ Got from https://stackoverflow.com/questions/6997387/how-to-archive-all-the-done
                 (when (display-graphic-p)
                   (set-org-capture-templates)
                   (remove-hook 'server-after-make-frame-hook
-                               #'org-capture-reinitialise-hook))))))
+                               #'org-capture-reinitialise-hook)))))
+
+
+  ;; new refile commands, allows me to refile to agenda files or to
+  ;; node files
+  (defun my/org-refile-to-node ()
+    (interactive)
+    (let* ((node (org-node-read))
+           ;; (file (org-node-get node 'file)))
+           (file (org-mem-file node)))
+      (org-cut-subtree)
+      (with-current-buffer (find-file-noselect file)
+        (goto-char (point-max))
+        (org-paste-subtree))))
+
+  (defun my/org-refile-dwim ()
+    (interactive)
+    (pcase
+        (completing-read
+         "Refile to: "
+         '("Agenda target" "Org-node")
+         nil t)
+      ("Agenda target"
+       (call-interactively #'org-refile))     
+      ("Org-node"
+       (call-interactively #'my/org-refile-to-node)))))
 
 
 (defun org-capture-select-template-prettier (&optional keys)
@@ -376,5 +401,21 @@ is selected, only the bare key is returned."
         (when buffer (kill-buffer buffer))))))
 (advice-add 'org-mks :override #'org-mks-pretty)
 
+
+(when (not my/android)
+  (use-package org-semantic
+    :ensure (org-semantic
+             :host github
+             :repo "alberti42/org-semantic")
+   :custom (org-semantic-vault-root "~/org/roam/")
+   :bind
+   (("C-c n s" . org-semantic-find)
+    ("C-c n S" . org-semantic-find-in-directory)
+    ("C-c n ." . org-semantic-find-at-point)
+    ("C-c n R" . org-semantic-reindex))
+   ;; Follow mode, on for every results buffer.
+   :hook (org-semantic-results-mode . next-error-follow-minor-mode)
+   ;; Reindex a vault as its notes are saved.
+   :init (org-semantic-auto-reindex-mode 1)))
 
 (provide 'setup-org)

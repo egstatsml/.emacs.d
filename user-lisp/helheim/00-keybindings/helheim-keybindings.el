@@ -20,9 +20,23 @@
 (use-package expreg
   :ensure t)
 
+(use-package
+  kirigami
+  :ensure t
+  :custom
+  ;; Add Kirigami to the menu bar and context menu (`context-menu-mode').
+  (kirigami-show-menu-bar t) (kirigami-show-context-menu t)
+  :init (kirigami-global-mode 1))
+
 (setup hel-leader
   (:install hel-leader :host github :repo "helheim-emacs/hel-leader")
   (:require t))
+
+
+;; port of vim-matchit to emacs
+;; doesn't need evil mode
+(use-package evil-matchit
+  :ensure t)
 
 (setup helheim
   (:global-bind :state normal
@@ -33,11 +47,11 @@
     "z C"   'kirigami-close-folds
     "z o"   'kirigami-open-fold
     "z O"   'kirigami-open-folds
+    "%"     'evilmi-jump-items-native
     "$" 'expreg-expand
     "|" 'expreg-contract
     "#" 'flash-jump
     "+" 'end-of-line)
-    
   (:global-bind :state insert
     "C-/"   'hippie-expand)
   (:global-bind

@@ -67,6 +67,21 @@
 	(yas-next-field-or-maybe-expand))))
   (yas-global-mode +1))
 
+(use-package yasnippet-snippets
+  :ensure (:post-build
+           (let ((default-directory
+                  (file-name-as-directory
+                   (file-name-concat
+                    elpaca-builds-directory
+                    "yasnippet-snippets"
+                    "snippets"
+                    "latex-mode"))))
+             (unless (file-directory-p default-directory)
+               (make-directory default-directory 'parents))
+             (with-temp-buffer
+               (write-file ".yas-skip"))))
+  :after yasnippet)
+
 (use-package yasnippet-capf
   :ensure (yasnippet-capf
 	   :host github

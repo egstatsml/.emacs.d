@@ -6,24 +6,25 @@
            :repo "alberti42/latex-to-svg-backend"))
 
 
-
 (use-package latex-to-svg-frontend
   :ensure (latex-to-svg-frontend
            :host github
            :repo "alberti42/latex-to-svg"))
 
-(use-package latex-to-svg-for-org
-  :ensure (latex-to-svg-for-org
+;; will use the builtin org latex preview now
+;; but use this for agent shell
+(use-package agent-shell-math-renderer
+  :ensure (agent-shell-math-renderer
            :host github
-           :repo "alberti42/latex-to-svg"
-           :files ("latex-to-svg-for-org.el"))
-  :hook (org-mode . latex-to-svg-for-org-mode)
-  :init
-  ;; Ignore `#+startup: latexpreview': it would run Org's own preview
-  ;; before this mode turns on (see Troubleshooting in
-  ;; docs/latex-to-svg-for-org.md).
-  (with-eval-after-load 'org
-    (setq org-startup-options
-          (assoc-delete-all "latexpreview" org-startup-options))))
+           :repo "alberti42/agent-shell-math-renderer")
+  :hook (agent-shell-mode . agent-shell-math-renderer-mode)
+  ;; Optional: re-tint equations the instant you switch themes, and
+  ;; rescale them when the frame font changes.  See "Usage" below; omit
+  ;; if you never change themes or font sizes at runtime.
+  :config
+  (add-hook 'enable-theme-functions
+            #'agent-shell-math-renderer-on-appearance-change)
+  (add-hook 'after-setting-font-hook
+            #'agent-shell-math-renderer-on-appearance-change))
 
 (provide 'setup-latex-preview)
