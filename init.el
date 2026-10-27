@@ -141,9 +141,6 @@ Give prefix to open in a new window"
 (require 'helheim-ibuffer)    ; Buffers menu
 (require 'helheim-dired)      ; File-manager
 (require 'helheim-embark)     ; Context-aware action menus
-;; (require 'helheim-modeline)   ; Normal people call this "status line"
-(require 'helheim-outline)    ; See "Outline Mode" in Emacs manual
-
 ;;; Search
 
 (require 'helheim-consult)  ; A set of search commands with preview
