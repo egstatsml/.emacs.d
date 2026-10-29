@@ -82,7 +82,65 @@
                     :add-on? t
                     :server-id 'py-pyrefly))
 
-  (lsp-consistency-check lsp-python-pyrefly))
+  (lsp-consistency-check lsp-python-refly)
+
+
+  (defgroup lsp-harper nil
+    "Settings for harper grammar language Server."
+    :prefix "lsp-harper-"
+    :group 'lsp-mode
+    )
+
+  (defcustom lsp-harper-active-modes
+    '( rust-mode python-mode ess-mode typst-ts-mode markdown-mode LaTeX-Mode)
+    "List of major modes that work with lsp-ai"
+    :type 'list
+    :group 'lsp-harper
+    )
+
+  (defcustom lsp-harper-configuration
+    '(:userDictPath ""
+                    :fileDictPath ""
+                    :linters (:SpellCheck t
+                                          :SpelledNumbers :json-false
+                                          :AnA t
+                                          :SentenceCapitalization t
+                                          :UnclosedQuotes t
+                                          :WrongQuotes :json-false
+                                          :LongSentences t
+                                          :RepeatedWords t
+                                          :Spaces t
+                                          :Matcher t
+                                          :CorrectNumberSuffix t)
+                    :codeActions (:ForceStable :json-false)
+                    :markdown (:IgnoreLinkTitle :json-false)
+                    :diagnosticSeverity "hint"
+                    :isolateEnglish :json-false)
+    "Harper configuration structure"
+    :type 'dictionary
+    :group 'lsp-harper
+    )
+
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-stdio-connection
+                     '("harper-ls" "-s"))
+    :major-modes lsp-harper-active-modes
+    :initialization-options lsp-harper-configuration
+    :add-on? 't
+    :priority -3
+    :server-id 'lsp-harper
+    )
+   )
+
+  (lsp-register-custom-settings `(("harper-ls.userDictPath" "")))
+  (lsp-defcustom lsp-harper-linters-sentence-capilization nil
+                 "Whether sentences should start with a capital letter"
+                 :type '(choice (const :tag "Enabled"        t)
+                                (const :tag "Disabled"      :json-false)
+                                (const :tag "Not Specified" nil))
+                 :lsp-path "harper-ls.linters.SentenceCapitalization")
+  )
 
 (setup lsp-ui
   (:install t)

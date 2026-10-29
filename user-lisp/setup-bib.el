@@ -143,14 +143,38 @@
 (use-package zotra
   ;; check out the zotra and zotra server package for info on getting started
   ;; https://github.com/mpedramfar/zotra-server
+  ;; I have also set this up to run as a daemon
+  ;; /etc/systemd/system/zotra.service
   :ensure t
   :if my/graphical
   :defer 1
   :init
   :config
+  (setq zotra-default-bibliography ethan/main-bib-library)
   (setq zotra-backend 'citoid)
   (setq zotra-backend 'translation-server)
-  (setq zotra-local-server-directory "~/code/zotra-server"))
+  (setq zotra-local-server-directory "~/code/zotra-server")
+
+  (defun zotra-download-attachment-for-current-entry ()
+    (interactive)
+    (save-excursion
+      (bibtex-beginning-of-entry)
+      (let* ((entry (bibtex-parse-entry t))
+             (key (cdr (assoc "=key=" entry)))
+             (url (cdr (assoc "url" entry)))
+             (filename (concat key ".pdf"))
+             (filename (when entry
+                         (zotra-download-attachment
+                          url nil filename))))
+        (when filename
+          (bibtex-make-field (list "File" nil filename) t)))))
+
+  (defun zotra-add-entry-and-download-attachment (&optional url)
+    (interactive)
+    (let ((zotra-after-get-bibtex-entry-hook
+           (append zotra-after-get-bibtex-entry-hook
+                   '(zotra-download-attachment-for-current-entry))))
+      (zotra-add-entry url))))
 
 
 ;;; setup org protocol for my bib access and saving files from arxiv

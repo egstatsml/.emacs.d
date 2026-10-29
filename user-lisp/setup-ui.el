@@ -1,6 +1,6 @@
 ;;; setup-ui.el -*- lexical-binding: t; no-byte-compile: t; -*-
 
-;; fonts
+;;; fonts
 (use-package fontaine
   :ensure t
   :if my/graphical
@@ -26,9 +26,9 @@
 	   ;; :default-family "AporeticSerifMonoNerdFont"
 	   ;; :default-family "GeistMono Nerd Font"
 	   :default-weight medium
-	   ;; :variable-pitch-family "Merriweather"
+	   :variable-pitch-family "Merriweather"
 	   ;; :variable-pitch-weight light
-	   :variable-pitch-family "cmr10"
+	   ;; :variable-pitch-family "cmr10"
 	   ;; :variable-pitch-family "CMU Serif"
 	   :variable-pitch-height 1.5)))
   ;; now set the preset
@@ -45,8 +45,9 @@
 ;; (let ((font (font-spec :family "Iosevka Comfy Wide" :size 13.0 :weight 'normal)))
 ;;   (set-face-font 'default font)
 ;;   (set-face-font 'fixed-pitch font))
+
 ;;; Color theme
-;;; my fork of Doom themes
+;; my fork of dooom themes with my catppuccin theme
 (use-package doom-themes
   ;; :ensure (doom-themes :type git :local-repo "~/.doom.d/doom-themes")
   :ensure (doom-themes
@@ -86,6 +87,26 @@
                (file-name-directory (locate-library "ember-theme"))))
 ;; (load-theme 'ember-light t))
 
+;; nice themes that the author designed for academic work
+;; a bit quiter in terms of highlighting
+(use-package foxglove-themes
+  :ensure (foxglove-themes
+           :host gitlab
+           :repo "vegasharmon/foxglove-themes"))
+
+;; lower-contrast and less visual noise themes
+;; built on modus/ef-themes
+;; author states they are for;
+;; "autistic people, and anyone who gets overwhelmed by visual noise,
+;; people with astigmatism,
+;; people who are sensitive to light,
+;; anyone who spends long hours reading text on a screen."
+;; I really like the look of the au-parchment-day theme
+;; more info here https://szymon-wilczek.me/writings/au-themes-screenshots/
+(use-package au-themes
+  :ensure (au-themes
+           :host github
+           :repo "szymonwilczek/au-themes"))
 
 (use-package mood-line
   :ensure (mood-line

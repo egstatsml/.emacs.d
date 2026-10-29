@@ -20,6 +20,27 @@
 ;;       debug-on-quit t)
 ;;------------------------
 
+
+;;; device and funcitonality
+(defvar my/graphical
+      ;; if in daemon and have display
+      (or
+       (and (not (equal (getenv "DISPLAY") nil)) (daemonp))
+       ;; if normal and have display
+       ;; this evaluates to false initially when run through daemon
+       (display-graphic-p)
+       (string= (system-name) "work"))
+      "Predicate to say if using graphical emacs.")
+
+;; setting up for andriod
+(defvar my/android (eq system-type 'android)
+  "Predicate to say if on Android.")
+(when my/android
+  (message "yes")
+  (setenv "PATH" (format "%s:%s" "/data/data/com.termux/files/usr/bin"
+                         (getenv "PATH")))
+  (push "/data/data/com.termux/files/usr/bin" exec-path))
+
 ;;; Garbage collector
 
 (if noninteractive ;; in CLI sessions
@@ -273,14 +294,6 @@ cookies.")
 (setq auto-save-file-name-transforms
       `((".*" ,ethan/autosave-dir t)))
 
-(setq my/graphical
-      ;; if in daemon and have display
-      (or
-       (and (not (equal (getenv "DISPLAY") nil)) (daemonp))
-       ;; if normal and have display
-       ;; this evaluates to false initially when run through daemon
-       (display-graphic-p)
-       (string= (system-name) "work")))
 
 ;; using plists for lsp mode
 (setenv "LSP_USE_PLISTS" "1")
