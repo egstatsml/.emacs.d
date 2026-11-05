@@ -22,12 +22,14 @@
                                                       "--stdin-filename" filepath "-"))
   ;; latex
   (setf (alist-get 'latexindent apheleia-formatters)
-	'("latexindent" "-y=/home/ethan/.config/latexindent/mysettings.yaml" "--logfile=/dev/null"))
+	'("latexindent" "-m" "-l" "/home/ethan/.config/latexindent/mysettings.yaml" "-g" "/dev/null"))
+
+  (setf (alist-get 'latexindent apheleia-formatters)
+	'("latexindent" "-m" "-g" "/dev/null"))
   ;; adding tex-fmt to the list
   ;; the -p -q will make it print back the output and then write
   (add-to-list 'apheleia-formatters '(tex-fmt "tex-fmt" "-p" "-q" filepath))
-  (add-to-list 'apheleia-mode-alist '(LaTeX-mode . tex-fmt))
-
+  (add-to-list 'apheleia-mode-alist '(LaTeX-mode . latexindent))
 
   ;; elisp with elisp-autofmt
   ;; from https://github.com/radian-software/apheleia/issues/272
