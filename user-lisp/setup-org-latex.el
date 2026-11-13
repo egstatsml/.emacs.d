@@ -27,7 +27,6 @@
   ;; fragment and updates the preview in real-time as you edit it.
   ;; To preview only environments, set it to '(block edit-special) instead
   (setq org-latex-preview-mode-display-live t)
-
   ;; More immediate live-previews -- the default delay is 1 second
   (setq org-latex-preview-mode-update-delay 0.25))
 

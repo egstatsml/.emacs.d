@@ -15,7 +15,8 @@
 	   :host github
 	   :repo "xenodium/agent-shell")
   :config
-  (setq agent-shell-thought-process-icon ""))
+  (setq agent-shell-thought-process-icon "")
+  (setopt agent-shell-inhibit-system-sleep nil))
 
 
 (use-package agent-review

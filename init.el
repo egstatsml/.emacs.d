@@ -90,8 +90,7 @@
   :ensure (org
            :host github
            :repo "karthink/org-mode"
-           :branch "feature/org-latex-preview"
-           ))
+           :branch "feature/org-latex-preview"))
 
 ;; small emacs lisp functions
 ;; loading early as some of these are used to write my config
