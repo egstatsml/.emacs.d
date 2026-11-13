@@ -182,21 +182,40 @@ org-clock has been loaded in"
   :ensure t
   :hook (pdf-mode . hide-mode-line-mode))
 
-(use-package dashboard
-  :ensure t
+;;; dashboard
+
+(use-package welkomscherm
+  :ensure (:host codeberg :repo "jjba23/welkomscherm.el" :branch "trunk")
+  :bind (("C-c SPC SPC" . welkomscherm))
+  :hook (elpaca-after-init . welkomscherm)
   :init
-  (setq initial-buffer-choice 'dashboard-open)
-  :config
-  (dashboard-setup-startup-hook)
-  (setq dashboard-banner-logo-title "")
-  (setq dashboard-startup-banner "/home/ethan/.local/assets/xemacs_color_reg.png")
-  (setq dashboard-center-content t)
-  ;; To disable shortcut "jump" indicators for each section, set
-  (setq dashboard-show-shortcuts nil)
-  (setq dashboard-footer-messages
-	'("Welcome Home" "You're capable of so much"))
-  ;; disable all the dashboards
-  (setq dashboard-items nil))
+  (setopt welkomscherm/centered t
+          welkomscherm/use-section-title t
+          welkomscherm/use-separator nil)
+
+  ;; A quiet two-line greeting.
+  (setopt welkomscherm/top-title-list
+          '("Make yourself comfortable."
+            "Your files are right here."))
+
+  (setopt welkomscherm/bookmarks-list
+          '((("dotfiles" . "~/.dotfiles/")
+             ("gtd" . "~/org/gtd.org")
+             ("emacs config" . "~/.emacs.d/init.el"))
+            (("second-row-api" . "~/Dev/Personal/second-row-api/README.md")
+             ("second-row-ssr" . "~/Dev/Personal/second-row-ssr/"))))
+
+  (setopt welkomscherm/work-list
+          '((("projects" . "~/projects"))))
+
+  (setopt welkomscherm/actions-list
+          '((("*scratch*" . (lambda (btn) (switch-to-buffer "*scratch*")))
+             ("*Messages*" . (lambda (btn) (switch-to-buffer "*Messages*")))
+             ("re-render me" . (lambda (btn) (welkomscherm))))))
+
+  ;; Offer a hand, only if you want it.
+  (setopt welkomscherm/show-recent-files t
+          welkomscherm/show-system-details nil))
 
 
 (use-package mixed-pitch
