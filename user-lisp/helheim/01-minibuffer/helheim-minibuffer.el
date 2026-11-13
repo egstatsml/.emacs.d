@@ -37,6 +37,10 @@
   (:keymap vertico-directory-map
     (:bind "C-h" 'vertico-directory-up)))
 
+(setup vertico-multiform
+  (:after vertico)
+  (:require t))
+
 (setup marginalia
   (:install t)
   (marginalia-mode))
