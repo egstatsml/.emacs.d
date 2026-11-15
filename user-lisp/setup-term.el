@@ -6,7 +6,7 @@
   :ensure (kitty-graphics
            :host github
            :repo "cashmeredev/kitty-graphics.el")
-  :if (not (display-graphic-p))
+  :if (not my/graphical)
   :config
   (kitty-graphics-mode 1))
 
