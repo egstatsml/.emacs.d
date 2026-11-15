@@ -149,16 +149,13 @@ Give prefix to open in a new window"
 (when (not my/android)
   (require 'setup-project)
   (require 'helheim-xref) ; Go to definition framework
-
-  ;; (require 'helheim-eglot)    ; eglot + flymake (both built-in)
-  ;; or
   (require 'helheim-flycheck) ; Diagnostics
   (require 'helheim-lsp-mode) ; Lsp-mode
   (require 'setup-formatting)) ; Lsp-mode
 ;;; Version control
 
-(require 'helheim-magit)
 (require 'helheim-diff-hl)  ; git gutter indicators
+(require 'setup-git)
 (use-package git-auto-commit-mode
   :ensure t)
 ;;; Org mode
