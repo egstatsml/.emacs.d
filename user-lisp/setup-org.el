@@ -154,6 +154,13 @@ Got from https://stackoverflow.com/questions/6997387/how-to-archive-all-the-done
                    :type entry
                    :template ("* %?"
                               "%i %a"))
+                  ("Website" :keys "w"
+                   :icon ("nf-fa-sticky_note_o" :set "faicon" :color "green")
+                   :file ethan/gtd-file
+                   :prepend t
+                   :headline "Inbox"
+                   :type entry
+                   :template ("* %a :website:\n\n%U %?\n\n%:initial"))
                   ("Email" :keys "e"
                    :icon ("nf-fa-envelope" :set "faicon" :color "blue")
                    :file ethan/gtd-file
