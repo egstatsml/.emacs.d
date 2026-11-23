@@ -211,12 +211,13 @@ Give prefix to open in a new window"
   (require 'setup-ai))
 ;;; Extra ficilities
 (when (not my/android)
-(require 'setup-term)
-(require 'setup-i3)
+  (require 'setup-term)
+  (require 'setup-i3)
   (require 'setup-elfeed)
   (require 'setup-notmuch)
-(require 'setup-pdf)
-
+  (require 'setup-pdf)
+  (require 'setup-library)
+  (require 'setup-bib)
   (use-package
    fancy-compilation
   :ensure t
