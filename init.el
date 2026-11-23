@@ -67,7 +67,7 @@
 ;; Main PDFs directory
 (defconst ethan/main-pdfs-library-path (nth 0 ethan/main-pdfs-library-paths))
 ;; I use org-roam to manage all my notes, including bib notes.
-(defconst ethan/bib-notes-dir "~/org/roam")
+(defconst ethan/bib-notes-dir "~/org/roam/references/")
 
 
 ;;; Helheim core
