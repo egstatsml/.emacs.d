@@ -1,0 +1,32 @@
+From d97da44bccd75abfa1311f15f5accb9cba59f92e Mon Sep 17 00:00:00 2001
+From: Yuriy Artemyev <anuvyklack@gmail.com>
+Date: Mon, 3 Aug 2026 17:11:38 +0300
+Subject: [PATCH 1/1] fix: break on configs that separate `C-i` from `TAB`
+
+Close #802
+---
+ citar.el | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/citar.el b/citar.el
+index eefd2af..2b9aedb 100644
+--- a/citar.el
++++ b/citar.el
+@@ -752,7 +752,13 @@ is used for exiting the minibuffer during completing read.")
+ (defun citar--multiple-exit ()
+   "Exit with the currently selected candidates."
+   (interactive)
+-  (setq unread-command-events (listify-key-sequence (kbd (car citar--multiple-setup)))))
++  (setq unread-command-events
++        (mapcar (lambda (event)
++                  (alist-get event '((?\t . tab)
++                                     (?\r . return)
++                                     (?\e . escape))
++                             event))
++                (listify-key-sequence (kbd (car citar--multiple-setup))))))
+ 
+ (defun citar--setup-multiple-keymap ()
+   "Make a keymap suitable for `citar--select-multiple'."
+-- 
+2.56.0
+
