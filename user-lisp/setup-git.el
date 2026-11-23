@@ -1,4 +1,4 @@
-;;; setup-git.el --- Git settings -*- lexical-binding: t; -*-
+;;; setup-git.el -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;
 ;; Copyright (C) 2026 Ethan Goan
 ;;
@@ -32,8 +32,6 @@
 
 (use-package magit
   :ensure t
-  :hook ((magit-process-mode . goto-address-mode)
-         (magit-popup-mode-hook hide-mode-line-mode))
   :config
   (magit-auto-revert-mode)
   :custom
@@ -45,7 +43,9 @@
 
 
 (use-package remoto
-  :ensure t)
+  :ensure (remoto
+           :host github
+           :repo "agzam/remoto.el"))
 
 
 (provide 'setup-git)
