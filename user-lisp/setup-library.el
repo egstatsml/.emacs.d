@@ -5,6 +5,7 @@
 (use-package library
   :if my/graphical
   :defer t
+  :after (czm-tex-util latex org-ref)
   :ensure (library
 	   :host github
 	   :repo "ultronozm/library.el")
@@ -44,8 +45,6 @@
 
 I want the filenames to match what google-scholar does.
 "
-    (message "manual author: %s" (bibtex-text-in-field "author" _entry))
-    (message "author: %s" author)
     (let* ((my-author (bibtex-text-in-field "author" _entry))
 	   (my-title (bibtex-text-in-field "title" _entry))
 	   ;; this concatenates first and last names when using arxiv
@@ -60,11 +59,12 @@ I want the filenames to match what google-scholar does.
 							       word-boundary (group (or "and" ","))
 							       word-boundary (zero-or-more space))))))))))
 	   (clean-title
+            (replace-regexp-in-string "[^[:alpha:]]" ""
 	    (downcase
 	     (car ;; get the first word, but filter out small words
 	      (cl-remove-if (lambda (str) (<= (length str) 3))
 			    (split-string
-			     my-title))))))
+			     my-title)))))))
       (concat lastname year clean-title)))
 
 
@@ -137,7 +137,12 @@ to PDF directory, and rename it according to the BIBTEX entry."
 	  (goto-char (point-max))
 	  (newline-and-indent)
 	  (insert bibtex)
+          ;; go up one line so can add a new bibtex field
+          ;; otherwise wont work
+          ;; (previous-line)
 	  (bibtex-set-field "file" path)
+          ;; (left-char)
+          ;; (insert path)
 	  ;; use the filename as a key
 	  (my/rename-bib-key key)
 	  (save-buffer)))))
@@ -147,4 +152,5 @@ to PDF directory, and rename it according to the BIBTEX entry."
   (with-eval-after-load 'org
     (add-to-list 'org-capture-templates
 		 '("j" "Journal" entry (file "~/org/reading.org")))))
+
 (provide 'setup-library)

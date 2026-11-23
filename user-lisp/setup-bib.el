@@ -5,7 +5,12 @@
 
 ;;; bibliographies
 (use-package citar
-  :ensure t
+  :ensure (citar
+           :host github
+           :repo "emacs-citar/citar"
+           :patch "~/.emacs.d/user-lisp/0001-fix-break-on-configs-that-separate-C-i-from-TAB.patch"
+           ;; apply patch after source files are on disk.
+           :build (:after elpaca-source +elpaca-apply-patch))
   :if my/graphical
   :hook ((LaTeX-mode org-mode) . citar-capf-setup)
   :bind (:map org-mode-map
@@ -21,6 +26,8 @@
   (setq org-cite-insert-processor 'citar
 	org-cite-follow-processor 'citar
 	org-cite-activate-processor 'citar)
+  ;; setting directory for org-roam/node notes
+  (setq citar-notes-paths (list ethan/bib-notes-dir))
   ;; setting paths for citar bib files and pdf directories
   (setq citar-bibliography ethan/bib-libraries
 	citar-library-paths ethan/main-pdfs-library-paths
@@ -43,7 +50,7 @@
 	'((main . "${author editor:55}     ${date year issued:4}     ${title:55}")
 	  (suffix . "  ${tags keywords keywords:40}")
 	  (preview . "${author editor} ${title}, ${journal publisher container-title collection-title booktitle} ${volume} (${year issued date}).\n")
-	  (note . "#+title: Notes on ${author editor}, ${title}")))
+	  (note . "${title}\n ${author} \n ${year},  ${journal publisher container-title collection-title booktitle}  \n [[${file}][pdf]]")))
   ;; nerd icons in citar
   (defvar citar-indicator-files-icons
     (citar-indicator-create
@@ -92,7 +99,16 @@
   :ensure t
   :after citar embark
   :no-require
-  :config (citar-embark-mode))
+  :config
+  (citar-embark-mode)
+  ;; opening files with sioyek
+  (defun my/embark-open-pdf-in-sioyek (file)
+    (when (string-match-p "\\.pdf\\'" file)
+      (start-process "sioyek" nil "sioyek" file)))
+
+  (with-eval-after-load 'embark
+    (define-key embark-file-map (kbd "p")
+                #'my/embark-open-pdf-in-sioyek)))
 
 
 (use-package citar-org-node
@@ -110,7 +126,7 @@
 (use-package org-ref
   :ensure t
   :if my/graphical
-  :commands (arxiv-get-pdf-add-bibtex-entry arxiv-get-pdf)
+  :commands (arxiv-get-pdf-add-bibtex-entry arxiv-get-pdf bibtex-set-field)
   :config
   (setq library-download-directory ethan/main-pdfs-library-path)
   (defun ethan/reformat-bib-library (&optional filename)
