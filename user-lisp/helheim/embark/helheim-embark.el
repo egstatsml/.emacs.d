@@ -4,7 +4,7 @@
 (require 'hel)
 
 (hel-keymap-global-set
-  "C-<m>" 'embark-act
+  "C-." 'embark-act
   "M-m"   'embark-dwim)
 
 ;; On QWERTY layout c, v, b keys are next to each other.
