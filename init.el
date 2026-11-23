@@ -86,6 +86,21 @@
   ;; Enable use-package :ensure support for Elpaca.
   (elpaca-use-package-mode))
 
+
+;; apply a patch in elpacas build step
+;; taken from https://github.com/progfolio/elpaca/issues/548
+(defun +elpaca-apply-patch (e)
+  "Apply E's :patch file."
+  (when-let* ((recipe (elpaca<-recipe e))
+              (patch (plist-get recipe :patch)))
+    (elpaca-note e (format "Applying patch %s" patch))
+    (elpaca-with-dir e source
+      (elpaca-with-process-call ("git" "apply" (expand-file-name patch))
+        (if (not success)
+            (elpaca--fail e (format "Unable to apply patch %s" patch))
+          (elpaca-note e "Successfully applied patch")
+          (elpaca-continue e))))))
+
 (use-package org
   :ensure (org
            :host github
