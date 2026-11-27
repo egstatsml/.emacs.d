@@ -128,10 +128,10 @@
 (use-package tramp-rpc
   :ensure (tramp-rpc
            :host github
-           :repo "ArthurHeymans/emacs-tramp-rpc"
-           :pre-build (("bash" "scripts/build_all.sh")))
-  :config
-  (setq tramp-rpc-deploy-git-build-policy 'release))
+           :repo "ArthurHeymans/emacs-tramp-rpc"))
+  ;;          :pre-build (("bash" "scripts/build_all.sh")))
+  ;; :config
+  ;; (setq tramp-rpc-deploy-git-build-policy 'release))
   ;; (setq tramp-rpc-deploy-local-cache-directory "~/.cache/emacs/tramp-rpc-binaries")
   ;; Remote installation directory (default: ~/.cache/emacs/tramp-rpc)
   ;; (setq tramp-rpc-deploy-remote-directory "~/.local/bin/tramp-rpc")

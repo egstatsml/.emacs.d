@@ -160,6 +160,7 @@ Give prefix to open in a new window"
 (require 'helheim-consult)  ; A set of search commands with preview
 (require 'helheim-deadgrep) ; Interface for Ripgrep in Emacs
 
+(require 'setup-tramp)
 ;;; IDE
 (when (not my/android)
   (require 'setup-project)
