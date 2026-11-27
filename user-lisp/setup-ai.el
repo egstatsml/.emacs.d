@@ -30,6 +30,7 @@
   :config
   (agent-shell-tramp-mode 1))
 
+
 (use-package hel-agent-shell
   :ensure (hel-agent-shell
            :host github
@@ -38,6 +39,15 @@
   :after agent-shell)
 
 (use-package gptel
-  :ensure t)
+  :ensure t
+  :config
+  (gptel-make-openai "OpenRouter"               ;Any name you want
+    :host "openrouter.ai"
+    :endpoint "/api/v1/chat/completions"
+    :stream t
+    :key #'gptel-api-key-from-auth-source
+    :models '(google/gemini-4-carbon
+              deepseek/deepseek-v4.1-flash-1017
+              openai/gpt-6.2-sol)))
 
 (provide 'setup-ai)
