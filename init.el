@@ -187,6 +187,7 @@ Give prefix to open in a new window"
   (require 'helheim-daily-notes)
   (require 'setup-agenda)
   (require 'setup-org)
+  (require 'setup-latex-svg)
   (require 'setup-anki))
 ;; (require 'setup-org-latex))
 

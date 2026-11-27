@@ -1,10 +1,9 @@
-;;; setup-latex-preview.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; setup-latex-svg.el -*- lexical-binding: t; no-byte-compile: t; -*-
 
 (use-package latex-to-svg-backend
   :ensure (latex-to-svg-backend
            :host github
            :repo "alberti42/latex-to-svg-backend"))
-
 
 (use-package latex-to-svg-frontend
   :ensure (latex-to-svg-frontend
@@ -27,4 +26,4 @@
   (add-hook 'after-setting-font-hook
             #'agent-shell-math-renderer-on-appearance-change))
 
-(provide 'setup-latex-preview)
+(provide 'setup-latex-svg)
